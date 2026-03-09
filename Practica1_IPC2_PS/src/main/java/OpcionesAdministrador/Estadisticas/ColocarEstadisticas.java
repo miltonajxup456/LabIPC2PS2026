@@ -20,21 +20,22 @@ public class ColocarEstadisticas {
     
     private final VentanaRanking ventanaRanking;
     private final GestorEstadisticas gestorEstadisticas;
-    private ListaGenerica<Estadistica> estadisticas;
+    private ListaGenerica<EstadisticaRanking> estadisticas;
     
     public ColocarEstadisticas(VentanaRanking ventanaRanking) {
         this.ventanaRanking = ventanaRanking;
         this.gestorEstadisticas = new GestorEstadisticas();
     }
 
-    public ListaGenerica<Estadistica> getEstadisticas() {
+    public ListaGenerica<EstadisticaRanking> getEstadisticas() {
         return estadisticas;
     }
     
     public void colocarEstadisticasPorSucursal(Usuario usuario) throws SQLException, ClassNotFoundException, ListaException {
+        ventanaRanking.setTextos("Nombre", "Sucursal", "Puntuacion", "Nivel");
         estadisticas = gestorEstadisticas.getEstadisticasPorSucursal(usuario.getIdSucursal());
         for (int i = 0; i < estadisticas.getTamaño(); i++) {
-            Estadistica estadistica = estadisticas.obtenerConIndice(i);
+            EstadisticaRanking estadistica = estadisticas.obtenerConIndice(i);
             PlantillaEstadistica plantilla = new PlantillaEstadistica(estadistica.getNombre(), estadistica.getSucursal(), 
                     estadistica.getPuntuacion(), estadistica.getNivel());
             ventanaRanking.agregarEstadistica(plantilla);
@@ -42,9 +43,10 @@ public class ColocarEstadisticas {
     }
     
     public void colocarEstadisticasGlobales() throws SQLException, ClassNotFoundException, ListaException {
+        ventanaRanking.setTextos("Nombre", "Sucursal", "Puntuacion", "Nivel");
         estadisticas = gestorEstadisticas.getEstadisticasGlobales();
         for (int i = 0; i < estadisticas.getTamaño(); i++) {
-            Estadistica estadistica = estadisticas.obtenerConIndice(i);
+            EstadisticaRanking estadistica = estadisticas.obtenerConIndice(i);
             PlantillaEstadistica plantilla = new PlantillaEstadistica(estadistica.getNombre(), estadistica.getSucursal(), 
                     estadistica.getPuntuacion(), estadistica.getNivel());
             ventanaRanking.agregarEstadistica(plantilla);

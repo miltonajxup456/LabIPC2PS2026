@@ -5,7 +5,7 @@
 package SQL.Partida;
 
 import Listas.ListaGenerica;
-import OpcionesAdministrador.Estadisticas.Estadistica;
+import OpcionesAdministrador.Estadisticas.EstadisticaRanking;
 import SQL.ConnectorDB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,19 +18,19 @@ import java.sql.SQLException;
  */
 public class GestorEstadisticas {
     
-    public ListaGenerica<Estadistica> getEstadisticasGlobales() throws SQLException, ClassNotFoundException {
+    public ListaGenerica<EstadisticaRanking> getEstadisticasGlobales() throws SQLException, ClassNotFoundException {
         String sql = "SELECT Usuario.nombre, Sucursal.nombre AS nombre_sucursal, Partida.puntaje, Partida.nivel_alcanzado "
                 + "FROM Usuario "
                 + "JOIN Sucursal ON Usuario.sucursal = Sucursal.id_sucursal "
                 + "JOIN Partida ON Partida.usuario = Usuario.id_usuario "
                 + "ORDER BY Partida.puntaje DESC";
-        ListaGenerica<Estadistica> estadisticas = new ListaGenerica<>();
+        ListaGenerica<EstadisticaRanking> estadisticas = new ListaGenerica<>();
         
         try (Connection connection = ConnectorDB.getConnection();
                 PreparedStatement pstmStats = connection.prepareStatement(sql)) {
             try (ResultSet resultSet = pstmStats.executeQuery()) {
                 while (resultSet.next()) {
-                    Estadistica estadistica = new Estadistica(resultSet.getString("nombre"), resultSet.getString("nombre_sucursal"), 
+                    EstadisticaRanking estadistica = new EstadisticaRanking(resultSet.getString("nombre"), resultSet.getString("nombre_sucursal"), 
                             resultSet.getInt("puntaje"), resultSet.getInt("nivel_alcanzado"));
                     estadisticas.agregarElemento(estadistica);
                 }
@@ -39,14 +39,14 @@ public class GestorEstadisticas {
         return estadisticas;
     }
     
-    public ListaGenerica<Estadistica> getEstadisticasPorSucursal(int idSucursal) throws SQLException, ClassNotFoundException {
+    public ListaGenerica<EstadisticaRanking> getEstadisticasPorSucursal(int idSucursal) throws SQLException, ClassNotFoundException {
         String sql = "SELECT Usuario.nombre, Sucursal.nombre AS nombre_sucursal, Partida.puntaje, Partida.nivel_alcanzado "
                 + "FROM Usuario "
                 + "JOIN Sucursal ON Usuario.sucursal = Sucursal.id_sucursal "
                 + "JOIN Partida ON Partida.usuario = Usuario.id_usuario "
                 + "WHERE Sucursal.id_sucursal = ? "
                 + "ORDER BY Partida.puntaje DESC";
-        ListaGenerica<Estadistica> estadisticas = new ListaGenerica<>();
+        ListaGenerica<EstadisticaRanking> estadisticas = new ListaGenerica<>();
         
         try (Connection connection = ConnectorDB.getConnection();
                 PreparedStatement pstmStats = connection.prepareStatement(sql)) {
@@ -54,7 +54,7 @@ public class GestorEstadisticas {
             
             try (ResultSet resultSet = pstmStats.executeQuery()) {
                 while (resultSet.next()) {
-                    Estadistica estadistica = new Estadistica(resultSet.getString("nombre"), resultSet.getString("nombre_sucursal"), 
+                    EstadisticaRanking estadistica = new EstadisticaRanking(resultSet.getString("nombre"), resultSet.getString("nombre_sucursal"), 
                             resultSet.getInt("puntaje"), resultSet.getInt("nivel_alcanzado"));
                     estadisticas.agregarElemento(estadistica);
                 }

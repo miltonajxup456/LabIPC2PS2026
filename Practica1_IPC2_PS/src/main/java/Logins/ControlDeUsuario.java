@@ -93,6 +93,7 @@ public class ControlDeUsuario {
             case 3:
                 organizador.setProductosDisponibles(productosSucursal);
                 organizador.setUsuario(usuarioActivo);
+                menuUsuario.setUsuario(usuarioActivo);
                 menuUsuario.mostrar();
                 break;
             default:

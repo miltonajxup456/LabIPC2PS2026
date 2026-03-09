@@ -1,3 +1,5 @@
+/home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/Archivos/GuardadoArchivos.java
+/home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/Archivos/GuardadoHistorialUsuario.java
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/Archivos/GuardadoRanking.java
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/ControlCocina/ControlTiempoPedidos.java
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/ControlCocina/ControladorPartida.java
@@ -22,7 +24,9 @@
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/Menus/VentanaMenuSuperAdmin.java
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/Menus/VentanaMenuUsuario.java
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/OpcionesAdministrador/Estadisticas/ColocarEstadisticas.java
-/home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/OpcionesAdministrador/Estadisticas/Estadistica.java
+/home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/OpcionesAdministrador/Estadisticas/ColocarEstadisticasPedidos.java
+/home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/OpcionesAdministrador/Estadisticas/EstadisticaEntregado.java
+/home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/OpcionesAdministrador/Estadisticas/EstadisticaRanking.java
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/OpcionesAdministrador/Sucursal/ValidarFrontent.java
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/OpcionesSucursalProducto/ColocarPlantillas.java
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/OpcionesSucursalProducto/Frontent/PlantillaEstadistica.java
@@ -45,6 +49,7 @@
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/Pedidos/Pedido.java
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/Pedidos/PedidosActivos.java
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/SQL/ConnectorDB.java
+/home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/SQL/Partida/GestorEstadisticaEntregados.java
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/SQL/Partida/GestorEstadisticas.java
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/SQL/Partida/GestorGuardadoPartida.java
 /home/millin-115/LabIPC2PS2026/Practica1_IPC2_PS/src/main/java/SQL/Pedido/GestorEstadoPedido.java

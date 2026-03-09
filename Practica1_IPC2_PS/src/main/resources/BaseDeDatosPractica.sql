@@ -104,3 +104,18 @@ INSERT INTO Estado (tipo_estado) VALUES
 ("RECHAZADO"), 
 ("NO_ENTREGADO");
 
+SELECT usu.nombre, 
+COUNT(usu.id_usuario) AS pedidos_completados, 
+MAX(par.puntaje) AS mejor_puntuacion 
+FROM Usuario usu 
+JOIN Partida par ON usu.id_usuario = par.usuario 
+JOIN Pedido pe ON par.id_partida = pe.partida 
+JOIN Historial_Pedido his ON pe.numero_pedido = his.id_pedido 
+WHERE his.id_estado = 4 AND usu.id_usuario = 3 AND usu.sucursal = 1 
+GROUP BY usu.id_usuario;
+
+SELECT Producto.nombre 
+FROM Producto 
+JOIN Sucursal_Producto ON Producto.id_producto = Sucursal_Producto.id_producto
+WHERE Sucursal_Producto.id_sucursal = 
+

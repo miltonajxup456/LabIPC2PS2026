@@ -13,7 +13,6 @@ OpcionesSucursalProducto/Frontent/VentanaHabilitarProductos.class
 Hilos/TiempoPartida.class
 SQL/Productos/ProductosDeSucursal.class
 FrontentCocina/PlantillaLista.class
-OpcionesAdministrador/Estadisticas/Estadistica.class
 Hilos/TiempoPedido.class
 SQL/Sucursal/GestorSucursal.class
 ControlCocina/ControlTiempoPedidos.class
@@ -25,8 +24,11 @@ Excepciones/PartidaException.class
 OpcionesAdministrador/Estadisticas/ColocarEstadisticas.class
 SQL/Sucursal/Sucursal.class
 SQL/Pedido/GestorEstadoPedido.class
+OpcionesAdministrador/Estadisticas/EstadisticaEntregado.class
 SQL/Partida/GestorEstadisticas.class
+OpcionesAdministrador/Estadisticas/ColocarEstadisticasPedidos.class
 Usuario/Usuario.class
+Archivos/GuardadoHistorialUsuario.class
 OpcionesSucursalProducto/Frontent/PlantillaEstadistica.class
 com/mycompany/practica1_ipc2_ps/Practica1_IPC2_PS.class
 OpcionesSuperAdmin/Frontent/PlantillaSucursal.class
@@ -35,6 +37,7 @@ OpcionesAdministrador/Sucursal/ValidarFrontent.class
 Logins/ControlDeUsuario.class
 Excepciones/DeshabilitarException.class
 Pedidos/GeneracionPedido.class
+SQL/Partida/GestorEstadisticaEntregados.class
 OpcionesSucursalProducto/OpcionCrearProducto.class
 SQL/Pedido/GestorGuardadoPedido.class
 Excepciones/ListaException.class
@@ -53,8 +56,10 @@ SQL/Partida/GestorGuardadoPartida.class
 Pedidos/Pedido.class
 SQL/Productos/GestorProductosSucursal.class
 Menus/VentanaMenuAdministrador.class
+Archivos/GuardadoArchivos.class
 Archivos/GuardadoRanking.class
 Logins/Frontent/VentanaIngresoUsuario.class
+OpcionesAdministrador/Estadisticas/EstadisticaRanking.class
 Menus/VentanaMenuUsuario.class
 SQL/Productos/Producto.class
 Logins/RevisionCampos.class

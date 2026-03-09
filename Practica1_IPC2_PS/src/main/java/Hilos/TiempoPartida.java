@@ -35,8 +35,8 @@ public class TiempoPartida extends Thread {
         this.gestorPartida = gestorPartida;
         this.controlPartida = controlPartida;
         this.idPartida = idPartida;
-        this.minutos = 0;
-        this.segundos = 30;
+        this.minutos = 2;
+        this.segundos = 0;
     }
     
     public void setGeneracionPedido(GeneracionPedido generacionPedido) {

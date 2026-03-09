@@ -4,6 +4,7 @@
  */
 package OpcionesSucursalProducto.Frontent;
 
+import Archivos.GuardadoArchivos;
 import Archivos.GuardadoRanking;
 import Excepciones.ListaException;
 import java.io.IOException;
@@ -18,7 +19,7 @@ import javax.swing.JPanel;
 public class VentanaRanking extends javax.swing.JFrame {
     
     private JFrame ventanaAnterior;
-    private GuardadoRanking guardadoRanking;
+    private GuardadoArchivos guardadoArchivos;
     
     public VentanaRanking() {
         initComponents();
@@ -33,8 +34,8 @@ public class VentanaRanking extends javax.swing.JFrame {
         this.ventanaAnterior = ventanaAnterior;
     }
 
-    public void setGuardadoRanking(GuardadoRanking guardadoRanking) {
-        this.guardadoRanking = guardadoRanking;
+    public void setGuardadoRanking(GuardadoArchivos guardadoArchivos) {
+        this.guardadoArchivos = guardadoArchivos;
     }
     
     /**
@@ -51,10 +52,10 @@ public class VentanaRanking extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         espacioRanking = new javax.swing.JPanel();
         espacioTitulo = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        texto1 = new javax.swing.JLabel();
+        texto2 = new javax.swing.JLabel();
+        texto3 = new javax.swing.JLabel();
+        texto4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -69,17 +70,17 @@ public class VentanaRanking extends javax.swing.JFrame {
         espacioTitulo.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
         espacioTitulo.setText("Estadisticas de la Sucursal Nombre");
 
-        jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
-        jLabel2.setText("Nombre");
+        texto1.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
+        texto1.setText("Nombre");
 
-        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
-        jLabel3.setText("Sucursal");
+        texto2.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
+        texto2.setText("Sucursal");
 
-        jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
-        jLabel4.setText("Puntuacion");
+        texto3.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
+        texto3.setText("Puntuacion");
 
-        jLabel5.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
-        jLabel5.setText("Nivel");
+        texto4.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
+        texto4.setText("Nivel");
 
         jButton1.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
         jButton1.setText("Exportar a CSV");
@@ -102,13 +103,13 @@ public class VentanaRanking extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(11, 11, 11)
-                                .addComponent(jLabel2)
+                                .addComponent(texto1)
                                 .addGap(222, 222, 222)
-                                .addComponent(jLabel3)
+                                .addComponent(texto2)
                                 .addGap(133, 133, 133)
-                                .addComponent(jLabel4)
+                                .addComponent(texto3)
                                 .addGap(92, 92, 92)
-                                .addComponent(jLabel5))
+                                .addComponent(texto4))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 881, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(335, 335, 335)
@@ -126,10 +127,10 @@ public class VentanaRanking extends javax.swing.JFrame {
                 .addComponent(espacioTitulo)
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(texto1)
+                    .addComponent(texto2)
+                    .addComponent(texto3)
+                    .addComponent(texto4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(29, Short.MAX_VALUE))
@@ -157,7 +158,7 @@ public class VentanaRanking extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            guardadoRanking.guardarArchivos();
+            guardadoArchivos.guardarArchivos();
             JOptionPane.showMessageDialog(this, "Se exportaron los datos con exito");
         } catch (ListaException | IOException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
@@ -169,13 +170,20 @@ public class VentanaRanking extends javax.swing.JFrame {
     private javax.swing.JPanel espacioRanking;
     private javax.swing.JLabel espacioTitulo;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel texto1;
+    private javax.swing.JLabel texto2;
+    private javax.swing.JLabel texto3;
+    private javax.swing.JLabel texto4;
     // End of variables declaration//GEN-END:variables
+    
+    public void setTextos(String texto1, String texto2, String texto3, String texto4) {
+        this.texto1.setText(texto1);
+        this.texto2.setText(texto2);
+        this.texto3.setText(texto3);
+        this.texto4.setText(texto4);
+    }
     
     public void agregarEstadistica(JPanel plantilla) {
         espacioRanking.add(plantilla);

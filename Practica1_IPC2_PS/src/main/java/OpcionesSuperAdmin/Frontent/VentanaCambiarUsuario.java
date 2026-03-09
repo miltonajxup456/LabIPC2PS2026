@@ -207,7 +207,6 @@ public class VentanaCambiarUsuario extends javax.swing.JFrame {
     public void quitarUsuarioElegido(PlantillaUsuarioCambio plantilla) {
         agregarUsuario(plantilla);
         actualizarUsuarioElegido();
-        plantilllaUsuario = null;
         usuario = null;
     }
     
@@ -225,7 +224,6 @@ public class VentanaCambiarUsuario extends javax.swing.JFrame {
     public void quitarSucursalElegida() {
         agregarSucursal(plantillaSucursal);
         actualizarSucursalElegida();
-        plantillaSucursal = null;
         sucursal = null;
     }
     

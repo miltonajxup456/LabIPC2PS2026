@@ -7,7 +7,7 @@ package Archivos;
 import Excepciones.ListaException;
 import Listas.ListaGenerica;
 import OpcionesAdministrador.Estadisticas.ColocarEstadisticas;
-import OpcionesAdministrador.Estadisticas.Estadistica;
+import OpcionesAdministrador.Estadisticas.EstadisticaRanking;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.io.PrintWriter;
  *
  * @author millin-115
  */
-public class GuardadoRanking {
+public class GuardadoRanking implements GuardadoArchivos {
     
     private final ColocarEstadisticas colocarEstadisticas;
     private final String carpeta;
@@ -34,14 +34,15 @@ public class GuardadoRanking {
         }
     }
     
+    @Override
     public void guardarArchivos() throws ListaException, IOException {
-        ListaGenerica<Estadistica> estadisticas = colocarEstadisticas.getEstadisticas();
+        ListaGenerica<EstadisticaRanking> estadisticas = colocarEstadisticas.getEstadisticas();
         
         try (PrintWriter printWriter = new PrintWriter(new FileWriter(archivo))) {
             String titulo = "Nombre_Usuario,Sucursal_Usuario,Puntuacion,Nivel";
             printWriter.println(titulo);
             for (int i = 0; i < estadisticas.getTamaño(); i++) {
-                Estadistica estadistica = estadisticas.obtenerConIndice(i);
+                EstadisticaRanking estadistica = estadisticas.obtenerConIndice(i);
                 String estadisticaCSV = estadistica.getNombre()+","+estadistica.getSucursal()+","+estadistica.getPuntuacion()+","+estadistica.getNivel();
                 printWriter.println(estadisticaCSV);
             }

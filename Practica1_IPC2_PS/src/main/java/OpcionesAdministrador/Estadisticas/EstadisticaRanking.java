@@ -8,14 +8,14 @@ package OpcionesAdministrador.Estadisticas;
  *
  * @author millin-115
  */
-public class Estadistica {
+public class EstadisticaRanking {
     
     private String nombre;
     private String sucursal;
     private int puntuacion;
     private int nivel;
 
-    public Estadistica(String nombre, String sucursal, int puntuacion, int nivel) {
+    public EstadisticaRanking(String nombre, String sucursal, int puntuacion, int nivel) {
         this.nombre = nombre;
         this.sucursal = sucursal;
         this.puntuacion = puntuacion;

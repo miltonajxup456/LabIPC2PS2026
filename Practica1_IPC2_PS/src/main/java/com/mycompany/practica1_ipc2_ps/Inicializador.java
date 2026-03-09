@@ -14,6 +14,7 @@ import Menus.VentanaMenuAdministrador;
 import Menus.VentanaMenuSuperAdmin;
 import Menus.VentanaMenuUsuario;
 import OpcionesAdministrador.Estadisticas.ColocarEstadisticas;
+import OpcionesAdministrador.Estadisticas.ColocarEstadisticasPedidos;
 import OpcionesSucursalProducto.ColocarPlantillas;
 import OpcionesSucursalProducto.Frontent.VentanaCrearProducto;
 import OpcionesSucursalProducto.Frontent.VentanaHabilitarProductos;
@@ -23,6 +24,7 @@ import OpcionesSuperAdmin.Frontent.VentanaCambiarUsuario;
 import OpcionesSuperAdmin.Frontent.VentanaCrearSucursal;
 import OpcionesSuperAdmin.Frontent.VentanaCrearUsuario;
 import OpcionesSuperAdmin.Sucursal.ColocarPlantillasSuperAdmin;
+import SQL.Partida.GestorEstadisticaEntregados;
 import SQL.Productos.CreadorListaProductos;
 import SQL.Productos.Producto;
 import SQL.Sucursal.GestorSucursal;
@@ -93,8 +95,11 @@ public class Inicializador {
     
     private void ventanasLogin(OrganizadorDeCocina organizadorCocina, ListaGenerica<Producto> todosLosProductos) {
         
+        GestorEstadisticaEntregados gestorEntregados = new GestorEstadisticaEntregados();
+        ColocarEstadisticasPedidos colocarStats = new ColocarEstadisticasPedidos(ventanaRanking, gestorEntregados);
         
         menuUsuario = new VentanaMenuUsuario(organizadorCocina);
+        menuUsuario.setOpcionesEstadisticas(ventanaRanking, colocarStats);
         
         ControlDeUsuario controlUsuario = new ControlDeUsuario(menuSuperAdmin, menuAdmin, menuUsuario, organizadorCocina, todosLosProductos);
         VentanaIngresoUsuario ingreso = new VentanaIngresoUsuario(controlUsuario);
