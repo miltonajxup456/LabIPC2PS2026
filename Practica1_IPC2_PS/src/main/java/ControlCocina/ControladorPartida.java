@@ -152,7 +152,7 @@ public class ControladorPartida {
     public void noEntregado(PlantillaLista plantilla) throws PedidosException, SQLException, ClassNotFoundException {
         Pedido pedido = plantilla.getPedido();
         continuarGeneracion();
-        if (aceptadoOcupado) {
+        if (pedido.equals(pedidoActivo)) {
             aceptadoOcupado = false;
         }
         activos.eliminarPedido(pedido.getNumeroPedidoCola());

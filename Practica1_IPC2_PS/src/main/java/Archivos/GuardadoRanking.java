@@ -6,7 +6,7 @@ package Archivos;
 
 import Excepciones.ListaException;
 import Listas.ListaGenerica;
-import OpcionesAdministrador.Estadisticas.ColocarEstadisticas;
+import OpcionesAdministrador.Estadisticas.ColocarEstadisticasRanking;
 import OpcionesAdministrador.Estadisticas.EstadisticaRanking;
 import java.io.File;
 import java.io.FileWriter;
@@ -19,11 +19,11 @@ import java.io.PrintWriter;
  */
 public class GuardadoRanking implements GuardadoArchivos {
     
-    private final ColocarEstadisticas colocarEstadisticas;
+    private final ColocarEstadisticasRanking colocarEstadisticas;
     private final String carpeta;
     private final String archivo;
     
-    public GuardadoRanking(ColocarEstadisticas colocarEstadisticas) {
+    public GuardadoRanking(ColocarEstadisticasRanking colocarEstadisticas) {
         this.colocarEstadisticas = colocarEstadisticas;
         this.carpeta = "ArchivosCSV";
         this.archivo = carpeta+"/Ranking.csv";

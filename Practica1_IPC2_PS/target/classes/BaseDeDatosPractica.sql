@@ -1,4 +1,12 @@
-CREATE DATABASE Practica1_202330209;
+CREATE DATABASE IF NOT EXISTS Practica1_202330209;
+
+CREATE USER IF NOT EXISTS 'usuario_practica_202330209'@'localhost' IDENTIFIED BY 'Contraseña1234@';
+-- DROP USER IF EXISTS 'usuario_practica_202330209'@'localhost';
+
+GRANT ALL PRIVILEGES
+ON Practica1_202330209.*
+TO 'usuario_practica_202330209'@'localhost';
+FLUSH PRIVILEGES;
 
 USE Practica1_202330209;
 
@@ -76,7 +84,7 @@ INSERT INTO Rol (nombre_rol) VALUES
 INSERT INTO Sucursal (nombre) VALUES ("La capital");
 
 INSERT INTO Usuario (nombre, clave_ingreso, id_rol, sucursal) VALUES 
-("super admin", "super", 1, 1),
+("super admin", "123", 1, 1),
 ("admin", "123", 2, 1),
 ("jugador", "123", 3, 1);
 
@@ -103,19 +111,3 @@ INSERT INTO Estado (tipo_estado) VALUES
 ("ENTREGADO"), 
 ("RECHAZADO"), 
 ("NO_ENTREGADO");
-
-SELECT usu.nombre, 
-COUNT(usu.id_usuario) AS pedidos_completados, 
-MAX(par.puntaje) AS mejor_puntuacion 
-FROM Usuario usu 
-JOIN Partida par ON usu.id_usuario = par.usuario 
-JOIN Pedido pe ON par.id_partida = pe.partida 
-JOIN Historial_Pedido his ON pe.numero_pedido = his.id_pedido 
-WHERE his.id_estado = 4 AND usu.id_usuario = 3 AND usu.sucursal = 1 
-GROUP BY usu.id_usuario;
-
-SELECT Producto.nombre 
-FROM Producto 
-JOIN Sucursal_Producto ON Producto.id_producto = Sucursal_Producto.id_producto
-WHERE Sucursal_Producto.id_sucursal = 
-

@@ -42,8 +42,8 @@ public class GeneracionPedido extends Thread {
         this.productosDisponibles = productosDisponibles;
         this.activos = activos;
         this.gestorPedido = gestorPedido;
-        this.segMaximos = 8;
-        this.segMinimos = 4;
+        this.segMaximos = 6;
+        this.segMinimos = 3;
         this.limitePedidos = limitePedidos;
         this.idPartida = idPartida;
         this.esPrimero = true;

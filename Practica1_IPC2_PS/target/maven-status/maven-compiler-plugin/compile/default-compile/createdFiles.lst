@@ -1,14 +1,16 @@
+OpcionesAdministrador/Estadisticas/ColocarEstadisticasRanking.class
 com/mycompany/practica1_ipc2_ps/Estado.class
 OpcionesSuperAdmin/Frontent/PlantillaUsuarioCambio.class
 OpcionesSucursalProducto/OpcionDesactivarActivar.class
 SQL/Usuario/GestorUsuario.class
 SQL/Productos/CreadorListaProductos.class
+OpcionesAdministrador/Estadisticas/ColocarEstadisticasHistorial.class
 SQL/ConnectorDB.class
 FrontentCocina/VentanaPizzaExpressTycoon.class
 Pedidos/PedidosActivos.class
 OpcionesSuperAdmin/Frontent/PlantillaSucursalCambio.class
+OpcionesAdministrador/Estadisticas/EstadisticaHistorial.class
 Listas/ListaGenerica.class
-OpcionesSucursalProducto/Frontent/VentanaRanking.class
 OpcionesSucursalProducto/Frontent/VentanaHabilitarProductos.class
 Hilos/TiempoPartida.class
 SQL/Productos/ProductosDeSucursal.class
@@ -21,12 +23,9 @@ ControlCocina/OrganizadorDeCocina.class
 OpcionesSuperAdmin/Frontent/VentanaCrearSucursal.class
 Excepciones/PedidosException.class
 Excepciones/PartidaException.class
-OpcionesAdministrador/Estadisticas/ColocarEstadisticas.class
 SQL/Sucursal/Sucursal.class
 SQL/Pedido/GestorEstadoPedido.class
-OpcionesAdministrador/Estadisticas/EstadisticaEntregado.class
 SQL/Partida/GestorEstadisticas.class
-OpcionesAdministrador/Estadisticas/ColocarEstadisticasPedidos.class
 Usuario/Usuario.class
 Archivos/GuardadoHistorialUsuario.class
 OpcionesSucursalProducto/Frontent/PlantillaEstadistica.class
@@ -37,7 +36,7 @@ OpcionesAdministrador/Sucursal/ValidarFrontent.class
 Logins/ControlDeUsuario.class
 Excepciones/DeshabilitarException.class
 Pedidos/GeneracionPedido.class
-SQL/Partida/GestorEstadisticaEntregados.class
+SQL/Partida/GestorEstadisticasHistorial.class
 OpcionesSucursalProducto/OpcionCrearProducto.class
 SQL/Pedido/GestorGuardadoPedido.class
 Excepciones/ListaException.class
@@ -63,6 +62,7 @@ OpcionesAdministrador/Estadisticas/EstadisticaRanking.class
 Menus/VentanaMenuUsuario.class
 SQL/Productos/Producto.class
 Logins/RevisionCampos.class
+OpcionesSucursalProducto/Frontent/VentanaEstadisticas.class
 OpcionesSucursalProducto/Frontent/PlantillaProducto.class
 Logins/Frontent/VentanaEleccionUsuario.class
 Excepciones/AgregarException.class

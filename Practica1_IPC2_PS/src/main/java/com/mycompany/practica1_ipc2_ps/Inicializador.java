@@ -4,7 +4,6 @@
  */
 package com.mycompany.practica1_ipc2_ps;
 
-import Archivos.GuardadoRanking;
 import ControlCocina.OrganizadorDeCocina;
 import Listas.ListaGenerica;
 import Logins.ControlDeUsuario;
@@ -13,18 +12,15 @@ import Logins.Frontent.VentanaEleccionUsuario;
 import Menus.VentanaMenuAdministrador;
 import Menus.VentanaMenuSuperAdmin;
 import Menus.VentanaMenuUsuario;
-import OpcionesAdministrador.Estadisticas.ColocarEstadisticas;
-import OpcionesAdministrador.Estadisticas.ColocarEstadisticasPedidos;
 import OpcionesSucursalProducto.ColocarPlantillas;
 import OpcionesSucursalProducto.Frontent.VentanaCrearProducto;
 import OpcionesSucursalProducto.Frontent.VentanaHabilitarProductos;
-import OpcionesSucursalProducto.Frontent.VentanaRanking;
+import OpcionesSucursalProducto.Frontent.VentanaEstadisticas;
 import OpcionesSucursalProducto.OpcionCrearProducto;
 import OpcionesSuperAdmin.Frontent.VentanaCambiarUsuario;
 import OpcionesSuperAdmin.Frontent.VentanaCrearSucursal;
 import OpcionesSuperAdmin.Frontent.VentanaCrearUsuario;
 import OpcionesSuperAdmin.Sucursal.ColocarPlantillasSuperAdmin;
-import SQL.Partida.GestorEstadisticaEntregados;
 import SQL.Productos.CreadorListaProductos;
 import SQL.Productos.Producto;
 import SQL.Sucursal.GestorSucursal;
@@ -37,8 +33,7 @@ import SQL.Usuario.GestorUsuario;
 public class Inicializador {
     
     private VentanaCrearProducto ventanaCrearProducto;
-    private VentanaRanking ventanaRanking;
-    private ColocarEstadisticas colocarEstadisticas;
+    private VentanaEstadisticas ventanaEstadisticas;
     private VentanaMenuSuperAdmin menuSuperAdmin;
     private VentanaMenuAdministrador menuAdmin;
     private VentanaMenuUsuario menuUsuario;
@@ -73,11 +68,8 @@ public class Inicializador {
         menuSuperAdmin.setOpcionesCrearUsuario(crearUsuario, plantillasSuperAdmin);
         VentanaCambiarUsuario cambiarUsuario = new VentanaCambiarUsuario(menuSuperAdmin, gestorUsuario);
         menuSuperAdmin.setVentanaCambiarUsuario(cambiarUsuario);
-        ventanaRanking = new VentanaRanking();
-        colocarEstadisticas = new ColocarEstadisticas(ventanaRanking);
-        menuSuperAdmin.setOpcionesRanking(ventanaRanking, colocarEstadisticas);
-        GuardadoRanking guardadoRanking = new GuardadoRanking(colocarEstadisticas);
-        ventanaRanking.setGuardadoRanking(guardadoRanking);
+        ventanaEstadisticas = new VentanaEstadisticas();
+        menuSuperAdmin.setOpcionesRanking(ventanaEstadisticas);
         
     }
     
@@ -89,17 +81,14 @@ public class Inicializador {
         
         menuAdmin = new VentanaMenuAdministrador(ventanaEleccionProductos, colocarPlantillas, ventanaCrearProducto);
         ventanaEleccionProductos.setMenuAdmin(menuAdmin);
-        menuAdmin.setOpcionesRanking(ventanaRanking, colocarEstadisticas);
+        menuAdmin.setOpcionesEstadisticas(ventanaEstadisticas);
         
     }
     
     private void ventanasLogin(OrganizadorDeCocina organizadorCocina, ListaGenerica<Producto> todosLosProductos) {
         
-        GestorEstadisticaEntregados gestorEntregados = new GestorEstadisticaEntregados();
-        ColocarEstadisticasPedidos colocarStats = new ColocarEstadisticasPedidos(ventanaRanking, gestorEntregados);
-        
         menuUsuario = new VentanaMenuUsuario(organizadorCocina);
-        menuUsuario.setOpcionesEstadisticas(ventanaRanking, colocarStats);
+        menuUsuario.setOpcionesEstadisticas(ventanaEstadisticas);
         
         ControlDeUsuario controlUsuario = new ControlDeUsuario(menuSuperAdmin, menuAdmin, menuUsuario, organizadorCocina, todosLosProductos);
         VentanaIngresoUsuario ingreso = new VentanaIngresoUsuario(controlUsuario);

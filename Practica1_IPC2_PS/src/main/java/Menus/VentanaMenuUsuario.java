@@ -4,13 +4,15 @@
  */
 package Menus;
 
+import Archivos.GuardadoArchivos;
+import Archivos.GuardadoHistorialUsuario;
 import ControlCocina.OrganizadorDeCocina;
 import Excepciones.ListaException;
 import Excepciones.PartidaException;
 import FrontentCocina.VentanaPizzaExpressTycoon;
 import Logins.Frontent.VentanaEleccionUsuario;
-import OpcionesAdministrador.Estadisticas.ColocarEstadisticasPedidos;
-import OpcionesSucursalProducto.Frontent.VentanaRanking;
+import OpcionesAdministrador.Estadisticas.ColocarEstadisticasHistorial;
+import OpcionesSucursalProducto.Frontent.VentanaEstadisticas;
 import Usuario.Usuario;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -24,8 +26,9 @@ public class VentanaMenuUsuario extends javax.swing.JFrame {
     private final OrganizadorDeCocina organizadorCocina;
     private final VentanaPizzaExpressTycoon ventanaCocina;
     private VentanaEleccionUsuario eleccionUsuario;
-    private VentanaRanking ventanaRanking;
-    private ColocarEstadisticasPedidos colocarStats;
+    private VentanaEstadisticas ventanaEstadisticas;
+    private ColocarEstadisticasHistorial colocarStats;
+    private GuardadoArchivos guardadoArchivosPedido;
     private Usuario usuario;
     
     public VentanaMenuUsuario(OrganizadorDeCocina organizadorCocina) {
@@ -43,9 +46,10 @@ public class VentanaMenuUsuario extends javax.swing.JFrame {
         this.eleccionUsuario = eleccionUsuario;
     }
     
-    public void setOpcionesEstadisticas(VentanaRanking ventanaRanking, ColocarEstadisticasPedidos colocarStats) {
-        this.ventanaRanking = ventanaRanking;
-        this.colocarStats = colocarStats;
+    public void setOpcionesEstadisticas(VentanaEstadisticas ventanaEstadisticas) {
+        this.ventanaEstadisticas = ventanaEstadisticas;
+        this.colocarStats = new ColocarEstadisticasHistorial(ventanaEstadisticas);
+        this.guardadoArchivosPedido = new GuardadoHistorialUsuario(colocarStats);
     }
 
     @SuppressWarnings("unchecked")
@@ -128,15 +132,16 @@ public class VentanaMenuUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_botonRegresarActionPerformed
 
     private void botonHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonHistorialActionPerformed
-//        try {
-//            colocarStats.colocarEstadisticaUsuario(usuario);
-//            this.setVisible(false);
-//            ventanaRanking.setTituloEstadisticas("Estadisticas de la sucursal "+usuario.getNombreSucursal());
-//            ventanaRanking.setVentanaAnterior(this);
-//            ventanaRanking.setVisible(true);
-//        } catch (SQLException | ClassNotFoundException | ListaException e) {
-//            JOptionPane.showMessageDialog(this, e.getMessage());
-//        }
+        try {
+            colocarStats.colocarEstadisticaUsuario(usuario);
+            this.setVisible(false);
+            ventanaEstadisticas.setTituloEstadisticas("Historial de "+usuario.getNombreSucursal());
+            ventanaEstadisticas.setGuardadoEstadistica(guardadoArchivosPedido);
+            ventanaEstadisticas.setVentanaAnterior(this);
+            ventanaEstadisticas.setVisible(true);
+        } catch (SQLException | ClassNotFoundException | ListaException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }//GEN-LAST:event_botonHistorialActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

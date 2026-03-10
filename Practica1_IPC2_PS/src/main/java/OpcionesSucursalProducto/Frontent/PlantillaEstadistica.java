@@ -10,12 +10,12 @@ package OpcionesSucursalProducto.Frontent;
  */
 public class PlantillaEstadistica extends javax.swing.JPanel {
 
-    public PlantillaEstadistica(String nombre, String sucursal, int puntuacion, int nivel) {
+    public PlantillaEstadistica(String campo1, String campo2, String campo3, String campo4) {
         initComponents();
-        espacioNombre.setText(nombre);
-        espacioSucursal.setText(sucursal);
-        espacioPuntuacion.setText(String.valueOf(puntuacion));
-        espacioNivel.setText(String.valueOf(nivel));
+        espacioNombre.setText(campo1);
+        espacioSucursal.setText(campo2);
+        espacioPuntuacion.setText(String.valueOf(campo3));
+        espacioNivel.setText(String.valueOf(campo4));
     }
 
     /**
@@ -50,13 +50,13 @@ public class PlantillaEstadistica extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(espacioNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+                .addComponent(espacioNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(espacioSucursal, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(espacioSucursal, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(espacioPuntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(espacioPuntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(espacioNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(espacioNivel, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(

@@ -4,14 +4,18 @@
  */
 package Menus;
 
+import Archivos.GuardadoArchivos;
+import Archivos.GuardadoHistorialUsuario;
+import Archivos.GuardadoRanking;
 import Excepciones.ListaException;
 import Listas.ListaGenerica;
 import Logins.Frontent.VentanaEleccionUsuario;
-import OpcionesAdministrador.Estadisticas.ColocarEstadisticas;
+import OpcionesAdministrador.Estadisticas.ColocarEstadisticasHistorial;
+import OpcionesAdministrador.Estadisticas.ColocarEstadisticasRanking;
 import OpcionesSucursalProducto.ColocarPlantillas;
 import OpcionesSucursalProducto.Frontent.VentanaCrearProducto;
 import OpcionesSucursalProducto.Frontent.VentanaHabilitarProductos;
-import OpcionesSucursalProducto.Frontent.VentanaRanking;
+import OpcionesSucursalProducto.Frontent.VentanaEstadisticas;
 import SQL.Productos.Producto;
 import Usuario.Usuario;
 import java.sql.SQLException;
@@ -28,8 +32,11 @@ public class VentanaMenuAdministrador extends javax.swing.JFrame {
     private final VentanaHabilitarProductos ventanaProductos;
     private final ColocarPlantillas colocarPlantillas;
     private final VentanaCrearProducto ventanaCrearProducto;
-    private VentanaRanking ventanaRanking;
-    private ColocarEstadisticas colocarEstadisticas;
+    private VentanaEstadisticas ventanaEstadisticas;
+    private ColocarEstadisticasRanking colocarEstadisticas;
+    private GuardadoArchivos guardadoArchivosRanking;
+    private ColocarEstadisticasHistorial colocarEstadisticasHistorial;
+    private GuardadoArchivos guardadoHistorialUsuario;
     private ListaGenerica<Producto> productosDeSucursal;
     private Usuario usuario;
     
@@ -45,9 +52,13 @@ public class VentanaMenuAdministrador extends javax.swing.JFrame {
         this.inicioSesion = inicioSesion;
     }
 
-    public void setOpcionesRanking(VentanaRanking ventanaRanking, ColocarEstadisticas colocarEstadisticas) {
-        this.ventanaRanking = ventanaRanking;
-        this.colocarEstadisticas = colocarEstadisticas;
+    public void setOpcionesEstadisticas(VentanaEstadisticas ventanaRanking) {
+        this.ventanaEstadisticas = ventanaRanking;
+        this.colocarEstadisticas = new ColocarEstadisticasRanking(ventanaRanking);
+        this.guardadoArchivosRanking = new GuardadoRanking(colocarEstadisticas);
+        
+        this.colocarEstadisticasHistorial = new ColocarEstadisticasHistorial(ventanaRanking);
+        this.guardadoHistorialUsuario = new GuardadoHistorialUsuario(colocarEstadisticasHistorial);
     }
 
     public void setProductosDeSucursal(ListaGenerica<Producto> productosDeSucursal) {
@@ -82,7 +93,7 @@ public class VentanaMenuAdministrador extends javax.swing.JFrame {
         botonGestionarProductos.addActionListener(this::botonGestionarProductosActionPerformed);
 
         botonEstadisticas.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
-        botonEstadisticas.setText("Estadisticas De Partidas");
+        botonEstadisticas.setText("Ver Historial de Usuarios");
         botonEstadisticas.addActionListener(this::botonEstadisticasActionPerformed);
 
         botonRanking.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
@@ -108,18 +119,18 @@ public class VentanaMenuAdministrador extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(140, 140, 140)
+                        .addGap(121, 121, 121)
                         .addComponent(botonGestionarProductos1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(121, 121, 121)
+                        .addGap(102, 102, 102)
                         .addComponent(botonGestionarProductos))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(102, 102, 102)
-                        .addComponent(botonEstadisticas))
+                        .addGap(140, 140, 140)
+                        .addComponent(botonRanking))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(157, 157, 157)
-                        .addComponent(botonRanking)))
-                .addContainerGap(103, Short.MAX_VALUE))
+                        .addGap(81, 81, 81)
+                        .addComponent(botonEstadisticas)))
+                .addContainerGap(120, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,9 +142,9 @@ public class VentanaMenuAdministrador extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(botonGestionarProductos)
                 .addGap(18, 18, 18)
-                .addComponent(botonEstadisticas)
-                .addGap(18, 18, 18)
                 .addComponent(botonRanking)
+                .addGap(18, 18, 18)
+                .addComponent(botonEstadisticas)
                 .addContainerGap(133, Short.MAX_VALUE))
         );
 
@@ -162,16 +173,26 @@ public class VentanaMenuAdministrador extends javax.swing.JFrame {
     }//GEN-LAST:event_botonGestionarProductosActionPerformed
 
     private void botonEstadisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEstadisticasActionPerformed
-        
+        try {
+            colocarEstadisticasHistorial.colocarEstadisticasSucursal(usuario);
+            this.setVisible(false);
+            ventanaEstadisticas.setTituloEstadisticas("Historiales Globales");
+            ventanaEstadisticas.setGuardadoEstadistica(guardadoHistorialUsuario);
+            ventanaEstadisticas.setVentanaAnterior(this);
+            ventanaEstadisticas.setVisible(true);
+        } catch (SQLException | ClassNotFoundException | ListaException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }//GEN-LAST:event_botonEstadisticasActionPerformed
 
     private void botonRankingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRankingActionPerformed
         try {
             colocarEstadisticas.colocarEstadisticasPorSucursal(usuario);
             this.setVisible(false);
-            ventanaRanking.setTituloEstadisticas("Estadisticas de la sucursal "+usuario.getNombreSucursal());
-            ventanaRanking.setVentanaAnterior(this);
-            ventanaRanking.setVisible(true);
+            ventanaEstadisticas.setTituloEstadisticas("Ranking de la sucursal "+usuario.getNombreSucursal());
+            ventanaEstadisticas.setGuardadoEstadistica(guardadoArchivosRanking);
+            ventanaEstadisticas.setVentanaAnterior(this);
+            ventanaEstadisticas.setVisible(true);
         } catch (SQLException | ClassNotFoundException | ListaException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }

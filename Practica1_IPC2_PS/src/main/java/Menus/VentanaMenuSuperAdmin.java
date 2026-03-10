@@ -4,14 +4,18 @@
  */
 package Menus;
 
+import Archivos.GuardadoArchivos;
+import Archivos.GuardadoHistorialUsuario;
+import Archivos.GuardadoRanking;
 import ControlCocina.OrganizadorDeCocina;
 import Excepciones.ListaException;
 import Excepciones.PartidaException;
 import FrontentCocina.VentanaPizzaExpressTycoon;
 import Logins.Frontent.VentanaEleccionUsuario;
-import OpcionesAdministrador.Estadisticas.ColocarEstadisticas;
+import OpcionesAdministrador.Estadisticas.ColocarEstadisticasRanking;
+import OpcionesAdministrador.Estadisticas.ColocarEstadisticasHistorial;
 import OpcionesSucursalProducto.Frontent.VentanaCrearProducto;
-import OpcionesSucursalProducto.Frontent.VentanaRanking;
+import OpcionesSucursalProducto.Frontent.VentanaEstadisticas;
 import OpcionesSuperAdmin.Frontent.VentanaCambiarUsuario;
 import OpcionesSuperAdmin.Frontent.VentanaCrearSucursal;
 import OpcionesSuperAdmin.Frontent.VentanaCrearUsuario;
@@ -31,8 +35,11 @@ public class VentanaMenuSuperAdmin extends javax.swing.JFrame {
     private ColocarPlantillasSuperAdmin plantillasSuperAdmin;
     private final VentanaCrearProducto crearProducto;
     private VentanaCambiarUsuario ventanaCambiarUsuario;
-    private VentanaRanking ventanaRanking;
-    private ColocarEstadisticas colocarEstadisticas;
+    private VentanaEstadisticas ventanaEstadisticas;
+    private ColocarEstadisticasRanking colocarEstadisticas;
+    private GuardadoArchivos guardadoArchivosRanking;
+    private ColocarEstadisticasHistorial colocarEstadisticasHistorial;
+    private GuardadoArchivos guardadoHistorialUsuario;
     private final OrganizadorDeCocina organizadorCocina;
     private final VentanaPizzaExpressTycoon ventanaCocina;
     
@@ -61,9 +68,13 @@ public class VentanaMenuSuperAdmin extends javax.swing.JFrame {
         this.ventanaCambiarUsuario = ventanaCambiarUsuario;
     }
     
-    public void setOpcionesRanking(VentanaRanking ventanaRanking, ColocarEstadisticas colocarEstadisticas) {
-        this.ventanaRanking = ventanaRanking;
-        this.colocarEstadisticas = colocarEstadisticas;
+    public void setOpcionesRanking(VentanaEstadisticas ventanaRanking) {
+        this.ventanaEstadisticas = ventanaRanking;
+        this.colocarEstadisticas = new ColocarEstadisticasRanking(ventanaRanking);
+        this.guardadoArchivosRanking = new GuardadoRanking(colocarEstadisticas);
+        
+        this.colocarEstadisticasHistorial = new ColocarEstadisticasHistorial(ventanaRanking);
+        this.guardadoHistorialUsuario = new GuardadoHistorialUsuario(colocarEstadisticasHistorial);
     }
 
     /**
@@ -77,7 +88,7 @@ public class VentanaMenuSuperAdmin extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         botonJugar = new javax.swing.JButton();
-        botonSucursales = new javax.swing.JButton();
+        botonHistorial = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         botonCrearSucursal = new javax.swing.JButton();
         botonCrearUsuario = new javax.swing.JButton();
@@ -91,9 +102,9 @@ public class VentanaMenuSuperAdmin extends javax.swing.JFrame {
         botonJugar.setText("Jugar a Pizza Express Tycoon");
         botonJugar.addActionListener(this::botonJugarActionPerformed);
 
-        botonSucursales.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
-        botonSucursales.setText("Sucursales");
-        botonSucursales.addActionListener(this::botonSucursalesActionPerformed);
+        botonHistorial.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
+        botonHistorial.setText("Historial de Usuarios");
+        botonHistorial.addActionListener(this::botonHistorialActionPerformed);
 
         jButton1.setFont(new java.awt.Font("Liberation Sans", 0, 22)); // NOI18N
         jButton1.setText("Regresar");
@@ -124,56 +135,51 @@ public class VentanaMenuSuperAdmin extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(93, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(149, 149, 149)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(botonCambiarSucursalUsuario)
-                        .addGap(116, 116, 116))))
+                    .addComponent(botonHistorial)
+                    .addComponent(botonRanking, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(184, 184, 184)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(botonCrearUsuario)
-                            .addComponent(botonCrearSucursal)
+                        .addGap(176, 176, 176)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(botonCrearUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(botonCrearSucursal, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(botonCrearProducto)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(163, 163, 163)
-                        .addComponent(botonRanking)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(96, 96, 96)
+                        .addComponent(botonCambiarSucursalUsuario))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(116, 116, 116)
-                        .addComponent(botonJugar))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(204, 204, 204)
-                        .addComponent(botonSucursales)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(105, 105, 105)
+                        .addComponent(botonJugar)))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addComponent(jButton1)
-                .addGap(15, 15, 15)
+                .addGap(16, 16, 16)
                 .addComponent(botonCrearSucursal)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(botonCrearUsuario)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(botonCrearProducto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(botonCambiarSucursalUsuario)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(botonRanking)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(botonSucursales)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(botonHistorial)
+                .addGap(18, 18, 18)
                 .addComponent(botonJugar)
-                .addGap(150, 150, 150))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -230,17 +236,27 @@ public class VentanaMenuSuperAdmin extends javax.swing.JFrame {
         try {
             colocarEstadisticas.colocarEstadisticasGlobales();
             this.setVisible(false);
-            ventanaRanking.setTituloEstadisticas("Estadisticas Globales");
-            ventanaRanking.setVentanaAnterior(this);
-            ventanaRanking.setVisible(true);
+            ventanaEstadisticas.setTituloEstadisticas("Ranking Global");
+            ventanaEstadisticas.setGuardadoEstadistica(guardadoArchivosRanking);
+            ventanaEstadisticas.setVentanaAnterior(this);
+            ventanaEstadisticas.setVisible(true);
         } catch (SQLException | ClassNotFoundException | ListaException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_botonRankingActionPerformed
 
-    private void botonSucursalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSucursalesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botonSucursalesActionPerformed
+    private void botonHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonHistorialActionPerformed
+        try {
+            colocarEstadisticasHistorial.colocarEstadisticaGlobal();
+            this.setVisible(false);
+            ventanaEstadisticas.setTituloEstadisticas("Historiales Globales");
+            ventanaEstadisticas.setGuardadoEstadistica(guardadoHistorialUsuario);
+            ventanaEstadisticas.setVentanaAnterior(this);
+            ventanaEstadisticas.setVisible(true);
+        } catch (SQLException | ClassNotFoundException | ListaException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_botonHistorialActionPerformed
 
     private void botonJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonJugarActionPerformed
         try {
@@ -257,9 +273,9 @@ public class VentanaMenuSuperAdmin extends javax.swing.JFrame {
     private javax.swing.JButton botonCrearProducto;
     private javax.swing.JButton botonCrearSucursal;
     private javax.swing.JButton botonCrearUsuario;
+    private javax.swing.JButton botonHistorial;
     private javax.swing.JButton botonJugar;
     private javax.swing.JButton botonRanking;
-    private javax.swing.JButton botonSucursales;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

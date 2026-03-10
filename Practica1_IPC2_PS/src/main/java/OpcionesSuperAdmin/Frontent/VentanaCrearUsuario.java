@@ -320,7 +320,6 @@ public class VentanaCrearUsuario extends javax.swing.JFrame {
     public void quitarEleccion() {
         agregarSucursal(plantilla);
         actualizarElegida();
-        plantilla = null;
         sucursal = null;
     }
     
