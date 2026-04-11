@@ -5,7 +5,6 @@
 package DAO.Archivos.Reportes;
 
 import Model.OcupacionDestino.OcupacionDestinoDB;
-import Model.Reservacion.ReservacionDB;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;

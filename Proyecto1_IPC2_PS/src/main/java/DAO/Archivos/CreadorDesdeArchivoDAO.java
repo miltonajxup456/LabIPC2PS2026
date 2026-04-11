@@ -72,6 +72,7 @@ public class CreadorDesdeArchivoDAO {
         String[] datosLimpios = limpiarDatos(tipo[1]);
         for (String datoLimpio : datosLimpios) {
             if (datoLimpio.isBlank()) {
+                registroErrores.agregarErrorGenerico("No se pueden permite dejar campos Vacios");
                 return;
             }
         }
@@ -133,7 +134,7 @@ public class CreadorDesdeArchivoDAO {
             destinodao.crearDestino(request);
             registroErrores.agregarCorrecto();
         } catch (DatosInvalidosException e) {
-            registroErrores.agregarErrorDestino(e.getMessage());
+            registroErrores.agregarErrorDestino("Los nombres de los Destinos no se pueden repetir");
         }
     }
     
@@ -336,9 +337,15 @@ public class CreadorDesdeArchivoDAO {
             request.setFecha(fechaPago);
             try {
                 pagodao.crearRegistroPago(request);
+                if (request.getMontoPagado() >= (reservacion.getCosto() - reservacion.getDineroCancelado())) {
+                    ReservacionRequest reservacionRequest = new ReservacionRequest();
+                    reservacionRequest.setAgenteDeRegistro(reservacion.getAgenteDeRegistro());
+                    reservacionRequest.setEstado(2);
+                    reservaciondao.actualizarReservacion(reservacionRequest);
+                }
                 registroErrores.agregarCorrecto();
             } catch (DatosInvalidosException e) {
-                registroErrores.agregarErrorPago(e.getMessage());
+                registroErrores.agregarErrorPago("El numero de reservacion "+request.getNumReservacion()+" no existe");
             }
         } else {
             registroErrores.agregarErrorPago("La Reservacion " + datos[0] + " no exsite");

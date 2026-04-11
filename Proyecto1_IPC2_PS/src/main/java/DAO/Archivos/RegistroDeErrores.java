@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class RegistroDeErrores {
     
+    private int camposVacios;
     private int creacionCorrecta;
     private int erroresUsuario;
     private int erroresDestino;
@@ -26,6 +27,11 @@ public class RegistroDeErrores {
     
     public RegistroDeErrores() {
         listaErrores = new ArrayList<>();
+    }
+    
+    public void agregarErrorGenerico(String error) {
+        listaErrores.add(error);
+        camposVacios++;
     }
     
     public void agregarCorrecto() {
@@ -76,6 +82,14 @@ public class RegistroDeErrores {
         for (int i = 0; i < listaErrores.size(); i++) {
             System.out.println(listaErrores.get(i));
         }
+    }
+
+    public int getCamposVacios() {
+        return camposVacios;
+    }
+
+    public int getCreacionCorrecta() {
+        return creacionCorrecta;
     }
 
     public int getErroresUsuario() {
