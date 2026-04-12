@@ -339,7 +339,7 @@ public class CreadorDesdeArchivoDAO {
                 pagodao.crearRegistroPago(request);
                 if (request.getMontoPagado() >= (reservacion.getCosto() - reservacion.getDineroCancelado())) {
                     ReservacionRequest reservacionRequest = new ReservacionRequest();
-                    reservacionRequest.setAgenteDeRegistro(reservacion.getAgenteDeRegistro());
+                    reservacionRequest.setNumReservacion(reservacion.getNumReservacion());
                     reservacionRequest.setEstado(2);
                     reservaciondao.actualizarReservacion(reservacionRequest);
                 }
