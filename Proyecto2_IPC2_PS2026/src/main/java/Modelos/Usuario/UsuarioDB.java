@@ -10,19 +10,21 @@ package Modelos.Usuario;
  */
 public class UsuarioDB {
     
-    private final String nombreUsuario;
-    private final String nombre;
-    private final String passwordUser;
-    private final String correoElectronico;
-    private final String telefono;
-    private final String direccion;
-    private final String cui;
-    private final String fechaNac;
-    private final String informacionUsuario;
-    private final boolean baneo;
-    private final double saldo;
-    private final int rol;
-    private final String tipoRol;
+    protected String nombreUsuario;
+    protected String nombre;
+    protected String passwordUser;
+    protected String correoElectronico;
+    protected String telefono;
+    protected String direccion;
+    protected String cui;
+    protected String fechaNac;
+    protected String informacionUsuario;
+    protected boolean baneo;
+    protected double saldo;
+    protected int rol;
+    protected String tipoRol;
+    
+    public UsuarioDB(){}
 
     public UsuarioDB(String nombreUsuario, String nombre, String passwordUser, String correoElectronico, 
             String telefono, String direccion, String cui, String fechaNac, String informacionUsuario, 

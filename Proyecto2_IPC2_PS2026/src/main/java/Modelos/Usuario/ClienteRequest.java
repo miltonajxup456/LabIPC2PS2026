@@ -8,7 +8,7 @@ package Modelos.Usuario;
  *
  * @author millin-115
  */
-public class ClienteRequest {
+public class ClienteRequest extends UsuarioRequest {
     
     private String descripcionEmpresa;
     private String industriaPerteneciente;
@@ -37,5 +37,5 @@ public class ClienteRequest {
     public void setSitioWeb(String sitioWeb) {
         this.sitioWeb = sitioWeb;
     }
-    
+
 }

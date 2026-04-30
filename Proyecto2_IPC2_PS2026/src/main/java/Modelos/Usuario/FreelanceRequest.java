@@ -8,10 +8,12 @@ package Modelos.Usuario;
  *
  * @author millin-115
  */
-public class FreelanceRequest {
+public class FreelanceRequest extends UsuarioRequest {
     
     private String biografia;
     private double tarifaReferencial;
+    private int nivelExperiencia;
+    private String tipoNivelExperiencia;
 
     public String getBiografia() {
         return biografia;
@@ -28,5 +30,21 @@ public class FreelanceRequest {
     public void setTarifaReferencial(double tarifaReferencial) {
         this.tarifaReferencial = tarifaReferencial;
     }
-    
+
+    public int getNivelExperiencia() {
+        return nivelExperiencia;
+    }
+
+    public void setNivelExperiencia(int nivelExperiencia) {
+        this.nivelExperiencia = nivelExperiencia;
+    }
+
+    public String getTipoNivelExperiencia() {
+        return tipoNivelExperiencia;
+    }
+
+    public void setTipoNivelExperiencia(String tipoNivelExperiencia) {
+        this.tipoNivelExperiencia = tipoNivelExperiencia;
+    }
+
 }

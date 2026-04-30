@@ -6,37 +6,42 @@ package Servicios;
 
 import DAOs.UsuarioDAO;
 import Exceptions.DataBaseException;
+import Exceptions.DataExistenteException;
 import Exceptions.DataInexistenteException;
 import Modelos.Usuario.ClienteDB;
 import Modelos.Usuario.FreelancerDB;
 import Modelos.Usuario.UsuarioDB;
 import Modelos.Usuario.UsuarioRequest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
  * @author millin-115
  */
-public class LoginService {
+public class UsuarioService {
     
-    public UsuarioDB validarContraseña(UsuarioRequest request) throws DataBaseException, DataInexistenteException {
+    public void validarCrearUsuario(UsuarioRequest request) throws DataBaseException, DataExistenteException {
         
         UsuarioDAO usuariodao = new UsuarioDAO();
-        UsuarioDB usuariodb = usuariodao.buscarPorNombreUsuario(request.getNombreUsuario());
+        UsuarioDB usuario = usuariodao.buscarPorNombreUsuario(request.getNombreUsuario());
         
-        if (usuariodb == null) {
-            throw new DataInexistenteException("No se pudo acceder");
+        if (usuario != null) {
+            throw new DataExistenteException("El nombre de Usuario "+request.getNombreUsuario()+" ya ha sido utilizado, elige otro");
         }
         
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        usuariodao.crearUsuario(request);
+    }
+    
+    public UsuarioDB buscarUsuario(String id) throws DataBaseException, DataInexistenteException {
         
-        boolean contraseñaCorrecta = encoder.matches(request.getPasswordUser(), usuariodb.getPasswordUser());
-        if (!contraseñaCorrecta) {
-            throw new DataInexistenteException("No se pudo acceder al sistema");
+        UsuarioDAO usuariodao = new UsuarioDAO();
+        UsuarioDB usuariodb = usuariodao.buscarPorNombreUsuario(id);
+        
+        if (usuariodb == null) {
+            throw new DataInexistenteException("El usuario no existe");
         }
         
         if (usuariodb.getTipoRol().equals("CLIENTE")) {
-            ClienteDB complemento = usuariodao.armarCliente(usuariodb.getNombreUsuario());
+            ClienteDB complemento = usuariodao.armarCliente(id);
             if (complemento != null) {
                 ClienteDB cliente = new ClienteDB(usuariodb);
                 cliente.setDescripcionEmpresa(complemento.getDescripcionEmpresa());
@@ -45,7 +50,7 @@ public class LoginService {
                 return cliente;
             }
         } else if (usuariodb.getTipoRol().equals("FREELANCER")) {
-            FreelancerDB complemento = usuariodao.armarFreelance(usuariodb.getNombreUsuario());
+            FreelancerDB complemento = usuariodao.armarFreelance(id);
             if (complemento != null) {
                 FreelancerDB freelancer = new FreelancerDB(usuariodb);
                 freelancer.setBiografia(complemento.getBiografia());
@@ -53,9 +58,7 @@ public class LoginService {
                 return freelancer;
             }
         }
-        
         return usuariodb;
-        
     }
     
 }

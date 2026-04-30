@@ -10,17 +10,27 @@ package Modelos.Usuario;
  */
 public class ClienteDB extends UsuarioDB {
     
-    private final String descripcionEmpresa;
-    private final String industriaPerteneciente;
-    private final String sitioWeb;
+    private String descripcionEmpresa;
+    private String industriaPerteneciente;
+    private String sitioWeb;
     
-    public ClienteDB(String nombreUsuario, String nombre, String passwordUser, String correoElectronico, 
-            String telefono, String direccion, String cui, String fechaNac, String informacionUsuario, 
-            boolean baneo, double saldo, int rol, String tipoRol, 
-            String descripcionEmpresa, String industriaPerteneciente, String sitioWeb) {
-        super(nombreUsuario, nombre, passwordUser, correoElectronico, 
-                telefono, direccion, cui, fechaNac, informacionUsuario,
-                baneo, saldo, rol, tipoRol);
+    public ClienteDB(UsuarioDB u) {
+        this.nombreUsuario = u.getNombreUsuario();
+        this.nombre = u.getNombre();
+        this.passwordUser = u.getPasswordUser();
+        this.correoElectronico = u.getCorreoElectronico();
+        this.telefono = u.getTelefono();
+        this.direccion = u.getDireccion();
+        this.cui = u.getCui();
+        this.fechaNac = u.getFechaNac();
+        this.informacionUsuario = u.getInformacionUsuario();
+        this.baneo = u.isBaneo();
+        this.saldo = u.getSaldo();
+        this.rol = u.getRol();
+        this.tipoRol = u.getTipoRol();
+    }
+
+    public ClienteDB(String descripcionEmpresa, String industriaPerteneciente, String sitioWeb) {
         this.descripcionEmpresa = descripcionEmpresa;
         this.industriaPerteneciente = industriaPerteneciente;
         this.sitioWeb = sitioWeb;
@@ -30,12 +40,24 @@ public class ClienteDB extends UsuarioDB {
         return descripcionEmpresa;
     }
 
+    public void setDescripcionEmpresa(String descripcionEmpresa) {
+        this.descripcionEmpresa = descripcionEmpresa;
+    }
+
     public String getIndustriaPerteneciente() {
         return industriaPerteneciente;
+    }
+
+    public void setIndustriaPerteneciente(String industriaPerteneciente) {
+        this.industriaPerteneciente = industriaPerteneciente;
     }
 
     public String getSitioWeb() {
         return sitioWeb;
     }
-    
+
+    public void setSitioWeb(String sitioWeb) {
+        this.sitioWeb = sitioWeb;
+    }
+
 }
