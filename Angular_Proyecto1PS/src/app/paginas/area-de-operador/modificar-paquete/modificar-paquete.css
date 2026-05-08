@@ -1,0 +1,46 @@
+.principal {
+    font-size: 20px;
+    margin-bottom: 200px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 75px;
+}
+
+.secundario {
+    width: 400px;
+    height: 500px;
+    overflow: auto;
+}
+
+input {
+    display: block;
+    
+}
+
+.boton {
+    width: 60%;
+    padding: 3px;
+    border-radius: 10px;
+}
+
+textarea {
+    font-size: 20px;
+    height: 200px;
+    width: 90%;
+}
+
+.boton.habilitado {
+    background: rgb(93, 199, 79);
+}
+
+.deshabilitado {
+    background: rgb(248, 159, 26);
+}
+
+.eliminar {
+    margin-top: 30px;
+    background: rgb(206, 61, 61);
+    color: white;
+}

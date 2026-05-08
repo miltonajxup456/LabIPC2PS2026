@@ -1,0 +1,24 @@
+label {
+    display: block;
+}
+
+.secundario .boton {
+    width: 60%;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.guardar{
+    font-size: var(--font-size);
+    width: 350px;
+    margin: auto;
+    margin-bottom: 200px;
+}
+
+.guardar .boton {
+    margin: 30px auto;
+}
+
+.mayorA80 {
+    color: rgb(255, 136, 0);
+}

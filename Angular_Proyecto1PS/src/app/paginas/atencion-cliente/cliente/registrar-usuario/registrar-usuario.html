@@ -1,0 +1,36 @@
+<app-head [titulo]="titulo" ></app-head>
+
+<app-regreso-menu [linkAnterior]="paginaAnterior" ></app-regreso-menu>
+
+<div class="contenedor" >
+    <h3>Llena los campos para guardar un nuevo Usuario</h3>
+    
+    <form [formGroup]="formUsuario" (ngSubmit)="guardarUsuario()" >
+            DPI:
+            <div>
+                <input type="text" formControlName="dpi" />
+            </div>
+            Nombre:
+            <div>
+                <input type="text" formControlName="nombre" />
+            </div>
+            Fecha de Nacimiento
+            <div>
+                <input type="date" formControlName="fechaNac" />
+            </div>
+            Telefono de Contacto
+            <div>
+                <input type="tel" formControlName="telefono" >
+            </div>
+            Correo Electronico
+            <div>
+                <input type="email" formControlName="email" >
+            </div>
+            Nacionalidad
+            <div>
+                <input type="text" formControlName="nacionalidad">
+            </div>
+            <button class="boton" type="submit" [disabled]="formUsuario.invalid" >Guardar Usuario</button>
+            <button class="boton" type="button" (click)="limpiar()">Limpiar Formulario</button>
+    </form>
+</div>

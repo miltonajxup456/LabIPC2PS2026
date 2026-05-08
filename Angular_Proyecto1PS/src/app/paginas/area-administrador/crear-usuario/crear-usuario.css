@@ -1,0 +1,12 @@
+.principal {
+    justify-content: center;
+    align-content: center;
+}
+
+input {
+    display: block;
+}
+
+.botones {
+    display: flex;
+}

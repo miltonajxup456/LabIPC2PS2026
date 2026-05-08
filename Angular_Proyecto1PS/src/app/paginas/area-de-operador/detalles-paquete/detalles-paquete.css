@@ -1,0 +1,26 @@
+.principal {
+    margin-bottom: 200px;
+}
+
+.boton {
+    width: 70%;
+    border-radius: 10px;
+}
+
+.paqueteInfo {
+    width: 450px;
+}
+
+.celda {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.paqueteInfo > .celda:first-child{
+    background: #09f;
+    text-align: center;
+}
+
+.paquete80{
+    color: rgb(255, 115, 0);
+}

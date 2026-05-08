@@ -1,0 +1,9 @@
+.boton {
+    width: 70%;
+    border-radius: 15px;
+    padding: 5px;
+}
+
+.estaActivo {
+    background: rgb(51, 201, 31);
+}

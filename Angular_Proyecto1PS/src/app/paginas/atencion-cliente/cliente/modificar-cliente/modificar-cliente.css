@@ -1,0 +1,25 @@
+h2 {
+    text-align: center;
+    margin: 30px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 75px;
+    justify-content: center;
+}
+
+.contenedorSecundario {
+    width: 400px;
+    height: 400px;
+    padding: 20px;
+    border: 2px solid rgb(87, 134, 236);
+    border-radius: 30px;
+    overflow: auto;
+}
+
+.boton {
+    display: block;
+    margin: 10px auto;
+}

@@ -1,0 +1,29 @@
+<app-head [titulo]="titulo"></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior"></app-regreso-menu>
+
+<div class="principal">
+    <div class="secundario">
+        @for (reservacion of todasLasReservaciones(); track reservacion.numReservacion) {
+            <button class="boton"
+            (click)="setReservacion(reservacion)"
+            [class.eleccion]="idReservacion === reservacion.numReservacion">
+                <div> Reservacion: {{reservacion.numReservacion}} </div>
+                <div> {{reservacion.nombrePaquete}} </div>
+            </button>
+        }
+    </div>
+
+    <div class="espacioHistorial">
+        @for (pago of pagosReservacion(); track pago.idPago) {
+            <div>
+                <div class="celda"> Id pago: {{pago.idPago}} </div>
+                <div class="celda"> MontoPagado: {{pago.montoPagado}} </div>
+                <div class="celda"> Fecha: {{pago.fecha}} </div>
+                <div class="celda"> Numero de Reservacion: {{pago.numReservacion}} </div>
+                <div class="celda"> Metodo de Pago: {{pago.metodoPago}} </div>
+            </div>
+        } @empty {
+            No se han registrado pagos para esta reservacion
+        }
+    </div>
+</div>

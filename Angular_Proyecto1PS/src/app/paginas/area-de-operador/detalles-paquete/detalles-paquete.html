@@ -1,0 +1,42 @@
+<app-head [titulo]="titulo"></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior"></app-regreso-menu>
+
+<div class="principal">
+    <div class="secundario">
+        Paquetes Disponibles
+        @for (paquete of paquetesGuardados(); track paquete.idPaquete) {
+            <button class="boton"
+            [class.eleccion]="paqueteElegido()?.idPaquete === paquete.idPaquete"
+            (click)="setPaquete(paquete)">
+                <div> {{paquete.destino}} </div>
+                <div> {{paquete.nombre}} </div>
+            </button>
+        }
+    </div>
+
+    <div class="paqueteInfo">
+        <div class="celda">Detalles Del Paquete</div>
+        <div class="celda">Paquete No. {{paqueteElegido()?.idPaquete}}</div>
+        <div class="celda">Nombre: {{paqueteElegido()?.nombre}}</div>
+        <div class="celda">Dias de Duracion: {{paqueteElegido()?.duracionDias}}</div>
+        <div class="celda">Precio: {{paqueteElegido()?.precio}}</div>
+        <div class="celda">Capacidad: {{paqueteElegido()?.capacidad}}</div>
+        <div class="celda">Reservaciones Hechas: {{paqueteElegido()?.reservacionesHechas}}</div>
+        <div class="celda">Destino: {{paqueteElegido()?.destino}}</div>
+        <div class="celda">Descripcion: {{paqueteElegido()?.descripcion}}</div>
+
+        @if (mayorA80) {
+            <div class="celda paquete80">El paquete Tiene mas del 80% de su capacidada ocupado</div>
+        }
+        <div class="celda">
+            Servicios del Paquete
+            @for (servicio of serviciosPaquete(); track servicio.idServicioPaquete) {
+                <div class="celda">
+                    <div> Servicio: {{servicio.nombreServicio}} </div>
+                    <div> Costo: Q{{servicio.costo}} </div>
+                    <div> Descripcion: {{servicio.descripcion}} </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

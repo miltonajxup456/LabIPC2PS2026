@@ -1,0 +1,38 @@
+<app-head [titulo]="titulo"></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior"></app-regreso-menu>
+
+<div class="fecha">
+    <label >
+        Ingresa la Fecha de la reservacion
+        <input type="date" [(ngModel)]="fechaElegida">
+    </label>
+    <button class="boton"
+    (click)="buscarReservaciones()" 
+    [disabled]="!fechaElegida()">
+        Buscar
+    </button>
+</div>
+
+<div class="principal">
+    @for (reservacion of reservacionesDia(); track reservacion.numReservacion) {
+        <div class="reservacion">
+            <div class="celda">No. Reservacion {{reservacion.numReservacion}} </div>
+            <div class="celda">Fecha de Viaje {{reservacion.fechaViaje}} </div>
+            <div class="celda">Fecha de Creacion {{reservacion.fechaCreacion}} </div>
+            <div class="celda">Cantidad de Pasajeros {{reservacion.cantPasajeros}} </div>
+            <div class="celda">Costo {{reservacion.costo}} </div>
+            <div class="celda">Dinero Cancelado {{reservacion.dineroCancelado}} </div>
+            <div class="celda">Nombre del Paquete {{reservacion.nombrePaquete}} </div>
+            <div class="celda">
+                <div class="pasajeros">
+                    DPI de pasajeros
+                    @for (pasajero of reservacion.dpiPasajeros; track $index) {
+                        <div class="celda"> {{pasajero}} </div>
+                    }
+                </div>
+            </div>
+        </div>
+    } @empty {
+        No se han registrado Reservaciones para este dia
+    }
+</div>

@@ -1,0 +1,24 @@
+<app-head [titulo]="titulo"></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior"></app-regreso-menu>
+
+<div class="principal">
+    <div class="secundario">
+        Selecciona a un Usuario
+        @for (usuario of usuariosGuardados(); track usuario.idUsuario) {
+            <button class="boton" 
+            [class.eleccion]="usuarioElegido()?.idUsuario === usuario.idUsuario" 
+            (click)="setUsuario(usuario)">
+                <div> {{usuario.idUsuario}} </div>
+                <div> {{usuario.nombre}} </div>
+            </button>
+        }
+    </div>
+
+    <div class="secundario">
+        <button class="boton" 
+        [disabled]="!usuarioElegido()" 
+        (click)="eliminarUsuario()">
+            Eliminar Usuario
+        </button>
+    </div>
+</div>

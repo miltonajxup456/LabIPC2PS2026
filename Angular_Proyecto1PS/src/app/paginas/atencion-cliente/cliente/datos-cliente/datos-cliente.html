@@ -1,0 +1,25 @@
+<app-head [titulo]="titulo" ></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior" ></app-regreso-menu>
+
+<h2>Selecciona un usuario para ver sus datos</h2>
+
+<div class="container" >
+    <div class="contenedorSecundario">
+        Clientes Registrados
+        @for (cliente of allClientes(); track cliente.dpi) {
+            <button class="boton" (click)="setCliente(cliente)" > {{cliente.nombre}} </button>
+        }
+    </div>
+    @if (clienteSeleccionado) {
+        <div class="contenedorSecundario" >
+            <strong>Datos del Cliente </strong> <br><br>
+            DPI: {{clienteSeleccionado.dpi}} <br><br>
+            Nombre: {{clienteSeleccionado.nombre}} <br><br>
+            Fecha de Nacimiento: {{clienteSeleccionado.fechaNac}} <br><br>
+            Telefono: {{clienteSeleccionado.telefono}} <br><br>
+            Email: {{clienteSeleccionado.email}} <br><br>
+            Nacionalidad: {{clienteSeleccionado.nacionalidad}}
+        </div>
+    }
+</div>
+

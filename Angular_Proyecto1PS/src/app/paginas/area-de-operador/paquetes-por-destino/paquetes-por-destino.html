@@ -1,0 +1,32 @@
+<app-head [titulo]="titulo"></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior"></app-regreso-menu>
+
+<div class="principal">
+    <div class="secundario">
+        Elige uno de los destinos Guardados para consultar los paquetes del Destino
+        @for (destino of destinosGuardados(); track destino.idDestino) {
+            <button class="boton"
+            [class.eleccion]="destino.idDestino === destinoElegido()?.idDestino"
+            (click)="setDestino(destino)">
+                <div>{{destino.pais}}</div>
+                <div> {{destino.nombre}} </div>
+            </button>
+        }
+    </div>
+
+    <div class="paquetes">
+        @for (paquete of paquetesDestino(); track paquete.idPaquete) {
+            <div class="paquete">
+                <div class="celda">Id: {{paquete.idPaquete}} </div>
+                <div class="celda">Nombre: {{paquete.nombre}} </div>
+                <div class="celda">Dias de Duracion: {{paquete.duracionDias}} </div>
+                <div class="celda">Precio: {{paquete.precio}} </div>
+                <div class="celda">Capacidad: {{paquete.capacidad}} </div>
+                <div class="celda">Estado: {{paquete.estadoPaquete}} </div>
+                <div class="celda">Descripcion: {{paquete.descripcion}} </div>
+            </div>
+        } @empty {
+            No se han registrado paquetes para este destino
+        }
+    </div>
+</div>

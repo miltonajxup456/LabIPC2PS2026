@@ -1,0 +1,59 @@
+<app-head [titulo]="titulo" ></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior" ></app-regreso-menu>
+<p>
+    Para cancelar una Reservacion, elige una Reservacion y cancela con el boton
+</p>
+<p>
+    Es posible modificar la fecha para pruebas mas concretas, 
+    esta sera la fecha en en base a al cual se daran los reembolzos 
+    <br><br>
+    Los estados se Identifican con los colores: 
+</p>
+<ul>
+    <li class="confirmado">(2) Confirmado</li>
+    <li class="cancelado">(3) Cancelado</li>
+    <li class="completado">(4) Completado</li>
+</ul>
+<div class="fecha">
+    <input type="date" [(ngModel)]="fechaSetteada" >
+</div>
+
+<div class="container" >
+    <div class="contenedorSecundario">
+        Reservaciones Creadas
+        @for (reservacion of allReservaciones(); track reservacion.numReservacion) {
+            <button class="boton" 
+            [class.eleccion]="reservacionElegida()?.numReservacion === reservacion.numReservacion" 
+            [class.confirmado]="reservacion.estado === 2"
+            [class.cancelado]="reservacion.estado === 3"
+            [class.completado]="reservacion.estado === 4"
+            (click)="setReservacion(reservacion)" >
+                <div>Reservacion: {{reservacion.numReservacion}} </div>
+                <div>{{reservacion.nombrePaquete}}</div>
+                <div>Fecha de Viaje: {{reservacion.fechaViaje}} </div>
+            </button>
+        }
+    </div>
+
+
+    <div class="contenedorSecundario">
+        @if (reservacionElegida != null) {
+            <h4>
+                Reservacion  {{reservacionElegida()?.numReservacion}} <br>
+                {{reservacionElegida()?.nombrePaquete}} <br>
+            </h4>
+            Costo de Rervacion: {{reservacionElegida()?.costo}} <br>
+            Fecha: {{reservacionElegida()?.fechaViaje}} <br>
+            Dinero Cancelado: {{reservacionElegida()?.dineroCancelado}} <br>
+            Fecha de Viaje: {{reservacionElegida()?.fechaViaje}} <br>
+            Cantidad De Pasajeros: {{reservacionElegida()?.cantPasajeros}} <br>
+        }
+    </div>
+
+    <div>
+        <button class="boton" (click)="completarReservacion()"
+        [disabled]="!reservacionElegida()">Completar Reservacion</button>
+        <button class="boton" (click)="cancelarReservacion()" 
+        [disabled]="!reservacionElegida()">Cancelar Reservacion</button>
+    </div>
+</div>

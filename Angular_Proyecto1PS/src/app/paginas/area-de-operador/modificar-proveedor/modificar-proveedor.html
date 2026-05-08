@@ -1,0 +1,59 @@
+<app-head [titulo]="titulo"></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior"></app-regreso-menu>
+
+<p>
+    Para modificar los Proveedores elije el Pais de procedencia o ingresa "todos" en el espacio 
+    de paises para ver todos los disponibles
+</p>
+
+<div class="principal">
+
+    <div class="secundario">
+        <label >
+            Selecciona el pais
+            <input type="text" [(ngModel)]="paisBuscado">
+        </label>
+        @for (paisLista of paises; track $index) {
+            @if (paisBuscado == paisLista.substring(0, paisBuscado.length)) {
+                <button class="boton"
+                [class.eleccion]="paisLista == pais"
+                (click)="setPais(paisLista)"> {{paisLista}} </button>
+            }
+        }
+    </div>
+
+    <div class="secundario">
+        Proveedores Registrados
+        @for (proveedor of todosProveedores(); track proveedor.idProveedor) {
+            @if (proveedor.pais === pais || paisBuscado == 'todos') {
+                <button class="boton"
+                    (click)="setProveedor(proveedor)"
+                    [class.eleccion]="proveedorElegido()?.idProveedor === proveedor.idProveedor">
+                    <div>{{proveedor.pais}}</div>
+                    <div>{{proveedor.nombre}}</div>
+                    <div>{{proveedor.nombreServicio}}</div>
+                </button>
+            }
+        }
+    </div>
+
+    <div>
+        <label >
+            Nombre del nuevo Proveedor
+            <input type="text" [(ngModel)]="nombre" >
+        </label>
+        <div>
+            Que tipo de Servicio ofrece
+            <button class="boton" [class.eleccion]="tipoServicio === 1" (click)="setTipoServicio(1)">Aerolinea</button>
+            <button class="boton" [class.eleccion]="tipoServicio === 2" (click)="setTipoServicio(2)">Hotel</button>
+            <button class="boton" [class.eleccion]="tipoServicio === 3" (click)="setTipoServicio(3)">Tour</button>
+            <button class="boton" [class.eleccion]="tipoServicio === 4" (click)="setTipoServicio(4)">Traslado</button>
+            <button class="boton" [class.eleccion]="tipoServicio === 5" (click)="setTipoServicio(5)">Otro</button>
+        </div>
+        <div class="secundario">
+            <button class="boton" (click)="guardarProveedor()">Guardar Proveedor</button>
+        </div>
+    </div>
+
+</div>
+

@@ -1,0 +1,35 @@
+<app-head [titulo]="titulo"></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior"></app-regreso-menu>
+
+<div class="principal">
+    <form [formGroup]="formUsuario" (ngSubmit)="agregarUsuario()">
+        <label >
+            Indica el Nombre
+            <input type="text" formControlName="nombre">
+        </label>
+        <label >
+            Indica la Contraseña
+            <input type="text" formControlName="password_user">
+        </label>
+
+        <div class="botones">
+            <button class="boton" type="button" 
+            [class.eleccion]="formUsuario.value.rol === 1" 
+            (click)="setRol(1)">
+                Atencion al Cliente
+            </button>
+            <button class="boton" type="button" 
+            [class.eleccion]="formUsuario.value.rol === 2" 
+            (click)="setRol(2)">
+                Encargado de Operaciones
+            </button>
+            <button class="boton" type="button" 
+            [class.eleccion]="formUsuario.value.rol === 3" 
+            (click)="setRol(3)">
+                Administrador
+            </button>
+        </div>
+
+        <button class="boton" [disabled]="formUsuario.invalid">Guardar Usuario</button>
+    </form>
+</div>

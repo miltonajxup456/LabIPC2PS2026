@@ -1,0 +1,8 @@
+export interface Destino {
+  idDestino?: number,
+  nombre: string,
+  pais: string,
+  descripcion: string,
+  climaEpoca: string,
+  url: string
+}

@@ -1,0 +1,22 @@
+.espacioHistorial {
+    width: 1000px;
+    font-size: var(--font-size);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.historial {
+    border: 1px solid black;
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.celda {
+    border: 1px solid black;
+    padding: 5px;
+}

@@ -1,0 +1,10 @@
+input {
+    display: block;
+    border-radius: 0;
+}
+
+.celda {
+    word-break: break-all;
+    border: 1px solid black;
+    padding: 10px;
+}

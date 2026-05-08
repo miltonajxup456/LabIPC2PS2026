@@ -1,0 +1,119 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+   'Helvetica Neue', sans-serif;
+  background: rgb(241, 243, 243);
+}
+
+:root {
+  --margen: 40px;
+  --font-size: 20px;
+}
+
+h2 {
+  text-align: center;
+}
+
+p {
+    margin: var(--margen);
+    font-size: var(--font-size);
+}
+
+.espacioMenuSuperior {
+  height: auto;
+  border-bottom: 2px solid black;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.botonMenuSuperior {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 20px;
+  font-size: var(--font-size);
+}
+
+.botonMenuSuperior:hover {
+  background-color: rgb(217, 218, 219);
+}
+
+.botonMenuSuperior:active {
+  background: rgb(228, 224, 224);
+}
+
+.container {
+  margin: 10px 40px;
+  font-size: var(--font-size);
+}
+
+.principal {
+    font-size: var(--font-size);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 75px;
+}
+
+.secundario {
+    width: 350px;
+    height: 500px;
+    overflow: auto;
+}
+
+.parrafo {
+  font-size: 20px;
+}
+
+input {
+  font-size: inherit;
+  height: 35px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+}
+
+.boton {
+  font-size: var(--font-size);
+  background: rgb(241, 243, 243);
+  border-radius: 50px;
+  height: auto;
+  padding: 10px;
+  margin: 10px;
+  display: block;
+}
+
+.boton:hover {
+  background: rgb(229, 229, 230);
+}
+
+.boton:active {
+  background: rgb(241, 241, 241);
+}
+
+.eleccion {
+    background: rgb(40, 89, 250);
+    color: white;
+}
+
+label {
+  display: block;
+}
+
+.reservacion {
+    width: 500px;
+}
+
+.celda {
+    padding: 7px;
+    border: 1px solid black;
+}
+
+.pasajeros {
+    padding: 10px;
+    height: 200px;
+    border: 1px solid black;
+    overflow: auto;
+}

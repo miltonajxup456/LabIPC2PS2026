@@ -1,0 +1,87 @@
+<app-head [titulo]="titulo"></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior"></app-regreso-menu>
+
+<p>
+    Llena los campos para que sea un paquete valido
+</p>
+
+<form class="principal" [formGroup]="formPaquete" (ngSubmit)="guardarPaquete()">
+    <div class="secundario">
+        Elige el paquete que se va a modificar
+        @for (paquete of todosPaquetes(); track paquete.idPaquete) {
+            <button class="boton" type="button" 
+            [class.eleccion]="paqueteElegido()?.idPaquete === paquete.idPaquete" 
+            (click)="setPaquete(paquete)">
+                <div> {{paquete.idPaquete}} {{paquete.nombre}} </div>
+            </button>
+        }
+    </div>
+
+    <div>
+        <label >
+            Asignale un Nombre al Paquete
+            <input type="text" formControlName="nombre">
+        </label>
+    </div>
+    <div class="secundario">
+        Todos los Destinos Registrados
+        @for (destino of todosDestinos(); track destino.idDestino) {
+            <button class="boton" type="button"
+                [class.eleccion]="destino.idDestino === formPaquete.value.idDestino"
+                (click)="setDestino(destino)">
+                <div> {{destino.pais}} </div>
+                <div> {{destino.nombre}} </div>
+            </button>
+        }
+    </div>
+
+    <!-- <div class="secundario">
+        Agrega los servicios que tendra el Destino
+        @for (proveedor of todosProveedores(); track proveedor.idProveedor) {
+            <button class="boton" type="button">
+                <div> {{proveedor.nombre}} </div>
+                <div> {{proveedor.nombreServicio}} </div>
+            </button>
+        }
+    </div> -->
+
+    <div class="secundario">
+        Agrega una descripcion general del Paquete  
+        <label >
+            <textarea formControlName="descripcion" ></textarea>
+        </label>
+    </div>
+
+    <div>
+        <label >
+            Asigna la duracion de dias
+            <input type="number" formControlName="duracionDias">
+        </label>
+        <label >
+            Asigna el Precio
+            <input type="number" formControlName="precio">
+        </label>
+        <label >
+            Asigna la Capacidad
+            <input type="number" formControlName="capacidad">
+        </label>
+        <button class="boton" [disabled]="formPaquete.invalid">Guardar El Paquete</button>
+    </div>
+
+    <div>
+        @if (!paqueteElegido()?.estadoPaquete) {
+            <button class="boton" 
+            [class.habilitado]="paqueteElegido()"
+            type="button" [disabled]="!paqueteElegido()"
+            (click)="habilitarPaquete(true)">Habilitar Paquete</button>
+        } @else {
+            <button class="boton" 
+            [class.deshabilitado]="paqueteElegido()"
+            type="button" [disabled]="!paqueteElegido()"
+            (click)="habilitarPaquete(false)">Desabilitar Paquete</button>
+        }
+        <button class="boton eliminar" type="button" [disabled]="!paqueteElegido()"
+        (click)="eliminarPaquete()">Eliminar Paquete</button>
+    </div>
+</form>
+

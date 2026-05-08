@@ -1,0 +1,30 @@
+<app-head [titulo]="titulo"></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior"></app-regreso-menu>
+
+<div class="principal">
+    <div class="secundario">
+        Selecciona un Pasajero Registrado para ver su Historial
+        @for (cliente of todosLosClientes(); track cliente.dpi) {
+            <button class="boton" 
+            [class.eleccion]="clienteElegido()?.dpi === cliente.dpi"
+            (click)="setCliente(cliente)">
+                <div> DPI: {{cliente.dpi}} </div>
+                <div> Nombre: {{cliente.nombre}} </div>
+            </button>
+        }
+    </div>
+    <div class="espacioHistorial">
+        @for (historial of historialCliente(); track historial.numReservacion) {
+            <div >
+                <div class="celda">No. Reservacion: {{historial.numReservacion}} </div>
+                <div class="celda">Fecha de la Reservacion: {{historial.fechaViaje}} </div>
+                <div class="celda">Costo Reservacion: {{historial.costo}} </div>
+                <div class="celda">Estado: {{historial.estado}} </div>
+                <div class="celda">Paquete: {{historial.nombrePaquete}} </div>
+                <div class="celda">Nombre Cliente: {{historial.nombreCliente}} </div>
+            </div>
+        } @empty {
+            No se tienen Registros de Reservaciones para el cliente 
+        }
+    </div>
+</div>

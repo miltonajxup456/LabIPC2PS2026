@@ -1,0 +1,46 @@
+<app-head [titulo]="titulo"></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior"></app-regreso-menu>
+
+<div class="principal">
+    <div class="secundario">
+        <label >
+            Ingresa la fecha de las reservaciones que quieres buscar 
+            <input type="date" [(ngModel)]="fechaElegida">
+            </label>
+    </div>
+    <div class="secundario">
+        Selecciona el Destino 
+        @for (destino of destinosGuardados(); track destino) {
+            <button class="boton" 
+            [class.eleccion]="destinoElegido()?.idDestino === destino.idDestino"
+            (click)="setDestino(destino)">
+                <div>Pais: {{destino.pais}} </div>
+                <div> {{destino.nombre}} </div>
+            </button>
+        }
+    </div>
+</div>
+<p>Informacion de las Reservaciones</p>
+<div class="principal">
+    <div class="reservaciones">
+        @for (reservacion of reservacionesFechaDestino(); track reservacion.numReservacion) {
+            <div class="reservacion">
+                <div class="celda">No. Reservacion {{reservacion.numReservacion}} </div>
+                <div class="celda">Fecha de Viaje {{reservacion.fechaViaje}} </div>
+                <div class="celda">Fecha de Creacion {{reservacion.fechaCreacion}} </div>
+                <div class="celda">Cantidad de Pasajeros {{reservacion.cantPasajeros}} </div>
+                <div class="celda">Costo {{reservacion.costo}} </div>
+                <div class="celda">Dinero Cancelado {{reservacion.dineroCancelado}} </div>
+                <div class="celda">Nombre del Paquete {{reservacion.nombrePaquete}} </div>
+                <div class="pasajeros">
+                    DPI de pasajeros
+                    @for (pasajero of reservacion.dpiPasajeros; track $index) {
+                        <div class="celda"> {{pasajero}} </div>
+                    }
+                </div>
+            </div>
+        } @empty {
+            Aun no hay reservaciones para Esta fecha y este Destino
+        }
+    </div>
+</div>

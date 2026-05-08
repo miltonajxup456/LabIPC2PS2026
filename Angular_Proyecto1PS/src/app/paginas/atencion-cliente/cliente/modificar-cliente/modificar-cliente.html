@@ -1,0 +1,47 @@
+<app-head [titulo]="titulo" ></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior" ></app-regreso-menu>
+
+<h2>Selecciona un usuario para ver los datos del mismo</h2>
+<div class="container" >
+    <div class="contenedorSecundario">
+        @for (cliente of allClientes(); track cliente.dpi) {
+            <button class="boton" (click)="setCliente(cliente)" > {{cliente.nombre}} </button>
+        }
+    </div>
+    @if (clienteSeleccionado != null) {
+        <form [formGroup]="formularioCliente" (ngSubmit)="guardarCambios()">
+            <div>
+                DPI: <br> {{clienteSeleccionado.dpi}}
+            </div>
+            Nombre:
+            <div>
+                <input type="text" formControlName="nombre" />
+            </div>
+            Fecha de Nacimiento
+            <div>
+                <input type="date" formControlName="fechaNac" />
+            </div>
+            Telefono de Contacto
+            <div>
+                <input type="tel" formControlName="telefono" >
+            </div>
+            Correo Electronico
+            <div>
+                <input type="email" formControlName="email" >
+            </div>
+            Nacionalidad
+            <div>
+                <input type="text" formControlName="nacionalidad">
+            </div>
+            <button class="boton" type="submit" [disabled]="formularioCliente.invalid" >Guardar Cambios</button>
+        </form>
+
+    }
+</div>
+
+<div class="container">
+    @if (clienteSeleccionado != null) {
+        <button class="boton" (click)="eliminarCliente()" >Eliminar el Cliente Seleccionado</button>
+    }
+</div>
+

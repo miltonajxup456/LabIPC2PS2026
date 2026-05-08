@@ -1,0 +1,11 @@
+input {
+    display: block;
+}
+
+p {
+    text-align: center;
+}
+
+.principal:last-child {
+    margin-bottom: 200px;
+}

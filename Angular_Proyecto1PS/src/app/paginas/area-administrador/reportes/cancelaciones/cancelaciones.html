@@ -1,0 +1,41 @@
+<app-reportes></app-reportes>
+
+<h2>Reporte de Cancelaciones en un tiempo X definido</h2>
+
+<div class="principal">
+    <label >
+        Fecha Inicial
+        <input type="date"  [(ngModel)]="fechaInicial">
+    </label>
+
+    <label >
+        Fecha Final
+        <input type="date" [(ngModel)]="fehcaFinal">
+    </label>
+</div>
+<div class="principal">
+    <button class="boton" (click)="buscarPorFechas()" [disabled]="!fechaInicial || !fehcaFinal">Buscar</button>
+</div>
+@if (mostrar()) {
+    <p>Cancelaciones y Dinero Reembolsado</p>
+    <p>Perdida de la agencia: {{montoReembolsado()}} </p>
+    @if (cancelacionesFecha().length > 0) {
+        <div class="principal">
+            <button class="boton" (click)="descargarPdf()">Descargar Los Reportes en PDF</button>
+        </div>
+    }
+    <div class="principal">
+        @for (cancelacion of cancelacionesFecha(); track cancelacion.numeroReservacion) {
+            <div class="numeroReservacion">
+                <div class="celda">Numero de Reservacion: {{cancelacion.numeroReservacion}} </div>
+                <div class="celda">Nombre del Paquete {{cancelacion.nombrePaquete}} </div>
+                <div class="celda">Fecha de Cancelacion: {{cancelacion.fechaCancelacion}} </div>
+                <div class="celda">Porcentaje de Reembolso: {{cancelacion.porcentajeReembolso}} </div>
+                <div class="celda">Dinero Pagado: {{cancelacion.dineroPagado}} </div>
+                <div class="celda">Monto Reembolsado: {{cantidadReembolsado(cancelacion)}} </div>
+            </div>
+        } @empty {
+            <p>No existen Reservaciones Canceladas en estas fechas</p>
+        }
+    </div>
+}

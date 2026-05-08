@@ -1,0 +1,72 @@
+<app-head [titulo]="titulo"></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior"></app-regreso-menu>
+
+<div class="principal">
+
+    <div class="espacioPaises">
+        Destinos Guardados
+        @for (destino of allDestinos(); track destino.idDestino) {
+            <button class="boton"
+            (click)="setDestino(destino)"
+            [class.eleccion]="destino == destinoElegido()">
+                <div>
+                    Pais: {{destino.pais}}
+                </div>
+                <div>
+                    Nombre: {{destino.nombre}}
+                </div>
+            </button>
+        }
+    </div>
+
+    <div >
+        <h4>Informacion del Destino</h4>
+        Id del destino {{destinoElegido()?.idDestino}} <br><br>
+        Nombre: {{destinoElegido()?.nombre}} <br><br>
+        Pais: {{destinoElegido()?.pais}} <br><br>
+        Descripcion: {{destinoElegido()?.descripcion}} <br><br>
+        Clima y Epoca: {{destinoElegido()?.climaEpoca}} <br><br>
+        <img [src]="destinoElegido()?.url" alt="Imagen del Destino">
+    </div>
+
+    <div class="espacioPaises">
+        Elige el pais de Destino
+        <label >
+            <input type="text" [(ngModel)]="paisBuscado" >
+        </label>
+        @for (pais of paises; track $index) {
+            @if (paisBuscado == pais.substring(0, paisBuscado.length)) {
+                <button class="boton" type="button" 
+                [class.eleccion]="pais === paisSeleccionado"
+                (click)="setPais(pais)"> {{pais}} </button>
+            }
+        }
+    </div>
+
+    <div class="container">
+        <form [formGroup]="formDestino" (ngSubmit)="guardarDestino()">
+            <label >
+                Asignale un nombre al Destino
+                <input type="text" formControlName="nombre" >
+            </label>
+            <label >
+                Agrega una descripcion
+                <input type="text" formControlName="descripcion">
+            </label>
+            <label >
+                Define el mejor Clima y Epoca
+                <input type="text" formControlName="climaEpoca">
+            </label>
+            <label >
+                Puedes agregar un url de una imagen representativa
+                <input type="text" formControlName="url">
+            </label>
+            <button class="boton" [disabled]="formDestino.invalid">Guardar Destino</button>
+        </form>
+    </div>
+    
+</div>
+
+<div class="borrar">
+    <button class="boton" (click)="eliminarDestino()">Eliminar Destino Elegido</button>
+</div>

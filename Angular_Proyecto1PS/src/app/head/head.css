@@ -1,0 +1,8 @@
+h1 {
+    background: rgb(88, 155, 255);
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}

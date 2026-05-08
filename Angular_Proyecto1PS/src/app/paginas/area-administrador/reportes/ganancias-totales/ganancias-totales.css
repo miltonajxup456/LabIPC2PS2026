@@ -1,0 +1,15 @@
+.ganancias {
+    font-size: var(--font-size);
+    text-align: center;
+    width: 350px;
+    background: rgb(93, 248, 93);
+    margin: auto;
+}
+
+p {
+    text-align: center;
+}
+
+.principal:last-child {
+    margin-bottom: 200px;
+}

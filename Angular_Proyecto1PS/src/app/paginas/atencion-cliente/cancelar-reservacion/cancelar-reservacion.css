@@ -1,0 +1,45 @@
+h4 {
+    text-align: center;
+}
+.fecha {
+    font-size: var(--font-size);
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 75px;
+    margin-bottom: 200px;
+}
+
+.contenedorSecundario {
+    height: 500px;
+    width: 350px;
+    overflow: auto;
+}
+
+/* .contenedor .boton {
+    height: auto;
+} */
+
+.completado{
+    background: rgb(59, 235, 248);
+    color: black;
+}
+
+.cancelado {
+    background: rgb(238, 59, 59);
+    color: white;
+}
+
+.confirmado {
+    background: rgb(52, 206, 52);
+}
+
+li {
+    width: 300px;
+    font-size: 20px;
+}

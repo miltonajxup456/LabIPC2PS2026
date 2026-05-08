@@ -1,0 +1,45 @@
+<app-reportes></app-reportes>
+<h2>Reporte de Paquete mas Vendido en un tiempo X definido</h2>
+
+<div class="principal">
+    <label >
+        Fecha Inicial
+        <input type="date"  [(ngModel)]="fechaInicial">
+    </label>
+
+    <label >
+        Fecha Final
+        <input type="date" [(ngModel)]="fehcaFinal">
+    </label>
+</div>
+<div class="principal">
+    <button class="boton" (click)="buscarPorFechas()" [disabled]="!fechaInicial || !fehcaFinal">Buscar</button>
+</div>
+
+@if (mostrar()) {
+    <p>El paquete mas vendido es {{nombrePaquete()}} </p>
+    @if (reservacionesFecha().length > 0) {
+        <div class="principal">
+            <button class="boton" (click)="descargarPdf()">Descargar Los Reportes en PDF</button>
+        </div>
+    }
+    <div class="principal">
+        @for (reservacion of reservacionesFecha(); track reservacion.numReservacion) {
+            <div class="reservacion">
+                <div class="celda">Numero de Reservacion: {{reservacion.numReservacion}} </div>
+                <div class="celda">Paquete: {{reservacion.nombrePaquete}} </div>
+                <div class="celda">Costo de Reservacion: {{reservacion.costo}} </div>
+                <div class="celda">Fecha de Viaje: {{reservacion.fechaViaje}} </div>
+                <div class="celda">Costo: {{reservacion.costo}} </div>
+                <div class="pasajeros">
+                    @for (pasajero of reservacion.dpiPasajeros; track pasajero) {
+                        <div class="celda"> {{pasajero}} </div>
+                    }
+                </div>
+            </div>
+        } @empty {
+            <p>No existen reservaciones que se hallan creado en estas fechas</p>
+        }
+    </div>
+}
+

@@ -1,0 +1,23 @@
+<button class="btnLogin" (click)="mostrarLog()">Iniciar Sesión</button>
+
+<div class="contenedorLogin" [class.mostrar]="logVisible">
+  <form [formGroup]="loginForm" (ngSubmit)="logearse()" >
+    <div class="celdaLogin">
+
+      <label>
+        Nombre de Usuario:
+        <input  type="text" formControlName="nombre" />
+      </label>
+
+    </div>
+    <div class="celdaLogin">
+      <label>
+        Contraseña:
+        <input type="password" formControlName="password_user" />
+      </label>
+    </div>
+    <div>
+      <button class="btnLogin" >Ingresar</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,44 @@
+<app-head [titulo]="titulo"></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior"></app-regreso-menu>
+
+<div class="principal">
+    <div class="secundario">
+        Elije un Paquete para agregar un servicio de los proveedores en el Destino
+        @for (paquete of paquetesDisponibles(); track paquete.idPaquete) {
+            <button class="boton"
+            [class.eleccion]="paqueteElegido()?.idPaquete === paquete.idPaquete"
+            (click)="setPaquete(paquete)">
+                <div> Id Paquete: {{paquete.idPaquete}} </div>
+                <div> Destino: {{paquete.destino}} </div>
+                <div> Nombre: {{paquete.nombre}} </div>
+            </button>
+        }
+    </div>
+
+    <div class="secundario">
+        Sevicios Disponibles en el Destino
+        @for (proveedor of proveedoresPais(); track proveedor.idProveedor) {
+            @if (estaActivo(proveedor)) {
+                <button class="boton estaActivo" 
+                [class.eleccion]="proveedorElegido()?.idProveedor === proveedor.idProveedor"
+                (click)="setServicioActivo(proveedor)"> {{proveedor.nombreServicio}} </button>
+            } @else {
+                <button class="boton" 
+                [class.eleccion]="proveedorElegido()?.idProveedor === proveedor.idProveedor"
+                (click)="activarCreacionServicio(proveedor)"> {{proveedor.nombreServicio}} </button>
+            }
+        }
+    </div>
+
+    <div class="secundario">
+        Precio del Servicio, si el paquete no tiene este servicio incluido es necesario defiirlo
+        <input type="number" [(ngModel)]="costoServicio">
+        @if (servicioElegido != null && !definirServicio) {
+            <button class="boton" (click)="actualizarServicioPaquete()"
+            [disabled]="servicioElegido()===null">Guardar Cambios</button>
+        } @else if (definirServicio) {
+            <button class="boton" (click)="agregarServicio()"
+            [disabled]="!definirServicio">Agregar Servicio al Paquete</button>
+        }
+    </div>
+</div>

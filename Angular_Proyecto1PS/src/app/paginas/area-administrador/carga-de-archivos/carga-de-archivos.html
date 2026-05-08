@@ -1,0 +1,32 @@
+<app-head [titulo]="titulo"></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior"></app-regreso-menu>
+
+<div class="principal">
+    <label >
+        Selecciona un Archivo
+        <input type="file" (change)="cargarArchivo($event)">
+    </label>
+</div>
+
+<div class="principal">
+    <div class="secundario">
+         @if (registroErrores()) {
+            <div class="celda"> Creaciones Correctas: {{registroErrores()?.creacionCorrecta}} </div>
+            <div class="celda"> Errores de Usuario: {{registroErrores()?.erroresUsuario}} </div>
+            <div class="celda"> Errores de Destino: {{registroErrores()?.erroresDestino}} </div>
+            <div class="celda"> Errores de Proveedor: {{registroErrores()?.erroresProveedor}} </div>
+            <div class="celda"> Errores de Paquete: {{registroErrores()?.erroresPaquete}} </div>
+            <div class="celda"> Errores de Servicio Paquete: {{registroErrores()?.erroresServicioPaquete}} </div>
+            <div class="celda"> Errores de Cliente: {{registroErrores()?.erroresCliente}} </div>
+            <div class="celda"> Errores de Reservacion: {{registroErrores()?.erroresReservacion}} </div>
+            <div class="celda"> Errores de Pago: {{registroErrores()?.erroresPago}} </div>
+            <div class="celda"> Errores Campos Vacios: {{registroErrores()?.camposVacios}} </div>
+         }
+    </div>
+    <div class="secundario">
+        Errores encontrados 
+        @for (error of registroErrores()?.listaErrores; track $index) {
+            <div class="celda"> {{error}} </div>
+        }
+    </div>
+</div>

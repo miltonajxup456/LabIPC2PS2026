@@ -1,0 +1,9 @@
+.contenedor {
+    font-size: 20px;
+    margin: var(--margen);
+}
+
+.btnPrueba {
+    margin: var(--margen);
+    font-size: var(--font-size);
+}

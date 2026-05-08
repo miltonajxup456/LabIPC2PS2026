@@ -1,0 +1,28 @@
+p {
+    text-align: center;
+}
+
+.reservaciones {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.reservacion {
+    margin: 20px;
+}
+
+.reservacion > .celda:first-child {
+    background: rgb(0, 153, 255);
+}
+
+.celda {
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.pasajeros {
+    border: 1px solid black;
+    padding: 15px;
+    max-width: 200px;
+    overflow: auto;
+}

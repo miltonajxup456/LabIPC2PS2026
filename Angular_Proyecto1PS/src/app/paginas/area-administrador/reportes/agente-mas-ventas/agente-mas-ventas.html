@@ -1,0 +1,37 @@
+<app-reportes></app-reportes>
+<h2>Reporte de Ventas de Agente en un tiempo X definido</h2>
+
+<div class="principal">
+    <label >
+        Fecha Inicial
+        <input type="date"  [(ngModel)]="fechaInicial">
+    </label>
+
+    <label >
+        Fecha Final
+        <input type="date" [(ngModel)]="fehcaFinal">
+    </label>
+</div>
+<div class="principal">
+    <button class="boton" (click)="buscarPorFechas()" [disabled]="!fechaInicial || !fehcaFinal">Buscar</button>
+</div>
+
+@if (mostrar()) {
+    <p>El agente con mas Ventas es {{agenteDeRegistro()}} </p>
+    @if (reservacionesFecha().length > 0) {
+        <div class="principal">
+            <button class="boton" (click)="descargarPdf()">Descargar Los Reportes en PDF</button>
+        </div>
+    }
+    <div class="principal">
+        @for (reservacion of reservacionesFecha(); track reservacion.numReservacion) {
+            <div class="reservacion">
+                <div class="celda">Numero de Reservacion: {{reservacion.numReservacion}} </div>
+                <div class="celda">Paquete: {{reservacion.nombrePaquete}} </div>
+                <div class="celda">Costo de Reservacion: {{reservacion.costo}} </div>
+            </div>
+        } @empty {
+            <p>No existen reservaciones que se hallan creado en estas fechas</p>
+        }
+    </div>
+}

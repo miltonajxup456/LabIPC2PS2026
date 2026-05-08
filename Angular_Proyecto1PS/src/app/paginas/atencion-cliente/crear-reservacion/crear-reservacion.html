@@ -1,0 +1,65 @@
+<app-head [titulo]="titulo"></app-head>
+<app-regreso-menu [linkAnterior]="linkAnterior"></app-regreso-menu>
+
+<div class="principal">
+    <div class="secundario">
+        Define la Fecha para la reservacion 
+        <label >
+            <input type="date" [(ngModel)]="fechaReservacion">
+        </label>
+    </div>
+
+    <div class="secundario">
+        Elije un Destino Para Filtrar los paquetes Disponibles
+        @for (destino of destinosDisponibles(); track destino.idDestino) {
+            <button class="boton" 
+            [class.eleccion]="destino.idDestino === destinoElegido"
+            (click)="setDestino(destino)">
+                <div> {{destino.pais}} </div>
+                <div> {{destino.nombre}} </div>
+            </button>
+        }
+    </div>
+
+    <div class="secundario">
+        Elige los paquetes Disponibles en el Destino
+        @if (mayorA80) {
+            <div class="mayorA80">Este paquete tiene mas del 80% de su capacidad con reservaciones</div>
+        }
+        @for (paquete of paquetesDisponibles(); track paquete.idPaquete) {
+            <button class="boton"
+            [class.eleccion]="paquete.idPaquete === paqueteElegido()?.idPaquete!"
+            (click)="setPaquete(paquete)"
+            [disabled]="!paquete.estadoPaquete">
+                <div> {{paquete.nombre}} </div>
+                <div> Q{{paquete.precio}} </div>
+            </button>
+        }
+    </div>
+
+    <div class="secundario">
+        Selecciona a los Pasajeros que Participaran o genera la busqueda 
+        <input type="text" [(ngModel)]="dpiBuscado">
+        @for (pasajero of clientesGuardados(); track pasajero.dpi) {
+            @if (dpiBuscado === pasajero.dpi.substring(0, dpiBuscado.length)) {
+                <button class="boton" 
+                [class.eleccion]="estaAgregado(pasajero)" 
+                (click)="adjuntarPasajero(pasajero)">
+                    <div> DPI: {{pasajero.dpi}} </div>
+                    <div> Nombre: {{pasajero.nombre}} </div>
+                </button>
+            } 
+        }
+        <div>
+            Si no se Encuentra el DPI puedes registrarlo
+            <button class="boton" routerLink="/registrar-usuario">Registrar</button>
+        </div>
+    </div>
+</div>
+
+<div class="guardar">
+    La Reservacion tiene un Costo de {{costoReservacion}}
+    <button class="boton"
+    [disabled]="sePuedeGuardar()"
+    (click)="guardarReservacion()">Guardar Reservacion</button>
+</div>
