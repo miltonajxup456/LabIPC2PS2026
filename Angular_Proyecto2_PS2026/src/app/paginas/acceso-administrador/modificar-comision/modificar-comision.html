@@ -1,0 +1,13 @@
+<app-header [titulo]="titulo"></app-header>
+<app-menu-secundario [linkAnterior]="linkAnterior"></app-menu-secundario>
+<div class="contPrincipal">
+    <div class="contSecundario">
+        <div class="celda">Nota: La comision debe ingresarse como un entero</div>
+        <div class="celda">Comision Acutal: {{ultimaComision()?.porcentaje}}%</div>
+        <label >
+            Ingresa la nueva Comision:
+            <input type="number" [(ngModel)]="nuevaComision">
+        </label>
+        <button class="btnRedondo" [disabled]="!nuevaComision" (click)="actualizarComision()">Actualizar comision</button>
+    </div>
+</div>

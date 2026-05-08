@@ -1,0 +1,17 @@
+<app-header [titulo]="titulo"></app-header>
+<app-menu-secundario [linkAnterior]="linkAnterior"></app-menu-secundario>
+<div class="contPrincipal">
+    <form [formGroup]="formCategoria">
+        <label >
+            Ingresa el nombre de la categoria:
+            <input type="text" formControlName="nombre">
+        </label>
+        <label >
+            Ingresa la descripcion de la categoria:
+            <textarea rows="10" cols="30" formControlName="descripcion"></textarea>
+        </label>
+        <button class="btnRedondo" (click)="mandarPropuesta()" [disabled]="formCategoria.invalid">
+            Enviar Propuesta
+        </button>
+    </form>
+</div>

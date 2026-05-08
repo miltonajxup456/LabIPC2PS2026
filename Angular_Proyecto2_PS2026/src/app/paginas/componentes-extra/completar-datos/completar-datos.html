@@ -1,0 +1,9 @@
+@if (!puedePublicar()) {
+    <div class="contPrincipal">
+        <p>
+            Antes de {{accion}} es necesario que se complete la informacion de usuario
+        </p>
+        <button class="btnCuadrado" [routerLink]="linkModificacion">CompletarInformacion</button>
+    </div>
+    <div class="espacio"></div>
+}

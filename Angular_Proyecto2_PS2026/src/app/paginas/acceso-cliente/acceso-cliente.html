@@ -1,0 +1,27 @@
+<app-header [titulo]="titulo"></app-header>
+<div class="menuBotones">
+    <button class="btnRedondo" routerLink="/recargar-saldo">Recargar Saldo</button>
+    <button class="btnRedondo" routerLink="/crear-proyecto">Crear Proyecto</button>
+    <button class="btnRedondo" routerLink="/editar-proyecto">Editar Proyecto</button>
+    <button class="btnRedondo" routerLink="/ver-propuestas">Ver Propuestas</button>
+    <button class="btnRedondo" routerLink="/ver-entregas">Ver Entregas</button>
+    <button class="btnRedondo" routerLink="/editar-informacion-cliente">Actualizar Datos</button>
+    <button class="btnRedondo" routerLink="/ver-historial-proyectos">Ver Historial de Proyectos</button>
+    <button class="btnRedondo" routerLink="/ver-historial-recargas">Ver Historal Recargas</button>
+    <button class="btnRedondo" routerLink="/ver-gastos-categorias">Ver Gastos Categoria</button>
+    <button class="btnRedondo" routerLink="/login" (click)="cerrarSesion()">Cerrar Sesion</button>
+</div>
+<app-completar-datos accion="poder crear proyectos"></app-completar-datos>
+<div class="contPrincipal">
+    <div class="contSecundario">
+        <div class="celda">Nombre de Usuario: {{usuarioLogeado()?.nombreUsuario}}</div>
+        <div class="celda">Nombre: {{usuarioLogeado()?.nombre}} </div>
+        <div class="celda">Saldo: {{usuarioLogeado()?.saldo}}</div>
+        <div class="celda"> Tipo de Rol: {{usuarioLogeado()?.tipoRol}} </div>
+        <div class="celda">Correo Electronico: {{usuarioLogeado()?.correoElectronico}} </div>
+        <div class="celda">Telefono: {{usuarioLogeado()?.telefono}} </div>
+        <div class="celda">Direccion: {{usuarioLogeado()?.direccion}} </div>
+        <div class="celda">CUI: {{usuarioLogeado()?.cui}} </div>
+        <div class="celda">Fecha de Nacimiento: {{usuarioLogeado()?.fechaNac}} </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<app-header [titulo]="titulo"></app-header>
+<div class="espacio"></div>
+<div class="contPrincipal">
+    <button class="btnCuadrado" (click)="volverLogin()">Regresar</button>
+</div>
+<div class="contPrincipal">
+    <form [formGroup]="formRegistro" (ngSubmit)="guardarUsuario()">
+        <label >
+            Ingresa el nombre de Usuario:
+            <input type="text" formControlName="nombreUsuario">
+        </label>
+        <label >
+            Ingresa un nombre para identificarte:
+            <input type="text" formControlName="nombre">
+        </label>
+        <label >
+            Contraseña:
+            <input type="text" formControlName="passwordUser">
+        </label>
+        <label >
+            Correo Electronico:
+            <input type="email" formControlName="correoElectronico">
+        </label>
+        <label >
+            Telefono:
+            <input type="text" formControlName="telefono">
+        </label>
+        <label >
+            Direccion:
+            <input type="text" formControlName="direccion">
+        </label>
+        <label >
+            CUI:
+            <input type="text" formControlName="cui">
+        </label>
+        <label >
+            Fecha de Nacimiento:
+            <input type="date" formControlName="fechaNac">
+        </label>
+        <div class="eleccionUsuario">
+            <button class="btnCuadrado" type="button" 
+            (click)="setRol(2)"
+            [class.seleccionado]="formRegistro.value.rol === 2">
+                Cliente
+            </button>
+            <button class="btnCuadrado" type="button" 
+            (click)="setRol(3)"
+            [class.seleccionado]="formRegistro.value.rol === 3">
+                Freelancer
+            </button>
+        </div>
+        <button class="btnRedondo" [disabled]="!formRegistro.valid">Registrarse</button>
+    </form>
+</div>

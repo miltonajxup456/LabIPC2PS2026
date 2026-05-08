@@ -1,0 +1,56 @@
+<app-header [titulo]="titulo"></app-header>
+<app-menu-secundario [linkAnterior]="linkAnterior"></app-menu-secundario>
+<div class="contPrincipal">
+    <div class="celda">
+        Saldo Disponible: Q{{cliente()?.saldo}}
+    </div>
+</div>
+<div class="contPrincipal">
+    <div class="contSecundario">
+        @for (proyecto of proyectos(); track proyecto.idProyecto) {
+            <button class="btnCuadrado" 
+            [class.seleccionado]="proyecto.idProyecto === proyectoElegido()?.idProyecto" 
+            (click)="elegirProyecto(proyecto)" 
+            >
+            @if (proyecto.estado !== 1) {
+                <p>No es posible modificar este Proyecto <br>Estado: {{proyecto.tipoEstado}} </p>
+            } 
+                Titulo: {{proyecto.titulo}}
+            </button>
+        }
+    </div>
+    @if (proyectoElegido()) {
+        <div class="contSecundario">
+            @for (propuesta of propuestas(); track propuesta.idPropuesta) {
+                <button class="btnCuadrado" 
+                [class.seleccionado]="propuestaElegida()?.idPropuesta === propuesta.idPropuesta" 
+                (click)="elegirPropuesta(propuesta)">
+                    Freelancer: {{propuesta.freelancer}}
+                </button>
+            } @empty {
+                <div class="celda">Este Proyecto aun no tiene Propuestas</div>
+            }
+        </div>
+    }
+    @if (propuestaElegida()) {
+        <div class="contSecundario">
+            @if (propuestaElegida()?.estado !== 1) {
+                Estado de la Propuesta: {{propuestaElegida()?.tipoEstado}}
+            }
+            <button class="btnCuadrado" (click)="aceptarPropuesta()" 
+            [disabled]="propuestaElegida()?.estado !== 1 || proyectoElegido()?.estado !== 1">
+                Aceptar Propuesta
+            </button>
+            <button class="btnCuadrado" (click)="rechazarPropuesta()" 
+            [disabled]="propuestaElegida()?.estado !== 1 || proyectoElegido()?.estado !== 1">
+                Rechazar Propuesta
+            </button>
+            <div class="celda"> Monto Ofertado: Q{{propuestaElegida()?.montoOfertado}} </div>
+            <div class="celda"> Plazo de Entrega: {{propuestaElegida()?.plazoEntrega}} </div>
+            <div class="celda"> Freelancer: {{propuestaElegida()?.freelancer}} </div>
+            <div class="celda"> Calificacion Promedio: {{propuestaElegida()?.calificacionPromedio}} / 5 </div>
+            <div class="celda"> Presentacion: {{propuestaElegida()?.presentacion}} </div>
+        </div>
+    }
+</div>
+

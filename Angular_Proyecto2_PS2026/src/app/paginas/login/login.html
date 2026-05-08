@@ -1,0 +1,26 @@
+<app-header [titulo]="titulo"></app-header>
+
+<div class="espacio"></div>
+<div class="contPrincipal">
+    <button class="btnCuadrado" (click)="registro()">
+        Registrarse
+    </button>
+</div>
+
+<div class="contPrincipal">
+    <form [formGroup]="formLogin" (ngSubmit)="ingresarAlSistema()">
+        <label >
+            Nombre de Usuario:
+            <input type="text" formControlName="nombreUsuario">
+        </label>
+        <label >
+            Contraseña:
+            <input type="password" formControlName="passwordUser">
+        </label>
+        <button class="btnCuadrado" >Ingresar</button>
+    </form>
+</div>
+
+<!-- <button routerLink="/acceso-administrador">Menu Administrador</button>
+<button routerLink="/acceso-cliente">Menu Cliente</button>
+<button routerLink="/acceso-freelancer">Menu Freelancer</button> -->

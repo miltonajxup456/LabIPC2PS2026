@@ -1,0 +1,100 @@
+<app-header [titulo]="titulo"></app-header>
+<app-menu-secundario [linkAnterior]="linkAnterior"></app-menu-secundario>
+<div class="contPrincipal">
+    <form [formGroup]="formUsuario" (ngSubmit)="guardarCambios()">
+        <label >
+            Nombre: 
+            <input type="text" formControlName="nombre">
+        </label>
+        <label >
+            Correo Electronico:
+            <input type="text" formControlName="correoElectronico">
+        </label>
+        <label >Telefono:
+            <input type="text" formControlName="telefono">
+        </label>
+        <label >
+            Direccion:
+            <input type="text" formControlName="direccion">
+        </label>
+        <label >
+            CUI:
+            <input type="text" formControlName="cui">
+        </label>
+        <label >
+            Fecha de Nacimiento:
+            <input type="date" formControlName="fechaNac">
+        </label>
+        @if (usuarioLogeado()?.rol === 2) {
+            <label >
+                <app-mensaje-obligatorio [texto]="formUsuario.value.descripcionEmpresa" [accion]="accionCliente"></app-mensaje-obligatorio>
+                Descripcion de la Empresa:
+                <input type="text" formControlName="descripcionEmpresa">
+            </label>
+            <label >
+                <app-mensaje-obligatorio [texto]="formUsuario.value.industriaPerteneciente" [accion]="accionCliente" ></app-mensaje-obligatorio>
+                Sector o Industria a la que pertenece:
+                <input type="text" formControlName="industriaPerteneciente">
+            </label>
+            <label >
+                <app-mensaje-obligatorio [texto]="formUsuario.value.sitioWeb" [accion]="accionCliente" ></app-mensaje-obligatorio>
+                Sitio Web:
+                <input type="text" formControlName="sitioWeb">
+            </label>
+        }
+        @if (usuarioLogeado()?.rol === 3) {
+            <label >
+                <app-mensaje-obligatorio [texto]="formUsuario.value.biografia" [accion]="accionFreelancer" ></app-mensaje-obligatorio>
+                Descripcion o Biografia Personal:
+                <input type="text" formControlName="biografia">
+            </label>
+            <label >
+                <app-mensaje-obligatorio [texto]="formUsuario.value.tarifaReferencial" [accion]="accionFreelancer" ></app-mensaje-obligatorio>
+                Tarifa Referencial:
+                <input type="number" formControlName="tarifaReferencial">
+            </label>
+        }
+        <button class="btnCuadrado" [disabled]="formUsuario.invalid">
+            Guardar Cambios
+        </button>
+    </form>
+    <div >
+        <div >
+            <label >
+                <h6>Importante: Si se define la contraseña <br> Se cambiará la contraseña</h6>
+                Contraseña:
+                <input type="text" [(ngModel)]="contrasenia">
+            </label>
+            <div class="espacio"></div>
+        </div>
+        @if (usuarioLogeado()?.rol === 3) {
+            Define el nivel de Experiencia
+            <div class="botonesNivel">
+                <button class="btnRedondo" [class.seleccionado]="formUsuario.value.nivelExperiencia === 1" 
+                (click)="elegirNivel(1)">
+                    Junior
+                </button>
+                <button class="btnRedondo" [class.seleccionado]="formUsuario.value.nivelExperiencia === 2" 
+                (click)="elegirNivel(2)">
+                    Semi-Senior
+                </button>
+                <button class="btnRedondo" [class.seleccionado]="formUsuario.value.nivelExperiencia === 3" 
+                (click)="elegirNivel(3)">
+                    Senior
+                </button>
+            </div>
+
+            Elige las Habilidades de las que dispone
+            <div class="contSecundario">
+                @for (habilidad of habilidades(); track habilidad.idHabilidad) {
+                    <button class="btnCuadrado" 
+                    [class.seleccionado]="habilidadGuardada(habilidad.idHabilidad!)"
+                    (click)="guardarHabilidad(habilidad.idHabilidad!)">
+                        {{habilidad.nombreHabilidad}}
+                    </button>
+                }
+            </div>
+        }
+    </div>
+</div>
+<div class="espacio"></div>

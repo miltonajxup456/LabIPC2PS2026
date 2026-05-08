@@ -1,0 +1,34 @@
+<app-header [titulo]="titulo"></app-header>
+<app-menu-secundario [linkAnterior]="linkAnterior"></app-menu-secundario>
+<div class="contPrincipal">
+    <label >
+        Fecha Inicial:
+        <input type="date" [(ngModel)]="fechaInicial">
+    </label>
+    <label >
+        Fecha Final:
+        <input type="date" [(ngModel)]="fechaFinal">
+    </label>
+</div>
+<div class="contPrincipal">
+    <button class="btnRedondo" (click)="llamarProyectos()" [disabled]="!fechaInicial || !fechaFinal">Buscar Ganancias</button>
+</div>
+<div class="contPrincipal">
+    <div class="contSecundario">
+        @for (proyecto of proyectos(); track $index) {
+            <div class="celda">
+                <div class="celda"> Estado: {{proyecto.tipoEstado}} </div>
+                <div class="celda"> Monto: {{proyecto.presupuesto}} </div>
+                @if (proyecto.freelancer) {
+                    <div class="celda"> Freelancer: {{proyecto.freelancer}} </div>
+                } @else {
+                    <div class="celda"> Freelancer: Sin freelancer </div>
+                }
+            </div>
+        } @empty {
+            <div class="celda">No se tienen registros de Proyectos creados en estas fechas</div>
+        }
+    </div>
+</div>
+
+

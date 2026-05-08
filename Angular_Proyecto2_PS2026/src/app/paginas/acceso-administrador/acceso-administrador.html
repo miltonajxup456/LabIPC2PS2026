@@ -1,0 +1,25 @@
+<app-header [titulo]="titulo"></app-header>
+<div class="menuBotones">
+    <button class="btnRedondo" routerLink="/ver-propuestas-categoria">Propuestas de Categoria</button>
+    <button class="btnRedondo" routerLink="/ver-propuestas-habilidad">Propuestas de Habilidad</button>
+    <button class="btnRedondo" routerLink="/modificar-comision">Modificar Comision</button>
+    <button class="btnRedondo" routerLink="/inhabilitar-cuentas">Inhabilitar Cuentas</button>
+    <button class="btnRedondo" routerLink="/historial-comision">Historal de Comisiones</button>
+    <button class="btnRedondo" routerLink="/ganancias-freelancer">Ver Ganancias de Freelancer</button>
+    <button class="btnRedondo" routerLink="/categoria-mas-activa">Ver Categoria Mas Activa</button>
+    <button class="btnRedondo" routerLink="/ganancias-de-plataforma">Ver Ganancias de la Plataforma</button>
+    <button class="btnRedondo" routerLink="/login" (click)="cerrarSesion()">Cerrar Sesion</button>
+</div>
+<div class="contPrincipal">
+    <div class="contSecundario">
+        <div class="celda">Nombre de Usuario: {{usuarioLogeado()?.nombreUsuario}}</div>
+        <div class="celda">Nombre: {{usuarioLogeado()?.nombre}} </div>
+        <div class="celda">Saldo: {{usuarioLogeado()?.saldo}}</div>
+        <div class="celda"> Tipo de Rol: {{usuarioLogeado()?.tipoRol}} </div>
+        <div class="celda">Correo Electronico: {{usuarioLogeado()?.correoElectronico}} </div>
+        <div class="celda">Telefono: {{usuarioLogeado()?.telefono}} </div>
+        <div class="celda">Direccion: {{usuarioLogeado()?.direccion}} </div>
+        <div class="celda">CUI: {{usuarioLogeado()?.cui}} </div>
+        <div class="celda">Fecha de Nacimiento: {{usuarioLogeado()?.fechaNac}} </div>
+    </div>
+</div>

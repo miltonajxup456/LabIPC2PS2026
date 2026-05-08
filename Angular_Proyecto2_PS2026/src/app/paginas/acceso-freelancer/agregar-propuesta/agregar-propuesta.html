@@ -1,0 +1,69 @@
+<app-header [titulo]="titulo"></app-header>
+<app-menu-secundario [linkAnterior]="linkAnterior"></app-menu-secundario>
+<app-completar-datos accion="poder mandar Propuestas"></app-completar-datos>
+<div class="contPrincipal">
+    @if (puedePublicar()) {
+        <div class="contSecundario">
+            @for(proyecto of proyectos(); track proyecto.idProyecto) {
+                <button class="btnCuadrado" 
+                [class.seleccionado]="proyecto.idProyecto === proyectoElegido()?.idProyecto" 
+                (click)="elegirProyecto(proyecto)" 
+                [disabled]="proyecto.estado !== 1">
+                @if (proyecto.estado !== 1) {
+                    <p>No es posible mandar una propuesta en este Proyecto <br>Estado: {{proyecto.tipoEstado}} </p>
+                }
+                    Titulo: {{proyecto.titulo}}
+                </button>
+            }
+        </div>
+    }
+    @if (proyectoElegido()) {
+        <div class="contSecundario">
+            <div class="celda">Titulo: {{proyectoElegido()?.titulo}}</div>
+            <div class="celda">Presupuesto: {{proyectoElegido()?.presupuesto}}</div>
+            <div class="celda">Fecha Limite: {{proyectoElegido()?.fechaLimite}}</div>
+            <div class="celda">Cliente: {{proyectoElegido()?.cliente}}</div>
+            <div class="celda">Categoria: {{proyectoElegido()?.tipoCategoria}}</div>
+            <div class="celda">Descripcion: {{proyectoElegido()?.descripcion}}</div>
+        </div>
+    }
+
+    @if (proyectoElegido()) {
+        <div>
+            @if (propuestaElegida()?.estado === 2) {
+                <div class="celda">
+                    Esta propuesta ya se ha aceptado
+                </div>
+            }
+            @if (propuestaElegida()?.estado === 3) {
+                <div class="celda">
+                    <p>Esta propuesta ha sido rechazada</p>
+                </div>
+            }
+            <form [formGroup]="formPropuesta" (ngSubmit)="subirPropuesta()">
+                <label >
+                    Presentacion:
+                    <textarea rows="10" cols="25" type="text" formControlName="presentacion"></textarea>
+                </label>
+                <label >
+                    Monto Ofertado:
+                    <input type="number" formControlName="montoOfertado">
+                </label>
+                <label >
+                    Plazo de Entrega (En dias):
+                    <input type="number" formControlName="plazoEntrega">
+                </label>
+                <button class="btnRedondo" 
+                [disabled]="formPropuesta.invalid || propuestaElegida()?.estado !== 1">
+                    Subir Propuesta
+                </button>
+            </form>
+            @if (propuestaElegida()) {
+                <button class="btnCuadrado" (click)="eliminarPropuesta()" 
+                [disabled]="propuestaElegida()?.estado !== 1">
+                    Eliminar Propuesta
+                </button>
+            }
+        </div>
+    }
+</div>

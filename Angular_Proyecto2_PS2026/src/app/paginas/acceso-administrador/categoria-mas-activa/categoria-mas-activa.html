@@ -1,0 +1,28 @@
+<app-header [titulo]="titulo"></app-header>
+<app-menu-secundario [linkAnterior]="linkAnterior"></app-menu-secundario>
+<div class="contPrincipal">
+    <label >
+        Fecha Inicial:
+        <input type="date" [(ngModel)]="fechaInicial">
+    </label>
+    <label >
+        Fecha Final:
+        <input type="date" [(ngModel)]="fechaFinal">
+    </label>
+</div>
+<div class="contPrincipal">
+    <button class="btnRedondo" (click)="llamarCategorias()" [disabled]="!fechaInicial || !fechaFinal">Buscar Ganancias</button>
+</div>
+<div class="contPrincipal">
+    <div class="contSecundario">
+        @for (categoria of topCategorias(); track categoria.categoria) {
+            <div class="celda">
+                <div class="celda"> Categoria: {{categoria.nombreCategoria}} </div>
+                <div class="celda"> Veces que Fué Solicitada: {{categoria.vecesSolicitadas}} </div>
+            </div>
+        } @empty {
+            <div class="celda">No se tienen registros de Proyectos termindos en estas fechas</div>
+        }
+    </div>
+</div>
+
