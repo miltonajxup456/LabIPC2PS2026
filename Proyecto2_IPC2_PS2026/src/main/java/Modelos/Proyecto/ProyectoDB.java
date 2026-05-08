@@ -20,9 +20,11 @@ public class ProyectoDB {
     private final String tipoCategoria;
     private final int estado;
     private final String tipoEstado;
+    private final String freelancer;
+    private final int comision;
 
     public ProyectoDB(int idProyecto, String titulo, String descripcion, double presupuesto, String fecha_limite, String cliente, 
-            int categoria, String tipoCategoria, int estado, String tipoEstado) {
+            int categoria, String tipoCategoria, int estado, String tipoEstado, String freelancer, int comision) {
         this.idProyecto = idProyecto;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -33,6 +35,8 @@ public class ProyectoDB {
         this.tipoCategoria = tipoCategoria;
         this.estado = estado;
         this.tipoEstado = tipoEstado;
+        this.freelancer = freelancer;
+        this.comision = comision;
     }
 
     public int getIdProyecto() {
@@ -73,6 +77,14 @@ public class ProyectoDB {
 
     public String getTipoEstado() {
         return tipoEstado;
+    }
+
+    public String getFreelancer() {
+        return freelancer;
+    }
+
+    public int getComision() {
+        return comision;
     }
 
 }

@@ -10,16 +10,16 @@ package Modelos.Categoria;
  */
 public class CategoriaRequest {
     
-    private String nombre_categoria;
+    private String nombreCategoria;
     private String descripcion;
     private boolean habilitado;
 
-    public String getNombre_categoria() {
-        return nombre_categoria;
+    public String getNombreCategoria() {
+        return nombreCategoria;
     }
 
-    public void setNombre_categoria(String nombre_categoria) {
-        this.nombre_categoria = nombre_categoria;
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
     }
 
     public String getDescripcion() {

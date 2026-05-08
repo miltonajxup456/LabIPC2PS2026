@@ -16,14 +16,16 @@ public class HistorialDB {
     private final String fecha;
     private final String cliente;
     private final String freelancer;
+    private final int categoria;
 
-    public HistorialDB(int idHistorial, double montoProyecto, int porcentajeComision, String fecha, String cliente, String freelancer) {
+    public HistorialDB(int idHistorial, double montoProyecto, int porcentajeComision, String fecha, String cliente, String freelancer, int categoria) {
         this.idHistorial = idHistorial;
         this.montoProyecto = montoProyecto;
         this.porcentajeComision = porcentajeComision;
         this.fecha = fecha;
         this.cliente = cliente;
         this.freelancer = freelancer;
+        this.categoria = categoria;
     }
 
     public int getIdHistorial() {
@@ -48,6 +50,10 @@ public class HistorialDB {
 
     public String getFreelancer() {
         return freelancer;
+    }
+    
+    public int getCategoria() {
+        return categoria;
     }
 
 }

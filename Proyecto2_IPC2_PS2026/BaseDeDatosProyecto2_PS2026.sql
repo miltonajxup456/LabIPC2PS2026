@@ -45,15 +45,15 @@ CREATE TABLE Habilidad_Categoria (
     FOREIGN KEY (habilidad) REFERENCES Habilidad(id_habilidad) ON DELETE CASCADE
 );
 
-CREATE TABLE Solicitud_Categoria (
-    id_solicitud_categoria INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Propuesta_Categoria (
+    id_propuesta_categoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     descripcion VARCHAR(200) NOT NULL,
     aprobado BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE Solicitud_Habilidad (
-    id_solicitud_habilidad INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Propuesta_Habilidad (
+    id_propuesta_habilidad INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     descripcion VARCHAR(200) NOT NULL,
     aprobado BOOLEAN DEFAULT FALSE
@@ -77,7 +77,6 @@ CREATE TABLE Usuario (
     direccion VARCHAR(100),
     cui VARCHAR(20),
     fecha_nac DATE,
-    -- informacion_usuario VARCHAR(200),
     baneo BOOLEAN DEFAULT FALSE,
     saldo DECIMAL(10,2) DEFAULT 0,
     rol INT NOT NULL,
@@ -85,15 +84,14 @@ CREATE TABLE Usuario (
 );
 
 INSERT INTO Usuario (nombre_usuario, nombre, password_user, correo_electronico, telefono, direccion, cui, fecha_nac, rol)
-VALUES ("Milton1", "Milton", "1234", "mil@gmail.com", "12345678", "Guatemala", "87654321", "2004-01-01", 2),
-("Milton2", "Efren", "1234", "efren@gmail.com", "12345678", "guatemala", "87654321", "2000-01-01", 3);
+VALUES ("Admin1", "Milton", "1234", "admin@gmail.com", "12345678", "Guatemala", "87654321", "2000-01-01", 1);
 
 CREATE TABLE Cliente(
     id_cliente VARCHAR(50) NOT NULL PRIMARY KEY,
-    descripcion_empresa VARCHAR(200) NOT NULL,
-    industria_perteneciente VARCHAR(100) NOT NULL,
+    descripcion_empresa VARCHAR(200) NULL,
+    industria_perteneciente VARCHAR(100) NULL,
     sitio_web VARCHAR(100),
-    FOREIGN KEY (id_cliente) REFERENCES Usuario(nombre_usuario)
+    FOREIGN KEY (id_cliente) REFERENCES Usuario(nombre_usuario) ON DELETE CASCADE
 );
 
 CREATE TABLE Recarga(
@@ -116,10 +114,10 @@ INSERT INTO Nivel_De_Experiencia (tipo_nivel) VALUES
 
 CREATE TABLE Freelancer (
     id_freelancer VARCHAR(50) NOT NULL PRIMARY KEY,
-    biografia VARCHAR(500) NOT NULL,
+    biografia VARCHAR(500) NULL,
     tarifa_referencial DECIMAL(10,2),
-    nivel_experiencia INT NOT NULL,
-    FOREIGN KEY (id_freelancer) REFERENCES Usuario(nombre_usuario),
+    nivel_experiencia INT NULL,
+    FOREIGN KEY (id_freelancer) REFERENCES Usuario(nombre_usuario) ON DELETE CASCADE,
     FOREIGN KEY (nivel_experiencia) REFERENCES Nivel_De_Experiencia(id_nivel)
 );
 
@@ -127,19 +125,26 @@ CREATE TABLE Habilidad_Freelancer (
     id_habilidad_freelancer INT AUTO_INCREMENT PRIMARY KEY,
     habilidad INT NOT NULL,
     freelancer VARCHAR(50) NOT NULL,
+    UNIQUE (habilidad, freelancer),
     FOREIGN KEY (habilidad) REFERENCES Habilidad(id_habilidad) ON DELETE CASCADE,
-    FOREIGN KEY (freelancer) REFERENCES Freelancer(id_freelancer)
+    FOREIGN KEY (freelancer) REFERENCES Freelancer(id_freelancer) ON DELETE CASCADE
 );
 
 CREATE TABLE Calificacion_Freelancer (
     id_calificacion INT AUTO_INCREMENT PRIMARY KEY,
     calificacion INT NOT NULL,
     comentario VARCHAR(200),
-    cliente VARCHAR(50) NOT NULL,
+    proyecto INT NOT NULL,
     freelancer VARCHAR(50) NOT NULL,
-    FOREIGN KEY (cliente) REFERENCES Cliente(id_cliente),
+    FOREIGN KEY (proyecto) REFERENCES Proyecto(id_proyecto),
     FOREIGN KEY (freelancer) REFERENCES Freelancer(id_freelancer)
 );
+
+-- INSERT INTO Calificacion_Freelancer (calificacion, comentario, cliente, freelancer) VALUES 
+-- (5, 'Bien', 'Milton2', 'Milton3'),
+-- (1, 'Mal', 'Milton2', 'Milton3');
+-- SELECT AVG(calificacion) AS calificacion_promedio FROM Calificacion_Freelancer GROUP BY freelancer;
+-- SELECT * FROM Propuesta_Proyecto;
 
 CREATE TABLE Estado_Proyecto (
     id_estado INT AUTO_INCREMENT PRIMARY KEY,
@@ -161,13 +166,15 @@ CREATE TABLE Proyecto (
     descripcion VARCHAR(500) NOT NULL,
     presupuesto DECIMAL(10,2) NOT NULL,
     fecha_limite DATE NOT NULL,
-    -- comision INT 
+    fecha_publicacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     cliente VARCHAR(50) NOT NULL,
     categoria INT NOT NULL,
     estado INT NOT NULL,
+    freelancer VARCHAR(50) NULL,
     FOREIGN KEY (cliente) REFERENCES Cliente(id_cliente),
     FOREIGN KEY (categoria) REFERENCES Categoria(id_categoria),
-    FOREIGN KEY (estado) REFERENCES Estado_Proyecto(id_estado)
+    FOREIGN KEY (estado) REFERENCES Estado_Proyecto(id_estado), 
+    FOREIGN KEY (freelancer) REFERENCES Freelancer(id_freelancer)
 );
 
 CREATE TABLE Habilidad_Proyecto (
@@ -178,31 +185,58 @@ CREATE TABLE Habilidad_Proyecto (
     FOREIGN KEY (proyecto) REFERENCES Proyecto(id_proyecto)
 );
 
+CREATE TABLE Estado_Propuesta_Proyecto (
+    id_estado INT AUTO_INCREMENT PRIMARY KEY,
+    tipo_estado VARCHAR(25) NOT NULL
+);
+
+INSERT INTO Estado_Propuesta_Proyecto (tipo_estado) VALUES ('PENDIENTE'), ('ACEPTADO'), ('RECHAZADO');
+
 CREATE TABLE Propuesta_Proyecto (
     id_propuesta INT AUTO_INCREMENT PRIMARY KEY,
     presentacion VARCHAR(300) NOT NULL,
     monto_ofertado DECIMAL(10,2) NOT NULL,
     plazo_entrega_propuesto INT NOT NULL,
-    -- estado INT NOT NULL,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
     freelancer VARCHAR(50) NOT NULL,
     proyecto INT NOT NULL,
-    -- FOFEIGN KEY (estado) REFERENCES Estado_Proyecto(id_estado),
+    estado INT DEFAULT 1,
     FOREIGN KEY (freelancer) REFERENCES Freelancer(id_freelancer) ON DELETE CASCADE,
-    FOREIGN KEY (proyecto) REFERENCES Proyecto(id_proyecto)
+    FOREIGN KEY (proyecto) REFERENCES Proyecto(id_proyecto),
+    FOREIGN KEY (estado) REFERENCES Estado_Propuesta_Proyecto(id_estado)
 );
 
-CREATE TABLE Entrega_Proyecto (
+CREATE TABLE Cancelacion_Proyecto (
+    id_cancelacion INT AUTO_INCREMENT PRIMARY KEY,
+    motivo VARCHAR(300) NOT NULL,
+    proyecto INT NOT NULL,
+    freelancer VARCHAR(50) NOT NULL,
+    FOREIGN KEY (proyecto) REFERENCES Proyecto(id_proyecto) ON DELETE CASCADE,
+    FOREIGN KEY (freelancer) REFERENCES Freelancer(id_freelancer) ON DELETE CASCADE
+);
+
+CREATE TABLE Entrega_Proyecto_Link (
     id_entrega INT AUTO_INCREMENT PRIMARY KEY,
     descripcion VARCHAR(200) NOT NULL,
-    path_archivo VARCHAR(200) NOT NULL,
+    link VARCHAR(250) NOT NULL,
     proyecto INT NOT NULL,
     freelancer VARCHAR(50) NULL,
     FOREIGN KEY (proyecto) REFERENCES Proyecto(id_proyecto),
     FOREIGN KEY (freelancer) REFERENCES Freelancer(id_freelancer) ON DELETE SET NULL
 );
 
-CREATE TABLE Respuesta_Entrega_Proyecto (
-    id_respuesta INT AUTO_INCREMENT PRIMARY KEY,
+-- CREATE TABLE Entrega_Proyecto (
+--     id_entrega INT AUTO_INCREMENT PRIMARY KEY,
+--     descripcion VARCHAR(200) NOT NULL,
+--     path_archivo VARCHAR(200) NULL,
+--     proyecto INT NOT NULL,
+--     freelancer VARCHAR(50) NULL,
+--     FOREIGN KEY (proyecto) REFERENCES Proyecto(id_proyecto),
+--     FOREIGN KEY (freelancer) REFERENCES Freelancer(id_freelancer) ON DELETE SET NULL
+-- );
+
+CREATE TABLE Rechazo_Entrega (
+    id_rechazo INT AUTO_INCREMENT PRIMARY KEY,
     respuesta VARCHAR(200) NOT NULL,
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
     proyecto INT NOT NULL,
@@ -211,15 +245,19 @@ CREATE TABLE Respuesta_Entrega_Proyecto (
     FOREIGN KEY (freelancer) REFERENCES Freelancer(id_freelancer)
 );
 
-CREATE TABLE Historial_Comision (
+CREATE TABLE Historial_Comision_Proyecto (
     id_historial INT AUTO_INCREMENT PRIMARY KEY,
     monto_proyecto DECIMAL(10,2) NOT NULL,
     porcentaje_comision INT NOT NULL,
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
     cliente VARCHAR(50) NOT NULL,
     freelancer VARCHAR(50) NOT NULL,
+    categoria INT NOT NULL,
+    proyecto INT NOT NULL,
     FOREIGN KEY (cliente) REFERENCES Cliente(id_cliente),
-    FOREIGN KEY (freelancer) REFERENCES Freelancer(id_freelancer)
+    FOREIGN KEY (freelancer) REFERENCES Freelancer(id_freelancer),
+    FOREIGN KEY (categoria) REFERENCES Categoria(id_categoria),
+    FOREIGN KEY (proyecto) REFERENCES Proyecto(id_proyecto)
 );
 
 INSERT INTO Categoria (nombre_categoria, descripcion_categoria) VALUES 

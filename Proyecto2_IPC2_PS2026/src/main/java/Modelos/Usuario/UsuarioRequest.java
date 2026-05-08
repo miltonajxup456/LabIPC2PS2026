@@ -18,7 +18,6 @@ public class UsuarioRequest {
     private String direccion;
     private String cui;
     private String fechaNac;
-    private String informacionUsuario;
     private boolean baneo;
     private double saldo;
     private int rol;
@@ -86,14 +85,6 @@ public class UsuarioRequest {
 
     public void setFechaNac(String fechaNac) {
         this.fechaNac = fechaNac;
-    }
-
-    public String getInformacionUsuario() {
-        return informacionUsuario;
-    }
-
-    public void setInformacionUsuario(String informacionUsuario) {
-        this.informacionUsuario = informacionUsuario;
     }
 
     public boolean isBaneo() {

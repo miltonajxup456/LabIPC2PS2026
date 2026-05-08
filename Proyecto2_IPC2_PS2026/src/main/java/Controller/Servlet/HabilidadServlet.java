@@ -52,11 +52,13 @@ public class HabilidadServlet extends HttpServlet {
         Gson gson = new Gson();
         HabilidadDAO dao = new HabilidadDAO();
         HabilidadRequest habilidadReq = gson.fromJson(request.getReader(), HabilidadRequest.class);
+        String path = request.getPathInfo().substring(1);
         
         try {
-            dao.crearHabilidad(habilidadReq);
+            int idPropuesta = Integer.parseInt(path);
+            dao.crearHabilidad(habilidadReq, idPropuesta);
             response.setStatus(HttpServletResponse.SC_OK);
-        } catch (DataBaseException e) {
+        } catch (DataBaseException | NumberFormatException e) {
             System.out.println(e);
             response.setStatus(HttpServletResponse.SC_CONFLICT);
         }

@@ -6,8 +6,10 @@ package Controller.Servlet;
 
 import DAOs.ProyectoDAO;
 import Exceptions.DataBaseException;
+import Exceptions.DataInexistenteException;
 import Modelos.Proyecto.ProyectoDB;
 import Modelos.Proyecto.ProyectoRequest;
+import Servicios.UsuarioService;
 import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -41,6 +43,11 @@ public class ProyectoServlet extends HttpServlet {
             } else if (partes[0].equals("cliente")) {
                 List<ProyectoDB> proyectos = proyectodao.getProyectosCliente(partes[1]);
                 response.getWriter().write(gson.toJson(proyectos));
+            } else if (partes[0].equals("freelancer")) {
+                List<ProyectoDB> proyectos = proyectodao.getProyectosFreelancer(partes[1]);
+                response.getWriter().write(gson.toJson(proyectos));
+            } else if (partes[0].equals("paquete-proyecto")) {
+                //List<PaqueteProyecto> paquete = 
             }
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (DataBaseException e) {
@@ -67,15 +74,40 @@ public class ProyectoServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Gson gson = new Gson();
+        UsuarioService service = new UsuarioService();
         ProyectoDAO proyectodao = new ProyectoDAO();
         ProyectoRequest proyectoReq = gson.fromJson(request.getReader(), ProyectoRequest.class);
-        String path = request.getPathInfo();
-        int idProyecto = Integer.parseInt(path.substring(1));
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        
+        String path = request.getPathInfo().substring(1);
+        String[] instrucciones = path.split("/");
         
         try {
-            proyectodao.actualizarProyecto(proyectoReq, idProyecto);
+            int idProyecto = Integer.parseInt(instrucciones[1]);
+            
+            if (instrucciones[0].equals("actualizacion")) {
+                proyectodao.actualizarProyecto(proyectoReq, idProyecto);
+            } else if (instrucciones[0].equals("proyecto-aceptado")) {
+                service.actualizarSaldo(instrucciones[0], idProyecto, proyectoReq);
+                proyectodao.aceptarPropuesta(proyectoReq, idProyecto);
+            } else if (instrucciones[0].equals("proyecto-rechazado")) {
+                proyectodao.actualizarEstadoProyecto(3, idProyecto);
+            } else if (instrucciones[0].equals("proyecto-completado")) {
+                service.actualizarSaldo(instrucciones[0], idProyecto, proyectoReq);
+                proyectodao.actualizarEstadoProyecto(5, idProyecto);
+            } else if (instrucciones[0].equals("proyecto-cancelado")) {
+                service.actualizarSaldo(instrucciones[0], idProyecto, proyectoReq);
+                proyectodao.actualizarEstadoProyecto(6, idProyecto);
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+            ProyectoDB proyecto = proyectodao.getProyectoPorId(idProyecto);
+            response.getWriter().write(gson.toJson(proyecto));
             response.setStatus(HttpServletResponse.SC_OK);
-        } catch (DataBaseException e) {
+        } catch (DataBaseException | DataInexistenteException | NumberFormatException e) {
             System.out.println(e.getMessage());
             response.setStatus(HttpServletResponse.SC_CONFLICT);
         }

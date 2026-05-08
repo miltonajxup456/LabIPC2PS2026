@@ -7,12 +7,16 @@ package Controller.Servlet;
 import DAOs.HistorialComisionDAO;
 import Exceptions.DataBaseException;
 import Modelos.Historial.HistorialRequest;
+import Modelos.Reporte.CategoriaMasActiva;
+import Modelos.Reporte.GananciaFreelancer;
+import Modelos.Reporte.GananciasPlataforma;
 import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  *
@@ -28,16 +32,25 @@ public class HistorialComisionServlet extends HttpServlet {
         
         String path = request.getPathInfo().substring(1);
         String[] instrucciones = path.split("/");
+        String fechaInicial = instrucciones[1];
+        String fechaFinal = instrucciones[2];
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         
         try {
-            if (instrucciones.equals("entre-fechas")) {
-                
-            } 
+            if (instrucciones[0].equals("ganancias-freelancer")) {
+                List<GananciaFreelancer> ganancias = dao.getGananciaFreelancerEntreFechas(fechaInicial, fechaFinal);
+                response.getWriter().write(gson.toJson(ganancias));
+            } else if (instrucciones[0].equals("categoria-activa")) {
+                List<CategoriaMasActiva> categorias = dao.getCategoraEntreFechas(fechaInicial, fechaFinal);
+                response.getWriter().write(gson.toJson(categorias));
+            } else if (instrucciones[0].equals("ganancias-plataforma")) {
+                GananciasPlataforma ganancias = dao.getGanaciasPlataformaEntreFechas(fechaInicial, fechaFinal);
+                response.getWriter().write(gson.toJson(ganancias));
+            }
             response.setStatus(HttpServletResponse.SC_OK);
-        } catch (Exception e) {
+        } catch (DataBaseException e) {
             System.out.println(e.getMessage());
             response.setStatus(HttpServletResponse.SC_CONFLICT);
         }

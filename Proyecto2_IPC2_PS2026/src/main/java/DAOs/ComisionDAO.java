@@ -21,8 +21,8 @@ import java.util.List;
  */
 public class ComisionDAO {
     
-    private static final String ULTIMA_COMISION = "SELECT * FROM Comision ORDER BY id_historial DESC LIMIT 1";
-    private static final String HISTORIAL_COMISION = "SELECT * FROM Comision ORDER BY id_historial DESC";
+    private static final String ULTIMA_COMISION = "SELECT * FROM Comision ORDER BY id_comision DESC LIMIT 1";
+    private static final String HISTORIAL_COMISION = "SELECT * FROM Comision ORDER BY id_comision DESC";
     private static final String COMISION_POR_ID = "SELECT * FROM Comision WHERE id_comision = ?";
     private static final String AGREGAR_COMISION = "INSERT INTO Comision (porcentaje) VALUES (?)";
     private static final String ACTUALIZAR_COMISION = "UPDATE Comision SET fecha_final = CURRENT_TIMESTAMP WHERE id_comision = ?";
@@ -41,7 +41,7 @@ public class ComisionDAO {
         return null;
     }
     
-    public List<ComisionDB> getComisiones() throws DataBaseException {
+    public List<ComisionDB> getHistorialComision() throws DataBaseException {
         List<ComisionDB> historial = new ArrayList<>();
         try (Connection connection = DBConnexionSingleton.getConnection();
                 PreparedStatement select = connection.prepareStatement(HISTORIAL_COMISION)) {
@@ -67,10 +67,10 @@ public class ComisionDAO {
                     int ultimoId = rs.getInt(1);
                     ComisionDB comision = null;
                     while (comision == null) {
-                        int anterior = ultimoId - 1;
-                        comision = comisionPorId(anterior);
+                        ultimoId = ultimoId - 1;
+                        comision = comisionPorId(ultimoId);
                         if (comision != null) {
-                            actualizarComision(anterior);
+                            actualizarComision(ultimoId);
                         }
                     }
                 }
@@ -80,9 +80,9 @@ public class ComisionDAO {
         }
     }
     
-    private ComisionDB comisionPorId(int idComision) throws DataBaseException {
+    public ComisionDB comisionPorId(int idComision) throws DataBaseException {
         try (Connection connection = DBConnexionSingleton.getConnection();
-                PreparedStatement select = connection.prepareStatement(AGREGAR_COMISION, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement select = connection.prepareStatement(COMISION_POR_ID)) {
             select.setInt(1, idComision);
             try (ResultSet rs = select.executeQuery()) {
                 if (rs.next()) {

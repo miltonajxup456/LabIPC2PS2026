@@ -14,6 +14,8 @@ public class HistorialRequest {
     private int porcentajeComision;
     private String cliente;
     private String freelancer;
+    private int categoria;
+    private int proyecto;
 
     public double getMontoProyecto() {
         return montoProyecto;
@@ -46,5 +48,21 @@ public class HistorialRequest {
     public void setFreelancer(String freelancer) {
         this.freelancer = freelancer;
     }
-    
+
+    public int getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(int categoria) {
+        this.categoria = categoria;
+    }
+
+    public int getProyecto() {
+        return proyecto;
+    }
+
+    public void setProyecto(int proyecto) {
+        this.proyecto = proyecto;
+    }
+
 }

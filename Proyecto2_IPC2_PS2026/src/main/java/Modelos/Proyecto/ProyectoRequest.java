@@ -17,6 +17,8 @@ public class ProyectoRequest {
     private String cliente;
     private int categoria;
     private int estado;
+    private String freelancer;
+    private int comision;
 
     public String getTitulo() {
         return titulo;
@@ -72,6 +74,22 @@ public class ProyectoRequest {
 
     public void setEstado(int estado) {
         this.estado = estado;
+    }
+
+    public String getFreelancer() {
+        return freelancer;
+    }
+
+    public void setFreelancer(String freelancer) {
+        this.freelancer = freelancer;
+    }
+
+    public int getComision() {
+        return comision;
+    }
+
+    public void setComision(int comision) {
+        this.comision = comision;
     }
     
 }

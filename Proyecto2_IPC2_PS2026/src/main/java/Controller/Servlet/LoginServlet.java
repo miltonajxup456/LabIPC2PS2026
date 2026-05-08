@@ -6,6 +6,7 @@ package Controller.Servlet;
 
 import Exceptions.DataBaseException;
 import Exceptions.DataInexistenteException;
+import Exceptions.LoginException;
 import Modelos.Usuario.UsuarioDB;
 import Modelos.Usuario.UsuarioRequest;
 import Servicios.LoginService;
@@ -41,9 +42,9 @@ public class LoginServlet extends HttpServlet {
             resp.put("mensaje", "ok");
             resp.put("data", usuariodb);
             response.setStatus(HttpServletResponse.SC_OK);
-        } catch (DataBaseException | DataInexistenteException e) {
+        } catch (DataBaseException | DataInexistenteException | LoginException e) {
             resp.put("mensaje", e.getMessage());
-            response.setStatus(HttpServletResponse.SC_CONFLICT);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
         
         response.getWriter().write(gson.toJson(resp));

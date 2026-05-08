@@ -21,30 +21,52 @@ import java.util.List;
  */
 public class PropuestaProyectoDAO {
     
-    private static final String PROPUESTAS_PROYECTO = ""
-            + "SELECT prop.*, AVG(calif.calificacion) AS calificacion_promedio "
-            + "FROM Propuesta_Proyecto JOIN Calificacion_Freelancer calif "
-            + "ON prop.freelancer = calif.freelancer "
-            + "WHERE prop.proyecto = ? "
-            + "GROUP BY calif.freelancer";
-    private static final String PROPUESTA_FREELANCER = ""
-            + "SELECT prop.*, AVG(calif.calificacion) AS calificacion_promedio "
-            + "FROM Propuesta_Proyecto JOIN Calificacion_Freelancer calif "
-            + "ON prop.freelancer = calif.freelancer "
-            + "WHERE prop.proyecto = ? AND freelancer = ? "
-            + "GROUP BY calif.freelancer";
-    private static final String CREAR_PROPUESTA = "INSERT INTO Propuesta_Proyecto (presentacion, monto_ofertado, plazo_entrega_propuesto, freelancer, proyecto)";
-    private static final String ACTUALIZAR_PROPUESTA = "UPDATE Propuesta_Proyecto SET presentacion = ?, monto_ofertado = ?, plazo_entrega_proyecto = ? WHERE id_propuesta = ?";
-    private static final String ELIMINAR_PROPUESTA = "DELETE Propuesta_Proyecto WHERE id_propuesta = ?";
+    private static final String PROPUESTAS_ENVIADAS = ""
+            + "SELECT pro.*, es.tipo_estado FROM Propuesta_Proyecto pro "
+            + "JOIN Estado_Propuesta_Proyecto es ON pro.estado = es.id_estado "
+            + "WHERE pro.fecha BETWEEN ? AND ? AND pro.freelancer = ? ";
+    private static final String PARTE_PROPUESTAS = "SELECT pro.*, es.tipo_estado FROM Propuesta_Proyecto pro JOIN Estado_Propuesta_Proyecto es ON pro.estado = es.id_estado WHERE proyecto = ?";
+    private static final String PARTE_PROPUESTA_FREELANCER = "SELECT pro.*, es.tipo_estado FROM Propuesta_Proyecto pro JOIN Estado_Propuesta_Proyecto es ON pro.estado = es.id_estado WHERE proyecto = ? AND pro.freelancer = ?";
+    private static final String PARTE_CALIFICACION = "SELECT AVG(calificacion) AS calificacion_promedio FROM Calificacion_Freelancer WHERE freelancer = ? GROUP BY freelancer";
+    private static final String CREAR_PROPUESTA = "INSERT INTO Propuesta_Proyecto (presentacion, monto_ofertado, plazo_entrega_propuesto, freelancer, proyecto) VALUES (?,?,?,?,?)";
+    private static final String ACTUALIZAR_PROPUESTA = "UPDATE Propuesta_Proyecto SET presentacion = ?, monto_ofertado = ?, plazo_entrega_propuesto = ? WHERE id_propuesta = ?";
+    private static final String RECHAZAR_PROPUESTA = "UPDATE Propuesta_Proyecto SET estado = 3 WHERE id_propuesta = ?";
+    private static final String ELIMINAR_PROPUESTA = "DELETE FROM Propuesta_Proyecto WHERE id_propuesta = ?";
+    
+    public List<PropuestaDB> getPropuestasEnviadas(String fechaInicial, String fechaFinal, String idFreelancer) throws DataBaseException {
+        List<PropuestaDB> propuestas = new ArrayList<>();
+        try (Connection connection = DBConnexionSingleton.getConnection();
+                PreparedStatement select = connection.prepareStatement(PROPUESTAS_ENVIADAS)) {
+            select.setString(1, fechaInicial);
+            select.setString(2, fechaFinal);
+            select.setString(3, idFreelancer);
+            try (ResultSet rs = select.executeQuery()) {
+                while (rs.next()) {
+                    propuestas.add(armarPropuesta(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataBaseException("Error al buscar propuestas enviadas "+e.getMessage());
+        }
+        return propuestas;
+    }
     
     public List<PropuestaDB> getPropuestasProyecto(int idProyecto) throws DataBaseException {
         List<PropuestaDB> propuestas = new ArrayList<>();
         try (Connection connection = DBConnexionSingleton.getConnection();
-                PreparedStatement select = connection.prepareStatement(PROPUESTAS_PROYECTO)) {
+                PreparedStatement select = connection.prepareStatement(PARTE_PROPUESTAS);
+                PreparedStatement promedio = connection.prepareStatement(PARTE_CALIFICACION)){
             select.setInt(1, idProyecto);
             try (ResultSet rs = select.executeQuery()) {
                 while (rs.next()) {
-                    propuestas.add(armarPropuesta(rs));
+                    PropuestaDB propuesta = armarPropuesta(rs);
+                    promedio.setString(1, propuesta.getFreelancer());
+                    try (ResultSet rsProm = promedio.executeQuery()) {
+                        if (rsProm.next()) {
+                            propuesta.setCalificacionPromedio(rsProm.getDouble("calificacion_promedio"));
+                        }
+                    }
+                    propuestas.add(propuesta);
                 }
             }
         } catch (SQLException e) {
@@ -56,12 +78,20 @@ public class PropuestaProyectoDAO {
     
     public PropuestaDB getPropuestaFrelancer(int idProyecto, String idFreelancer) throws DataBaseException {
         try (Connection connection = DBConnexionSingleton.getConnection();
-                PreparedStatement select = connection.prepareStatement(PROPUESTA_FREELANCER)) {
+                PreparedStatement select = connection.prepareStatement(PARTE_PROPUESTA_FREELANCER);
+                PreparedStatement promedio = connection.prepareStatement(PARTE_CALIFICACION)) {
             select.setInt(1, idProyecto);
             select.setString(2, idFreelancer);
             try (ResultSet rs = select.executeQuery()) {
                 if (rs.next()) {
-                    return armarPropuesta(rs);
+                    PropuestaDB propuesta = armarPropuesta(rs);
+                    promedio.setString(1, idFreelancer);
+                    try (ResultSet rsProm = promedio.executeQuery()) {
+                        if (rsProm.next()) {
+                            propuesta.setCalificacionPromedio(rsProm.getDouble("calificacion_promedio"));
+                        }
+                    }
+                    return propuesta;
                 }
             }
         } catch (SQLException e) {
@@ -84,6 +114,17 @@ public class PropuestaProyectoDAO {
         }
     }
     
+    public void rechazarPropuesta(int idPropuesta) throws DataBaseException {
+        try (Connection connection = DBConnexionSingleton.getConnection();
+                PreparedStatement update = connection.prepareStatement(RECHAZAR_PROPUESTA)) {
+            update.setInt(1, idPropuesta);
+            
+            update.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataBaseException("Error al rechazar propuesta "+e);
+        }
+    }
+    
     public void eliminarPropuesta(int idPropuesta) throws DataBaseException {
         try (Connection connection = DBConnexionSingleton.getConnection();
                 PreparedStatement delete = connection.prepareStatement(ELIMINAR_PROPUESTA)) {
@@ -101,7 +142,7 @@ public class PropuestaProyectoDAO {
             insert.setString(1, request.getPresentacion());
             insert.setDouble(2, request.getMontoOfertado());
             insert.setInt(3, request.getPlazoEntrega());
-            insert.setInt(4, request.getFreelancer());
+            insert.setString(4, request.getFreelancer());
             insert.setInt(5, request.getProyecto());
             
             insert.executeUpdate();
@@ -116,9 +157,11 @@ public class PropuestaProyectoDAO {
                 rs.getString("presentacion"), 
                 rs.getDouble("monto_ofertado"), 
                 rs.getInt("plazo_entrega_propuesto"), 
-                rs.getInt("freelancer"), 
+                rs.getString("fecha"),
+                rs.getString("freelancer"), 
                 rs.getInt("proyecto"), 
-                rs.getDouble("calificacion_promedio"));
+                rs.getInt("estado"), 
+                rs.getString("tipo_estado"));
     }
     
 }

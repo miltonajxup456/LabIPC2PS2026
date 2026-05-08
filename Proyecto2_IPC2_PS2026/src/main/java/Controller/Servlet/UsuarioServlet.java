@@ -4,6 +4,7 @@
  */
 package Controller.Servlet;
 
+import DAOs.HabilidadesUsuarioDAO;
 import DAOs.UsuarioDAO;
 import Exceptions.DataBaseException;
 import Exceptions.DataExistenteException;
@@ -20,29 +21,44 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  *
  * @author millin-115
  */
 @WebServlet("/usuario/*")
-public class RegistroUsuarioServlet extends HttpServlet {
+public class UsuarioServlet extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Gson gson = new Gson();
         UsuarioService service = new UsuarioService();
-        String path = request.getPathInfo();
-        String idUsuario = path.substring(1);
+        String path = request.getPathInfo().substring(1);
+        String[] informacion = path.split("/");
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         
         try {
-            UsuarioDB usuario = service.buscarUsuario(idUsuario);
-            response.getWriter().write(gson.toJson(usuario));
+            if (informacion[0].equals("crear-administrador")) {
+                service.crearAdministrador();
+            } else if (informacion[0].equals("todos-los-usuarios")) {
+                List<UsuarioDB> usuarios = service.getUsuarios();
+                response.getWriter().write(gson.toJson(usuarios));
+            } else if (informacion[0].equals("usuario-unico")) {
+                String idUsuario = informacion[1];
+                UsuarioDB usuario = service.buscarUsuario(idUsuario);
+                response.getWriter().write(gson.toJson(usuario));
+            } else if (informacion[0].equals("habilidades-usuario")) {
+                String idUsuario = informacion[1];
+                HabilidadesUsuarioDAO dao = new HabilidadesUsuarioDAO();
+                List<Integer> idsHabilidades = dao.getHabilidadesFreelancer(idUsuario);
+                response.getWriter().write(gson.toJson(idsHabilidades));
+            }
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (DataBaseException | DataInexistenteException e) {
+            System.out.println(e);
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             String mensaje = "{ \"mensaje\": " +e.getMessage()+ "}";
             response.getWriter().write(gson.toJson(mensaje));
@@ -69,7 +85,7 @@ public class RegistroUsuarioServlet extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Gson gson = new Gson();
         UsuarioDAO usuariodao = new UsuarioDAO();
-        String path = request.getPathInfo();
+        String path = request.getPathInfo().substring(1);
         
         String[] partes = path.split("/");
         
@@ -82,7 +98,11 @@ public class RegistroUsuarioServlet extends HttpServlet {
                 usuariodao.actualizarFreelancer(frelanceReq, partes[1]);
             } else if (partes[0].equals("habilidades")) {
                 ListaHabilidades lista = gson.fromJson(request.getReader(), ListaHabilidades.class);
-                usuariodao.agregarHabilidades(lista, partes[1]);
+                UsuarioService service = new UsuarioService();
+                service.revisarHabilidades(lista, partes[1]);
+            } else if (partes[0].equals("baneo")) {
+                UsuarioRequest usuReq = gson.fromJson(request.getReader(), UsuarioRequest.class);
+                usuariodao.banearUsuario(usuReq, partes[1]);
             }
             
             response.setStatus(HttpServletResponse.SC_OK);
@@ -96,16 +116,10 @@ public class RegistroUsuarioServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         UsuarioDAO usuariodao = new UsuarioDAO();
         String path = request.getPathInfo();
-        String[] partes = path.split("/");
+        String idUsuario = path.substring(1);
         
         try {
-            if (partes[0].equals("habilidad")) {
-                int idHabilidad = Integer.parseInt(partes[1]);
-                String idFreelancer = partes[2];
-                usuariodao.eliminarHabilidad(idHabilidad, idFreelancer);
-            } else if (partes[0].equals("usuario")) {
-                usuariodao.eliminarUsuario(partes[1]);
-            }
+            usuariodao.eliminarUsuario(idUsuario);
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (DataBaseException | NumberFormatException e) {
             System.out.println(e);

@@ -29,7 +29,6 @@ public class CategoriaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Gson gson = new Gson();
-        CategoriaService service = new CategoriaService();
         CategoriaDAO categoriadao = new CategoriaDAO();
         
         String path = request.getPathInfo().substring(1);
@@ -44,7 +43,7 @@ public class CategoriaServlet extends HttpServlet {
                 response.getWriter().write(gson.toJson(categorias));
             } else if (partes[0].equals("por-id")) {
                 int idCategoria = Integer.parseInt(partes[1]);
-                CategoriaDB categoria = service.buscarCategoria(idCategoria);
+                CategoriaDB categoria = categoriadao.getCategoriaProyecto(idCategoria);
                 response.getWriter().write(gson.toJson(categoria));
             } else if (partes[0].equals("habilidades-proyecto")) {
                 int idCategoria = Integer.parseInt(partes[1]);
@@ -52,7 +51,7 @@ public class CategoriaServlet extends HttpServlet {
                 response.getWriter().write(gson.toJson(habilidades));
             }
             response.setStatus(HttpServletResponse.SC_OK);
-        } catch (DataBaseException | DataInexistenteException | NumberFormatException e) {
+        } catch (DataBaseException | NumberFormatException e) {
             System.out.println(e);
             response.setStatus(HttpServletResponse.SC_CONFLICT);
         }
@@ -63,11 +62,13 @@ public class CategoriaServlet extends HttpServlet {
         Gson gson = new Gson();
         CategoriaDAO dao = new CategoriaDAO();
         CategoriaRequest categoriaReq = gson.fromJson(request.getReader(), CategoriaRequest.class);
+        String path = request.getPathInfo().substring(1);
         
         try {
-            dao.crearCategoria(categoriaReq);
+            int idPropuesta = Integer.parseInt(path);
+            dao.crearCategoria(categoriaReq, idPropuesta);
             response.setStatus(HttpServletResponse.SC_OK);
-        } catch (DataBaseException e) {
+        } catch (DataBaseException | NumberFormatException e) {
             System.out.println(e);
             response.setStatus(HttpServletResponse.SC_CONFLICT);
         }

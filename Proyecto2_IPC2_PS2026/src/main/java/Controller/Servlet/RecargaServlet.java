@@ -6,8 +6,11 @@ package Controller.Servlet;
 
 import DAOs.RecargaDAO;
 import Exceptions.DataBaseException;
+import Exceptions.DataInexistenteException;
 import Modelos.Recarga.RecargaDB;
 import Modelos.Recarga.RecargaRequest;
+import Modelos.Usuario.UsuarioDB;
+import Servicios.UsuarioService;
 import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -53,13 +56,17 @@ public class RecargaServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Gson gson = new Gson();
-        RecargaDAO dao = new RecargaDAO();
+        UsuarioService service = new UsuarioService();
         RecargaRequest req = gson.fromJson(request.getReader(), RecargaRequest.class);
         
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        
         try {
-            dao.agregarRegistro(req);
+            UsuarioDB actual = service.agregarRecarga(req);
+            response.getWriter().write(gson.toJson(actual));
             response.setStatus(HttpServletResponse.SC_OK);
-        } catch (DataBaseException e) {
+        } catch (DataBaseException | DataInexistenteException e) {
             System.out.println(e.getMessage());
             response.setStatus(HttpServletResponse.SC_CONFLICT);
         }

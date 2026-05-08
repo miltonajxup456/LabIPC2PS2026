@@ -2,22 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Modelos.Solicitud;
+package Modelos.Propuestas;
 
 /**
  *
  * @author millin-115
  */
-public class Solicitud {
+public class Propuesta {
     
     private String nombre;
     private String descripcion;
-    private boolean aprovado;
+    private boolean aprobado;
 
-    public Solicitud(String nombre, String descripcion, boolean aprovado) {
+    public Propuesta(String nombre, String descripcion, boolean aprovado) {
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.aprovado = aprovado;
+        this.aprobado = aprovado;
     }
     
     public String getNombre() {
@@ -36,11 +36,11 @@ public class Solicitud {
         this.descripcion = descripcion;
     }
 
-    public boolean isAprovado() {
-        return aprovado;
+    public boolean isAprobado() {
+        return aprobado;
     }
 
-    public void setAprovado(boolean aprovado) {
-        this.aprovado = aprovado;
+    public void setAprobado(boolean aprobado) {
+        this.aprobado = aprobado;
     }
 }

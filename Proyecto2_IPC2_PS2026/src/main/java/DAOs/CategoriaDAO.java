@@ -25,9 +25,10 @@ public class CategoriaDAO {
     private static final String TODAS_LAS_CATEGORIAS = "SELECT * FROM Categoria";
     private static final String CATEGORIA_POR_ID = "SELECT * FROM Categoria WHERE id_categoria = ?";
     private static final String HABILIDADES_CATEGORIA = "SELECT hab_cat.*, hab.* FROM Habilidad_Categoria hab_cat JOIN Habilidad hab ON hab_cat.habilidad = hab.id_habilidad WHERE hab_cat.categoria = ?";
-    private static final String CREAR_CATEGORIA = "INSERT INTO Categoria (nombre_categoria, descripcion)";
+    private static final String CREAR_CATEGORIA = "INSERT INTO Categoria (nombre_categoria, descripcion_categoria) VALUES (?,?)";
+    private static final String ACTUALIZAR_PROPUESTA = "UPDATE Propuesta_Categoria SET aprobado = true WHERE id_propuesta_categoria = ?";
     private static final String ACTUALIZAR_CATEGORIA = "UPDATE Categoria SET nombre_categoria = ?, descripcion = ? WHERE id_categoria = ?";
-    private static final String ELIMINAR_CATEGORIA = "DELETE Categoria WHERE id_categoria = ?";
+    private static final String ELIMINAR_CATEGORIA = "DELETE FROM Categoria WHERE id_categoria = ?";
     
     public List<CategoriaDB> getCategorias() throws DataBaseException {
         List<CategoriaDB> categorias = new ArrayList<>();
@@ -76,13 +77,16 @@ public class CategoriaDAO {
         return habilidades;
     }
     
-    public void crearCategoria(CategoriaRequest request) throws DataBaseException {
+    public void crearCategoria(CategoriaRequest request, int idPropuesta) throws DataBaseException {
         try (Connection connection = DBConnexionSingleton.getConnection();
-                PreparedStatement insert = connection.prepareStatement(CREAR_CATEGORIA)) {
-            insert.setString(1, request.getNombre_categoria());
+                PreparedStatement insert = connection.prepareStatement(CREAR_CATEGORIA);
+                PreparedStatement update = connection.prepareStatement(ACTUALIZAR_PROPUESTA)) {
+            insert.setString(1, request.getNombreCategoria());
             insert.setString(2, request.getDescripcion());
             
             insert.executeUpdate();
+            update.setInt(1, idPropuesta);
+            update.executeUpdate();
         } catch (SQLException e) {
             throw new DataBaseException("Error al crear categoria "+e);
         }
@@ -91,7 +95,7 @@ public class CategoriaDAO {
     public void actualizarCategoria(CategoriaRequest request, int idCategoria) throws DataBaseException {
         try (Connection connection = DBConnexionSingleton.getConnection();
                 PreparedStatement insert = connection.prepareStatement(ACTUALIZAR_CATEGORIA)) {
-            insert.setString(1, request.getNombre_categoria());
+            insert.setString(1, request.getNombreCategoria());
             insert.setString(2, request.getDescripcion());
             insert.setInt(3, idCategoria);
             

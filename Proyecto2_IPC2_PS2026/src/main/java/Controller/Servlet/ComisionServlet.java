@@ -39,8 +39,12 @@ public class ComisionServlet extends HttpServlet {
                 ComisionDB comision = dao.getUltimaComision();
                 response.getWriter().write(gson.toJson(comision));
             } else if (partes[0].equals("historial")) {
-                List<ComisionDB> historial = dao.getComisiones();
+                List<ComisionDB> historial = dao.getHistorialComision();
                 response.getWriter().write(gson.toJson(historial));
+            } else if (partes[0].equals("comision-id")) {
+                int idComision = Integer.parseInt(partes[1]);
+                ComisionDB comision = dao.comisionPorId(idComision);
+                response.getWriter().write(gson.toJson(comision));
             }
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (DataBaseException | NumberFormatException e) {

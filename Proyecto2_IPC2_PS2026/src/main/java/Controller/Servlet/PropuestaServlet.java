@@ -35,7 +35,13 @@ public class PropuestaServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         
         try {
-            if (instrucciones[0].equals("propuestas-proyecto")) {
+            if (instrucciones[0].equals("propuestas-enviadas")) {
+                String fechaInicial = instrucciones[1];
+                String fechaFinal = instrucciones[2];
+                String idFreelancer = instrucciones[3];
+                List<PropuestaDB> propuestas = dao.getPropuestasEnviadas(fechaInicial, fechaFinal, idFreelancer);
+                response.getWriter().write(gson.toJson(propuestas));
+            } else if (instrucciones[0].equals("propuestas-proyecto")) {
                 int idProyecto = Integer.parseInt(instrucciones[1]);
                 List<PropuestaDB> propuestas = dao.getPropuestasProyecto(idProyecto);
                 response.getWriter().write(gson.toJson(propuestas));
@@ -76,10 +82,22 @@ public class PropuestaServlet extends HttpServlet {
         PropuestaRequest req = gson.fromJson(request.getReader(), PropuestaRequest.class);
         
         String path = request.getPathInfo().substring(1);
+        String[] instrucciones = path.split("/");
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         
         try {
-            int idProyecto = Integer.parseInt(path);
-            dao.actualizarPropuesta(req, idProyecto);
+            if (instrucciones[0].equals("actualizar")) {
+                int idPropuesta = Integer.parseInt(instrucciones[1]);
+                int idProyecto = Integer.parseInt(instrucciones[2]);
+                dao.actualizarPropuesta(req, idPropuesta);
+                PropuestaDB propuesta = dao.getPropuestaFrelancer(idProyecto, req.getFreelancer());
+                response.getWriter().write(gson.toJson(propuesta));
+            } else if (instrucciones[0].equals("rechazar")) {
+                int idPropuesta = Integer.parseInt(instrucciones[1]);
+                dao.rechazarPropuesta(idPropuesta);
+            }
+            
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (DataBaseException e) {
             System.out.println(e.getMessage());

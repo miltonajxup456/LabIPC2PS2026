@@ -22,8 +22,9 @@ import java.util.List;
 public class RecargaDAO {
     
     private static final String TODOS_LOS_REGISTROS = "SELECT * FROM Recarga";
-    private static final String RECARGAS_POR_CLIENTE = "SELECT * FROM Recarga WHERE cliente = ?";
+    private static final String REGISTROS_POR_CLIENTE = "SELECT * FROM Recarga WHERE cliente = ? ORDER BY id_recarga DESC";
     private static final String AGREGAR_REGISTRO_RECARGA = "INSERT INTO Recarga (monto, cliente) VALUES (?,?)";
+    private static final String ACTUALIZAR_CLIENTE = "UPDATE Usuario SET saldo = ? WHERE nombre_usuario = ?";
     
     public List<RecargaDB> getTodosLosRegistros() throws DataBaseException {
         List<RecargaDB> recargas = new ArrayList<>();
@@ -40,11 +41,10 @@ public class RecargaDAO {
         return recargas;
     }
     
-    
     public List<RecargaDB> getRegistrosCliente(String idCliente) throws DataBaseException {
         List<RecargaDB> recargas = new ArrayList<>();
         try (Connection connection = DBConnexionSingleton.getConnection();
-                PreparedStatement select = connection.prepareStatement(RECARGAS_POR_CLIENTE)) {
+                PreparedStatement select = connection.prepareStatement(REGISTROS_POR_CLIENTE)) {
             select.setString(1, idCliente);
             try (ResultSet rs = select.executeQuery()) {
                 while (rs.next()) {
@@ -57,15 +57,19 @@ public class RecargaDAO {
         return recargas;
     }
     
-    public void agregarRegistro(RecargaRequest request) throws DataBaseException {
+    public void agregarRegistro(RecargaRequest request, double saldoActual) throws DataBaseException {
         try (Connection connection = DBConnexionSingleton.getConnection();
-                PreparedStatement select = connection.prepareStatement(AGREGAR_REGISTRO_RECARGA)) {
-            select.setDouble(1, request.getMonto());
-            select.setString(2, request.getCliente());
+                PreparedStatement insert = connection.prepareStatement(AGREGAR_REGISTRO_RECARGA);
+                PreparedStatement update = connection.prepareStatement(ACTUALIZAR_CLIENTE)) {
+            insert.setDouble(1, request.getMonto());
+            insert.setString(2, request.getCliente());
+            insert.executeUpdate();
             
-            select.executeUpdate(); 
+            update.setDouble(1, saldoActual);
+            update.setString(2, request.getCliente());
+            update.executeUpdate();
         } catch (SQLException e) {
-            throw new DataBaseException("Error al traer registros recarga cliente "+e);
+            throw new DataBaseException("Error al agregar Registro Recarga "+e);
         }
     }
     

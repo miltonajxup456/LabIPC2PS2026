@@ -13,8 +13,10 @@ public class PropuestaRequest {
     private String presentacion;
     private double montoOfertado;
     private int plazoEntrega;
-    private int freelancer;
+    private String fecha;
+    private String freelancer;
     private int proyecto;
+    private int estado;
 
     public String getPresentacion() {
         return presentacion;
@@ -39,12 +41,12 @@ public class PropuestaRequest {
     public void setPlazoEntrega(int plazoEntrega) {
         this.plazoEntrega = plazoEntrega;
     }
-
-    public int getFreelancer() {
+    
+    public String getFreelancer() {
         return freelancer;
     }
 
-    public void setFreelancer(int freelancer) {
+    public void setFreelancer(String freelancer) {
         this.freelancer = freelancer;
     }
 
@@ -54,6 +56,22 @@ public class PropuestaRequest {
 
     public void setProyecto(int proyecto) {
         this.proyecto = proyecto;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
     
 }

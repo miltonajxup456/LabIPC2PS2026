@@ -6,7 +6,6 @@ package DAOs;
 
 import ConexionDB.DBConnexionSingleton;
 import Exceptions.DataBaseException;
-import Modelos.Habilidad.ListaHabilidades;
 import Modelos.Usuario.ClienteDB;
 import Modelos.Usuario.ClienteRequest;
 import Modelos.Usuario.FreelanceRequest;
@@ -17,6 +16,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -25,17 +26,35 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 public class UsuarioDAO {
     
+    private static final String GET_USUARIOS = "SELECT usu.*, rol.tipo_rol FROM Usuario usu JOIN Rol rol ON usu.rol = rol.id_rol";
     private static final String CREAR_USUARIO = "INSERT INTO Usuario (nombre_usuario, nombre, password_user, correo_electronico, telefono, direccion, cui, fecha_nac, saldo, rol) "
             + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+    private static final String CREAR_CLIENTE = "INSERT INTO Cliente (id_cliente) VALUES (?)";
+    private static final String CREAR_FREELANCER = "INSERT INTO Freelancer (id_freelancer) VALUES (?)";
     private static final String BUSCAR_POR_USUARIO = "SELECT usu.*, rol.tipo_rol FROM Usuario usu JOIN Rol rol ON usu.rol = rol.id_rol WHERE nombre_usuario = ?";
     private static final String BUSCAR_CLIENTE = "SELECT * FROM Cliente WHERE id_cliente = ?";
-    private static final String BUSCAR_FREELANCE = "SELECT free.*, niv.tipo_nivel FROM Freelance free JOIN Nivel_De_Experiencia niv WHERE free.id_freelancer = ?";
-    private static final String ACTUALIZAR_DATOS_USUARIO = "UPDATE Usuario SET nombre = ?, password_user = ?, correo_electronico = ?, telefono = ?, direccion = ?, cui = ?, fecha_nac = ?, informacion_usuario = ?, baneo = ?, saldo = ? WHERE nombre_usuario = ?";
-    private static final String ACTUALIZAR_CLIENTE = "UPDATE Cliente SET descripcion_empresa = ?, industria_perteneciente = ?, sitio_web = ? WHERE nombre_usuario = ?";
-    private static final String ACTUALIZAR_FREELANCER = "UPDATE Freelancer SET biografia = ?, tarifa_referencial = ? WHERE nombre_usuario = ?";
-    private static final String AGREGAR_HABILIDADES = "INSERT INTO Habilidad_Freelancer (habilidad, freelancer) VALUES (?,?)";
-    private static final String ELIMINAR_HABILIDAD_FREELANCER = "DELETE Habilidad_Freelancer WHERE habilidad = ?, freelancer = ?";
-    private static final String ELIMINAR_USUARIO = "DELETE Cliente WHERE nombre_usuario = ?";
+    private static final String BUSCAR_FREELANCE = "SELECT free.*, niv.tipo_nivel FROM Freelancer free JOIN Nivel_De_Experiencia niv ON free.nivel_experiencia = niv.id_nivel WHERE free.id_freelancer = ?";
+    private static final String ACTUALIZAR_DATOS_USUARIO = "UPDATE Usuario SET nombre = ?, password_user = COALESCE(?, password_user), correo_electronico = ?, telefono = ?, direccion = ?, cui = ?, fecha_nac = ?, baneo = ?, saldo = ? WHERE nombre_usuario = ?";
+    private static final String ACTUALIZAR_SALDO = "UPDATE Usuario SET saldo = ? WHERE nombre_usuario = ?";
+    private static final String ACTUALIZAR_CLIENTE = "UPDATE Cliente SET descripcion_empresa = ?, industria_perteneciente = ?, sitio_web = ? WHERE id_cliente = ?";
+    private static final String ACTUALIZAR_FREELANCER = "UPDATE Freelancer SET biografia = ?, tarifa_referencial = ?, nivel_experiencia = ? WHERE id_freelancer = ?";
+    private static final String BANEAR_USUARIO = "UPDATE Usuario SET baneo = ? WHERE nombre_usuario = ?";
+    private static final String ELIMINAR_USUARIO = "DELETE FROM Usuario WHERE nombre_usuario = ?";
+    
+    public List<UsuarioDB> getUsuarios() {
+        List<UsuarioDB> usuarios = new ArrayList<>();
+        try (Connection connection = DBConnexionSingleton.getConnection();
+                PreparedStatement select = connection.prepareStatement(GET_USUARIOS)){
+            try (ResultSet rs = select.executeQuery()) {
+                while (rs.next()) {
+                    usuarios.add(armarUsuario(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al traer todos los usuarios "+e);
+        }
+        return usuarios;
+    }
     
     public void crearUsuario(UsuarioRequest request) throws DataBaseException {
         
@@ -43,7 +62,9 @@ public class UsuarioDAO {
         String hashedPassword = encoder.encode(request.getPasswordUser());
         
         try (Connection connection = DBConnexionSingleton.getConnection();
-                PreparedStatement insert = connection.prepareStatement(CREAR_USUARIO)) {
+                PreparedStatement insert = connection.prepareStatement(CREAR_USUARIO);
+                PreparedStatement insertCliente = connection.prepareStatement(CREAR_CLIENTE);
+                PreparedStatement insertFreelancer = connection.prepareStatement(CREAR_FREELANCER)) {
             insert.setString(1, request.getNombreUsuario());
             insert.setString(2, request.getNombre());
             insert.setString(3, hashedPassword);
@@ -56,6 +77,13 @@ public class UsuarioDAO {
             insert.setInt(10, request.getRol());
             
             insert.executeUpdate();
+            if (request.getRol() == 2) {
+                insertCliente.setString(1, request.getNombreUsuario());
+                insertCliente.executeUpdate();
+            } else if (request.getRol() == 3) {
+                insertFreelancer.setString(1, request.getNombreUsuario());
+                insertFreelancer.executeUpdate();
+            }
         } catch (SQLException e) {
             throw new DataBaseException("Error Interno en la Base de Datos al crear usuario "+e);
         }
@@ -119,7 +147,7 @@ public class UsuarioDAO {
     public void actualizarCliente(ClienteRequest request, String idCliente) throws DataBaseException {
         try (Connection connection = DBConnexionSingleton.getConnection();
                 PreparedStatement update = connection.prepareStatement(ACTUALIZAR_CLIENTE)) {
-            actualizarDatosUsuario(connection, request);
+            actualizarDatosUsuario(connection, request, idCliente);
             update.setString(1, request.getDescripcionEmpresa());
             update.setString(2, request.getIndustriaPerteneciente());
             update.setString(3, request.getSitioWeb());
@@ -131,13 +159,14 @@ public class UsuarioDAO {
         }
     }
     
-    public void actualizarFreelancer(FreelanceRequest request, String idCliente) throws DataBaseException {
+    public void actualizarFreelancer(FreelanceRequest request, String idFreelancer) throws DataBaseException {
         try (Connection connection = DBConnexionSingleton.getConnection();
                 PreparedStatement update = connection.prepareStatement(ACTUALIZAR_FREELANCER)) {
-            actualizarDatosUsuario(connection, request);
+            actualizarDatosUsuario(connection, request, idFreelancer);
             update.setString(1, request.getBiografia());
             update.setDouble(2, request.getTarifaReferencial());
-            update.setString(3, idCliente);
+            update.setInt(3, request.getNivelExperiencia());
+            update.setString(4, idFreelancer);
             
             update.executeUpdate();
         } catch (SQLException e) {
@@ -145,7 +174,25 @@ public class UsuarioDAO {
         }
     }
     
-    private void actualizarDatosUsuario(Connection connection, UsuarioRequest request) throws DataBaseException, SQLException {
+    public void actualizarSaldoUsuario(double saldo, String idUsuario) throws DataBaseException {
+        try (Connection connection = DBConnexionSingleton.getConnection();
+                PreparedStatement update = connection.prepareStatement(ACTUALIZAR_SALDO)) {
+            update.setDouble(1, saldo);
+            update.setString(2, idUsuario);
+            update.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataBaseException("Error al actualizar saldo usuario "+e);
+        }
+    }
+    
+    private void actualizarDatosUsuario(Connection connection, UsuarioRequest request, String idUsuario) throws DataBaseException, SQLException {
+        if (request.getPasswordUser() != null) {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String hashedPassword = encoder.encode(request.getPasswordUser());
+            
+            request.setPasswordUser(hashedPassword);
+        }
+        
         try (PreparedStatement update = connection.prepareCall(ACTUALIZAR_DATOS_USUARIO)) {
             update.setString(1, request.getNombre());
             update.setString(2, request.getPasswordUser());
@@ -154,41 +201,26 @@ public class UsuarioDAO {
             update.setString(5, request.getDireccion());
             update.setString(6, request.getCui());
             update.setString(7, request.getFechaNac());
-            update.setString(8, request.getInformacionUsuario());
-            update.setBoolean(9, request.isBaneo());
-            update.setDouble(10, request.getSaldo());
-            update.setString(11, request.getNombreUsuario());
+            update.setBoolean(8, request.isBaneo());
+            update.setDouble(9, request.getSaldo());
+            update.setString(10, idUsuario);
             
             update.executeUpdate();
         }
     }
     
-    public void agregarHabilidades(ListaHabilidades lista, String idFreelancer) throws DataBaseException {
+    public void banearUsuario(UsuarioRequest request, String idUsuario) throws DataBaseException {
         try (Connection connection = DBConnexionSingleton.getConnection();
-                PreparedStatement insert = connection.prepareStatement(AGREGAR_HABILIDADES)) {
-            for (int i = 0; i < lista.getListaIds().size(); i++) {
-                int idHabilidad = lista.getListaIds().get(i);
-                insert.setInt(1, idHabilidad);
-                insert.setString(2, idFreelancer);
-                
-                insert.executeUpdate();
-            }
+                PreparedStatement update = connection.prepareStatement(BANEAR_USUARIO)) {
+            update.setBoolean(1, request.isBaneo());
+            update.setString(2, idUsuario);
+            
+            update.executeUpdate();
         } catch (SQLException e) {
-            throw new DataBaseException("Error interno al acualizar Freelancer "+e);
+            throw new DataBaseException("Error interno al modificar baneo usuario "+e);
         }
     }
     
-    public void eliminarHabilidad(int idHabilidad, String idFreelancer) throws DataBaseException {
-        try (Connection connection = DBConnexionSingleton.getConnection();
-                PreparedStatement delete = connection.prepareStatement(ELIMINAR_HABILIDAD_FREELANCER)) {
-            delete.setInt(1, idHabilidad);
-            delete.setString(2, idFreelancer);
-
-            delete.executeUpdate();
-        } catch (SQLException e) {
-            throw new DataBaseException("Error interno al acualizar Freelancer "+e);
-        }
-    }
     
     public void eliminarUsuario(String idUsuario) throws DataBaseException   {
         try (Connection connection = DBConnexionSingleton.getConnection();

@@ -23,8 +23,9 @@ public class HabilidadDAO {
     
     private static final String HABILIDADES_GUARDADAS = "SELECT * FROM Habilidad";
     private static final String CREAR_HABILIDAD = "INSERT INTO Habilidad (nombre_habilidad, descripcion_habilidad) VALUES (?,?)";
+    private static final String ACTUALIZAR_PROPUESTA = "UPDATE Propuesta_Habilidad SET aprobado = true WHERE id_propuesta_habilidad = ?";
     private static final String ACTUALIZAR_HABILIDAD = "UPDATE Habilidad SET nombre_habilidad = ?, descripcion_habilidad = ? WHERE id_habilidad = ?";
-    private static final String ELIMINAR_HABILIDAD = "DELETE Habilidad WHERE id_habilidad = ?";
+    private static final String ELIMINAR_HABILIDAD = "DELETE FROM Habilidad WHERE id_habilidad = ?";
     
     public List<HabilidadDB> getHabilidades() throws DataBaseException {
         List<HabilidadDB> habilidades = new ArrayList<>();
@@ -41,13 +42,16 @@ public class HabilidadDAO {
         return habilidades;
     }
     
-    public void crearHabilidad(HabilidadRequest request) throws DataBaseException {
+    public void crearHabilidad(HabilidadRequest request, int idPropuesta) throws DataBaseException {
         try (Connection connection = DBConnexionSingleton.getConnection();
-                PreparedStatement insert = connection.prepareStatement(CREAR_HABILIDAD)) {
+                PreparedStatement insert = connection.prepareStatement(CREAR_HABILIDAD);
+                PreparedStatement update = connection.prepareStatement(ACTUALIZAR_PROPUESTA)) {
             insert.setString(1, request.getNombreHabilidad());
             insert.setString(2, request.getDescripcion());
             
             insert.executeUpdate();
+            update.setInt(1, idPropuesta);
+            update.executeUpdate();
         } catch (SQLException e) {
             throw new DataBaseException("Error al crear habilidad "+e);
         }
