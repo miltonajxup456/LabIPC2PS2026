@@ -14,6 +14,7 @@
     @if (rechazos()) {
         @for (rechazo of rechazos(); track rechazo.idRechazo) {
             <div class="rechazos">
+                Historial de Rechazos
                 <p>Se ha rechazado el proyecto</p>
                 <div class="plan">
                     <div class="celda"> Fecha: {{rechazo.fecha}} </div>
@@ -24,6 +25,7 @@
     }
     @if (entregasProyecto().length > 0) {
         <div class="contSecundario">
+            Historial de Entregas
             @for (entrega of entregasProyecto(); track entrega.idEntrega) {
                 <div>
                     <div>Link de Entrega: 

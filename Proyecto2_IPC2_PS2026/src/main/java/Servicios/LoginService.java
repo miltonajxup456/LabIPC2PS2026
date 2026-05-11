@@ -61,6 +61,7 @@ public class LoginService {
                 freelancer.setTarifaReferencial(complemento.getTarifaReferencial());
                 freelancer.setNivelExperiencia(complemento.getNivelExperiencia());
                 freelancer.setTipoNivelExperiencia(complemento.getTipoNivelExperiencia());
+                freelancer.setCalificacionPromedio(complemento.getCalificacionPromedio());
                 return freelancer;
             }
         }

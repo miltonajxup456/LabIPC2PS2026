@@ -10,7 +10,7 @@ import { UsuarioService } from '../../restApi/usuario-service/usuario-service';
 
 @Component({
   selector: 'app-login',
-  imports: [Header, ReactiveFormsModule, RouterLink],
+  imports: [Header, ReactiveFormsModule],
   templateUrl: './login.html',
   styles: '',
 })
