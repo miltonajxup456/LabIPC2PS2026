@@ -7,8 +7,10 @@ package Controller.Servlet;
 import DAOs.ProyectoDAO;
 import Exceptions.DataBaseException;
 import Exceptions.DataInexistenteException;
+import Modelos.Habilidad.HabilidadDB;
 import Modelos.Proyecto.ProyectoDB;
 import Modelos.Proyecto.ProyectoRequest;
+import Servicios.ProyectoService;
 import Servicios.UsuarioService;
 import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;
@@ -40,6 +42,13 @@ public class ProyectoServlet extends HttpServlet {
             if (partes[0].equals("todos-los-proyectos")) {
                 List<ProyectoDB> proyectos = proyectodao.getTodosLosProyectos();
                 response.getWriter().write(gson.toJson(proyectos));
+            } else if (partes[0].equals("proyectos-abiertos")) {
+                List<ProyectoDB> proyectos = proyectodao.getTodosLosProyectosAbiertos();
+                response.getWriter().write(gson.toJson(proyectos));
+            } else if (partes[0].equals("habilidades-proyecto")) {
+                int idProyecto = Integer.parseInt(partes[1]);
+                List<HabilidadDB> habilidades = proyectodao.getHabilidadesProyecto(idProyecto);
+                response.getWriter().write(gson.toJson(habilidades));
             } else if (partes[0].equals("cliente")) {
                 List<ProyectoDB> proyectos = proyectodao.getProyectosCliente(partes[1]);
                 response.getWriter().write(gson.toJson(proyectos));
@@ -50,7 +59,7 @@ public class ProyectoServlet extends HttpServlet {
                 //List<PaqueteProyecto> paquete = 
             }
             response.setStatus(HttpServletResponse.SC_OK);
-        } catch (DataBaseException e) {
+        } catch (DataBaseException | NumberFormatException e) {
             System.out.println(e);
             response.setStatus(HttpServletResponse.SC_CONFLICT);
         }
@@ -75,6 +84,7 @@ public class ProyectoServlet extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Gson gson = new Gson();
         UsuarioService service = new UsuarioService();
+        ProyectoService proyService = new ProyectoService();
         ProyectoDAO proyectodao = new ProyectoDAO();
         ProyectoRequest proyectoReq = gson.fromJson(request.getReader(), ProyectoRequest.class);
         
@@ -88,7 +98,7 @@ public class ProyectoServlet extends HttpServlet {
             int idProyecto = Integer.parseInt(instrucciones[1]);
             
             if (instrucciones[0].equals("actualizacion")) {
-                proyectodao.actualizarProyecto(proyectoReq, idProyecto);
+                proyService.modificarProyecto(proyectoReq, idProyecto);
             } else if (instrucciones[0].equals("proyecto-aceptado")) {
                 service.actualizarSaldo(instrucciones[0], idProyecto, proyectoReq);
                 proyectodao.aceptarPropuesta(proyectoReq, idProyecto);

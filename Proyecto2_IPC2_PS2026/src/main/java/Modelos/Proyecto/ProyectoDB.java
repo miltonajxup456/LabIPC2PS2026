@@ -4,6 +4,8 @@
  */
 package Modelos.Proyecto;
 
+import java.util.List;
+
 /**
  *
  * @author millin-115
@@ -22,6 +24,7 @@ public class ProyectoDB {
     private final String tipoEstado;
     private final String freelancer;
     private final int comision;
+    private List<Integer> habilidades;
 
     public ProyectoDB(int idProyecto, String titulo, String descripcion, double presupuesto, String fecha_limite, String cliente, 
             int categoria, String tipoCategoria, int estado, String tipoEstado, String freelancer, int comision) {
@@ -85,6 +88,14 @@ public class ProyectoDB {
 
     public int getComision() {
         return comision;
+    }
+
+    public List<Integer> getHabilidades() {
+        return habilidades;
+    }
+
+    public void setHabilidades(List<Integer> habilidades) {
+        this.habilidades = habilidades;
     }
 
 }

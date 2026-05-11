@@ -39,7 +39,10 @@ public class HistorialComisionServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         
         try {
-            if (instrucciones[0].equals("ganancias-freelancer")) {
+            if (instrucciones[0].equals("comision-total")) {
+                int comision = dao.getComisionGanada();
+                response.getWriter().write(gson.toJson(comision));
+            } else if (instrucciones[0].equals("ganancias-freelancer")) {
                 List<GananciaFreelancer> ganancias = dao.getGananciaFreelancerEntreFechas(fechaInicial, fechaFinal);
                 response.getWriter().write(gson.toJson(ganancias));
             } else if (instrucciones[0].equals("categoria-activa")) {

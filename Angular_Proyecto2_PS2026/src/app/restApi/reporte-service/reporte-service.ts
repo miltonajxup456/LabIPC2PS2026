@@ -18,6 +18,10 @@ export class ReporteService {
         return this.httpClient.get<Proyecto[]>(`${this.apiUrl.getUrl()}reporte/proyectos-publicados/${fechaInicial}/${fechaFinal}/${idCliente}`);
     }
 
+    public getReporteProyectos(fechaInicial: string, fechaFinal: string, idCliente: string): Observable<Blob> {
+        return this.httpClient.get(`${this.apiUrl.getUrl()}reporte/proyectos-publicados-pdf/${fechaInicial}/${fechaFinal}/${idCliente}`, {responseType: 'blob'});
+    }
+
     public getGastoCategoria(fechaInicial: string, fechaFinal: string, idCliente: string): Observable<GastoCategoria[]> {
         return this.httpClient.get<GastoCategoria[]>(`${this.apiUrl.getUrl()}reporte/gasto-categoria/${fechaInicial}/${fechaFinal}/${idCliente}`);
     }

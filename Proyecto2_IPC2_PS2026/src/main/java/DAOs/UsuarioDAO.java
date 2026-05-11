@@ -34,6 +34,7 @@ public class UsuarioDAO {
     private static final String BUSCAR_POR_USUARIO = "SELECT usu.*, rol.tipo_rol FROM Usuario usu JOIN Rol rol ON usu.rol = rol.id_rol WHERE nombre_usuario = ?";
     private static final String BUSCAR_CLIENTE = "SELECT * FROM Cliente WHERE id_cliente = ?";
     private static final String BUSCAR_FREELANCE = "SELECT free.*, niv.tipo_nivel FROM Freelancer free JOIN Nivel_De_Experiencia niv ON free.nivel_experiencia = niv.id_nivel WHERE free.id_freelancer = ?";
+    private static final String CALIFICACION_PROMEDIO = "SELECT COALESCE(AVG(calificacion), 0) AS calificacion_promedio FROM Calificacion_Freelancer WHERE freelancer = ?";
     private static final String ACTUALIZAR_DATOS_USUARIO = "UPDATE Usuario SET nombre = ?, password_user = COALESCE(?, password_user), correo_electronico = ?, telefono = ?, direccion = ?, cui = ?, fecha_nac = ?, baneo = ?, saldo = ? WHERE nombre_usuario = ?";
     private static final String ACTUALIZAR_SALDO = "UPDATE Usuario SET saldo = ? WHERE nombre_usuario = ?";
     private static final String ACTUALIZAR_CLIENTE = "UPDATE Cliente SET descripcion_empresa = ?, industria_perteneciente = ?, sitio_web = ? WHERE id_cliente = ?";
@@ -129,19 +130,29 @@ public class UsuarioDAO {
     }
     
     public FreelancerDB armarFreelance(String nombreUsuario) throws DataBaseException {
-        
+        FreelancerDB freelancer = null;
         try (Connection connection = DBConnexionSingleton.getConnection();
-                PreparedStatement select = connection.prepareStatement(BUSCAR_FREELANCE)) {
+                PreparedStatement select = connection.prepareStatement(BUSCAR_FREELANCE);
+                PreparedStatement promedio = connection.prepareStatement(CALIFICACION_PROMEDIO)) {
             select.setString(1, nombreUsuario);
+            promedio.setString(1, nombreUsuario);
             try (ResultSet rs = select.executeQuery()) {
                 if (rs.next()) {
-                    return new FreelancerDB(rs.getString("biografia"), rs.getDouble("tarifa_referencial"), rs.getInt("nivel_experiencia"), rs.getString("tipo_nivel"));
+                    freelancer = new FreelancerDB(rs.getString("biografia"), rs.getDouble("tarifa_referencial"), rs.getInt("nivel_experiencia"), rs.getString("tipo_nivel"));
+                }
+            }
+            if (freelancer != null) {
+                try (ResultSet rs = promedio.executeQuery()) {
+                    if (rs.next()) {
+                        double calificacion = rs.getDouble("calificacion_promedio");
+                        freelancer.setCalificacionPromedio(calificacion);
+                    }
                 }
             }
         } catch (SQLException e) {
             throw new DataBaseException("Error interno en base de datos al amrar Freelance "+e);
         }
-        return null;
+        return freelancer;
     }
     
     public void actualizarCliente(ClienteRequest request, String idCliente) throws DataBaseException {

@@ -35,4 +35,17 @@ export class VerHistorialProyectos {
     })
   }
 
+  descargarPdf(): void {
+    this.reporteService.getReporteProyectos(this.fechaInicial, this.fechaFinal, this.guardado.getUsuarioLogeado().nombreUsuario).subscribe({
+      next: (pdf: Blob) => {
+        const url = window.URL.createObjectURL(pdf);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Historial Proyectos.pdf';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }
+    })
+  }
+
 }

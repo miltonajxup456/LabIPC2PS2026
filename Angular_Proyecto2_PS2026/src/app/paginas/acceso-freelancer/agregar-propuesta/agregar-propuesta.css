@@ -1,0 +1,18 @@
+p {
+    color: red;
+} 
+
+.btnRedondo {
+    margin-bottom: 25px;
+} 
+
+.hab {
+    border: 3px solid rgb(2, 2, 172); 
+    height: 200px; 
+    width: 300px; 
+    overflow: auto; 
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}

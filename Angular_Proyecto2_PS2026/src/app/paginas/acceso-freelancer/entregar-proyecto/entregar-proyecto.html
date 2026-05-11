@@ -22,6 +22,19 @@
             </div>
         }
     }
+    @if (entregasProyecto().length > 0) {
+        <div class="contSecundario">
+            @for (entrega of entregasProyecto(); track entrega.idEntrega) {
+                <div>
+                    <div>Link de Entrega: 
+                        <div class="celda"> <a href="{{entrega.link}}" target="_blank">Entrega</a> </div>
+                    </div>
+                    <div class="celda"> Id Entrega {{entrega.idEntrega}} </div>
+                    <div class="celda"> Descripcion: {{entrega.descripcion}} </div>
+                </div>
+            }
+        </div>
+    }
     @if (proyectoElegido()) {
         <div>
             <form [formGroup]="formEntrega">
@@ -39,9 +52,9 @@
                 </button> -->
                     Espacio par el link que representa la entrega:
                     <input type="text" formControlName="link">
-                <button class="btnRedondo" [disabled]="formEntrega.invalid"
+                <button class="btnRedondo" [disabled]="formEntrega.invalid || proyectoElegido()?.estado! > 4"
                 (click)="mandarEntrega()">
-                    Subir Archivo
+                    Subir Entrega
                 </button>
             </form>
         </div>

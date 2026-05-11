@@ -6,6 +6,7 @@ package DAOs;
 
 import ConexionDB.DBConnexionSingleton;
 import Exceptions.DataBaseException;
+import Modelos.Habilidad.HabilidadDB;
 import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class HabilidadesUsuarioDAO {
     
     private static final String HABILIDADES_FREELANCER = "SELECT * FROM Habilidad_Freelancer WHERE freelancer = ?";
+    private static final String HABILIDADES_COMPLETAS = "SELECT * FROM Habilidad WHERE id_habilidad = ?";
     private static final String AGREGAR_HABILIDAD = "INSERT INTO Habilidad_Freelancer (habilidad, freelancer) VALUES (?,?)";
     private static final String ELIMINAR_HABILIDAD_FREELANCER = "DELETE FROM Habilidad_Freelancer WHERE habilidad = ? AND freelancer = ?";
     
@@ -35,6 +37,26 @@ public class HabilidadesUsuarioDAO {
             }
         } catch (SQLException e) {
             throw new DataBaseException("Error al traer habilidades de freelancer "+e);
+        }
+        return habilidades;
+    }
+    
+    public List<HabilidadDB> getHabilidadesCompletas(String idFreelancer) throws DataBaseException {
+        List<HabilidadDB> habilidades = new ArrayList<>();
+        List<Integer> ids = getHabilidadesFreelancer(idFreelancer);
+        try (Connection connection = DBConnexionSingleton.getConnection();
+                PreparedStatement select = connection.prepareStatement(HABILIDADES_COMPLETAS)) {
+            for (int i = 0; i < ids.size(); i++) {
+                int idActual = ids.get(i);
+                select.setInt(1, idActual);
+                try (ResultSet rs = select.executeQuery()) {
+                    if (rs.next()) {
+                        habilidades.add(new HabilidadDB(rs.getInt("id_habilidad"), rs.getString("nombre_habilidad"), rs.getString("descripcion_habilidad")));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataBaseException("Error al traer habilidades completas freelancer "+e.getMessage());
         }
         return habilidades;
     }

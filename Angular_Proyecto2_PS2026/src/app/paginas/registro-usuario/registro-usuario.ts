@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   selector: 'app-registro-usuario',
   imports: [Header, ReactiveFormsModule],
   templateUrl: './registro-usuario.html',
-  styles: `.espacio {height: 50px}
+  styles: `.espacio {height: 50px} .espacioFinal {height: 200px} .btnRedondo {margin-bottom: 20px}
   .eleccionUsuario {display: flex; gap: 50px; margin-bottom: 15px;}
   `
 })
@@ -30,7 +30,7 @@ export class RegistroUsuario implements OnInit {
       direccion: new FormControl<string>('Guatemala', Validators.required),
       cui: new FormControl<string>('87654321', Validators.required),
       fechaNac: new FormControl<Date | null>(null, Validators.required), 
-      rol: new FormControl<number>(2)
+      rol: new FormControl<number>(2, Validators.required)
     })
   }
 
@@ -40,7 +40,7 @@ export class RegistroUsuario implements OnInit {
     });
   }
 
-  guardarUsuario() {
+  guardarUsuario(): void {
     const miForm = this.formRegistro.value;
     if (miForm.passwordUser.length < 4) {
       alert('La contraseña debe ser de por lo menos 4 elementos');
@@ -62,8 +62,12 @@ export class RegistroUsuario implements OnInit {
     })
   }
 
-  volverLogin() {
+  volverLogin(): void {
     this.router.navigate(['/login'])
+  }
+
+  vaciar(): void {
+    this.formRegistro.reset();
   }
 
 }

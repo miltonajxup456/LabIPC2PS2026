@@ -27,7 +27,7 @@ public class CategoriaDAO {
     private static final String HABILIDADES_CATEGORIA = "SELECT hab_cat.*, hab.* FROM Habilidad_Categoria hab_cat JOIN Habilidad hab ON hab_cat.habilidad = hab.id_habilidad WHERE hab_cat.categoria = ?";
     private static final String CREAR_CATEGORIA = "INSERT INTO Categoria (nombre_categoria, descripcion_categoria) VALUES (?,?)";
     private static final String ACTUALIZAR_PROPUESTA = "UPDATE Propuesta_Categoria SET aprobado = true WHERE id_propuesta_categoria = ?";
-    private static final String ACTUALIZAR_CATEGORIA = "UPDATE Categoria SET nombre_categoria = ?, descripcion = ? WHERE id_categoria = ?";
+    private static final String ACTUALIZAR_CATEGORIA = "UPDATE Categoria SET nombre_categoria = ?, descripcion_categoria = ? WHERE id_categoria = ?";
     private static final String ELIMINAR_CATEGORIA = "DELETE FROM Categoria WHERE id_categoria = ?";
     
     public List<CategoriaDB> getCategorias() throws DataBaseException {

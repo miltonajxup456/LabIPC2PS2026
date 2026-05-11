@@ -10,8 +10,9 @@
                 (click)="elegirProyecto(proyecto)" 
                 [disabled]="proyecto.estado !== 1">
                 @if (proyecto.estado !== 1) {
-                    <p>No es posible mandar una propuesta en este Proyecto <br>Estado: {{proyecto.tipoEstado}} </p>
+                    <p>No es posible mandar una propuesta en este Proyecto </p>
                 }
+                    Estado: {{proyecto.tipoEstado}} <br>
                     Titulo: {{proyecto.titulo}}
                 </button>
             }
@@ -19,6 +20,12 @@
     }
     @if (proyectoElegido()) {
         <div class="contSecundario">
+            <div class="hab">
+                Habilidades necesarias para proyecto
+                @for (habilidad of habilidadesProyecto(); track habilidad.idHabilidad) {
+                    <div class="celda">{{habilidad.nombreHabilidad}}</div>
+                }
+            </div>
             <div class="celda">Titulo: {{proyectoElegido()?.titulo}}</div>
             <div class="celda">Presupuesto: {{proyectoElegido()?.presupuesto}}</div>
             <div class="celda">Fecha Limite: {{proyectoElegido()?.fechaLimite}}</div>
@@ -30,6 +37,9 @@
 
     @if (proyectoElegido()) {
         <div>
+            @if (!esApto()) {
+                <p>No se esta capacitado para realizar este proyecto</p>
+            }
             @if (propuestaElegida()?.estado === 2) {
                 <div class="celda">
                     Esta propuesta ya se ha aceptado
@@ -54,7 +64,7 @@
                     <input type="number" formControlName="plazoEntrega">
                 </label>
                 <button class="btnRedondo" 
-                [disabled]="formPropuesta.invalid || propuestaElegida()?.estado !== 1">
+                [disabled]="formPropuesta.invalid || propuestaElegida()?.estado! > 1 || !esApto()">
                     Subir Propuesta
                 </button>
             </form>

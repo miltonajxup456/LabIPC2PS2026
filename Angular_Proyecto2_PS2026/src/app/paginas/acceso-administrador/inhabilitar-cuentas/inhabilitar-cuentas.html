@@ -3,19 +3,21 @@
 <div class="contPrincipal">
     <div class="contSecundario">
         @for (usuario of usuarios(); track usuario.nombreUsuario) {
-            <div class="celda">
-                Nombre De Usuario: {{usuario.nombreUsuario}} <br>
-                Tipo de Usuario: {{usuario.tipoRol}}
-                <button class="btnRedondo" 
-                [class.hab]="!usuario.baneo" 
-                [class.des]="usuario.baneo" (click)="cambiar(usuario)">
-                    @if (usuario.baneo) {
-                        Deshabilitado
-                    } @else {
-                        Habilitado
-                    }
-                </button>
-            </div>
+            @if (usuario.nombreUsuario !== 'Admin1') {
+                <div class="celda">
+                    Nombre De Usuario: {{usuario.nombreUsuario}} <br>
+                    Tipo de Usuario: {{usuario.tipoRol}}
+                    <button class="btnRedondo" 
+                    [class.hab]="!usuario.baneo" 
+                    [class.des]="usuario.baneo" (click)="cambiar(usuario)">
+                        @if (usuario.baneo) {
+                            Deshabilitado
+                        } @else {
+                            Habilitado
+                        }
+                    </button>
+                </div>
+            }
         }
     </div>
 </div>

@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Apiurl } from "../apiurl/apiurl";
 import { Observable } from "rxjs";
 import { Proyecto } from "../../models/proyecto/proyecto";
+import { Habilidad } from "../../models/habilidad/habilidad";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,14 @@ export class ProyectoService {
 
   public getProyectos(): Observable<Proyecto[]> {
     return this.httpClient.get<Proyecto[]>(`${this.apiUrl.getUrl()}proyecto/todos-los-proyectos`);
+  }
+
+  public getProyectosAbiertos(): Observable<Proyecto[]> {
+    return this.httpClient.get<Proyecto[]>(`${this.apiUrl.getUrl()}proyecto/proyectos-abiertos`);
+  }
+
+  public getHabilidadesProyecto(idProyecto: number): Observable<Habilidad[]> {
+    return this.httpClient.get<Habilidad[]>(`${this.apiUrl.getUrl()}proyecto/habilidades-proyecto/${idProyecto}`);
   }
 
   public getProyectosCliente(idCliente: string): Observable<Proyecto[]> {

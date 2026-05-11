@@ -27,7 +27,7 @@ public class PropuestaProyectoDAO {
             + "WHERE pro.fecha BETWEEN ? AND ? AND pro.freelancer = ? ";
     private static final String PARTE_PROPUESTAS = "SELECT pro.*, es.tipo_estado FROM Propuesta_Proyecto pro JOIN Estado_Propuesta_Proyecto es ON pro.estado = es.id_estado WHERE proyecto = ?";
     private static final String PARTE_PROPUESTA_FREELANCER = "SELECT pro.*, es.tipo_estado FROM Propuesta_Proyecto pro JOIN Estado_Propuesta_Proyecto es ON pro.estado = es.id_estado WHERE proyecto = ? AND pro.freelancer = ?";
-    private static final String PARTE_CALIFICACION = "SELECT AVG(calificacion) AS calificacion_promedio FROM Calificacion_Freelancer WHERE freelancer = ? GROUP BY freelancer";
+    private static final String PARTE_CALIFICACION = "SELECT COALESCE(AVG(calificacion), 0) AS calificacion_promedio FROM Calificacion_Freelancer WHERE freelancer = ?";
     private static final String CREAR_PROPUESTA = "INSERT INTO Propuesta_Proyecto (presentacion, monto_ofertado, plazo_entrega_propuesto, freelancer, proyecto) VALUES (?,?,?,?,?)";
     private static final String ACTUALIZAR_PROPUESTA = "UPDATE Propuesta_Proyecto SET presentacion = ?, monto_ofertado = ?, plazo_entrega_propuesto = ? WHERE id_propuesta = ?";
     private static final String RECHAZAR_PROPUESTA = "UPDATE Propuesta_Proyecto SET estado = 3 WHERE id_propuesta = ?";

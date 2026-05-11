@@ -7,7 +7,6 @@ export interface Usuario {
   direccion?: string,
   cui?: string,
   fechaNac?: string,
-  //informacionUsuario?: string,
   baneo?: boolean,
   saldo?: number,
   rol?: number,
@@ -19,4 +18,5 @@ export interface Usuario {
   tarifaReferencial?: number
   nivelExperiencia?: number
   tipoNivelExperiencia?: string
+  calificacionPromedio?: number
 }

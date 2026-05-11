@@ -4,6 +4,7 @@ import { Apiurl } from "../apiurl/apiurl";
 import { Observable } from "rxjs";
 import { Usuario } from "../../models/usuario/usuario";
 import { ListaHabilidades } from "../../models/extras/habilidades/habilidades";
+import { Habilidad } from "../../models/habilidad/habilidad";
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class UsuarioService {
 
   public getHabilidadesFreelancer(idUsuario: string): Observable<number[]> {
     return this.httpClient.get<number[]>(`${this.apiUrl.getUrl()}usuario/habilidades-usuario/${idUsuario}`);
+  }
+
+  public getHabsCompletasFree(idUsuario: string): Observable<Habilidad[]> {
+    return this.httpClient.get<Habilidad[]>(`${this.apiUrl.getUrl()}usuario/habilidades-completas-usuario/${idUsuario}`);
   }
 
   public crearUsuario(usuario: Usuario): Observable<void> {

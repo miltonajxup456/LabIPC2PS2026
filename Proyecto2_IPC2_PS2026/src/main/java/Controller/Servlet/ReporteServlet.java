@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import ReporteDAO.ReporteProyectosDAO;
 
 /**
  *
@@ -42,6 +43,13 @@ public class ReporteServlet extends HttpServlet {
                 String idCliente = instrucciones[3];
                 List<HistorialProyecto> historial = dao.getHistorialProyecto(idCliente, fechaInicial, fechaFinal);
                 response.getWriter().write(gson.toJson(historial));
+            } else if (instrucciones[0].equals("proyectos-publicados-pdf")) {
+                String fechaInicial = instrucciones[1];
+                String fechaFinal = instrucciones[2];
+                String idCliente = instrucciones[3];
+                List<HistorialProyecto> historial = dao.getHistorialProyecto(idCliente, fechaInicial, fechaFinal);
+                ReporteProyectosDAO daoRep = new ReporteProyectosDAO();
+                daoRep.generarPDF(this, response, historial);
             } else if (instrucciones[0].equals("gasto-categoria")) {
                 String fechaInicial = instrucciones[1];
                 String fechaFinal = instrucciones[2];

@@ -9,6 +9,7 @@ import DAOs.UsuarioDAO;
 import Exceptions.DataBaseException;
 import Exceptions.DataExistenteException;
 import Exceptions.DataInexistenteException;
+import Modelos.Habilidad.HabilidadDB;
 import Modelos.Habilidad.ListaHabilidades;
 import Modelos.Usuario.ClienteRequest;
 import Modelos.Usuario.FreelanceRequest;
@@ -55,6 +56,11 @@ public class UsuarioServlet extends HttpServlet {
                 HabilidadesUsuarioDAO dao = new HabilidadesUsuarioDAO();
                 List<Integer> idsHabilidades = dao.getHabilidadesFreelancer(idUsuario);
                 response.getWriter().write(gson.toJson(idsHabilidades));
+            } else if (informacion[0].equals("habilidades-completas-usuario")) {
+                String idUsuario = informacion[1];
+                HabilidadesUsuarioDAO dao = new HabilidadesUsuarioDAO();
+                List<HabilidadDB> habilidades = dao.getHabilidadesCompletas(idUsuario);
+                response.getWriter().write(gson.toJson(habilidades));
             }
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (DataBaseException | DataInexistenteException e) {

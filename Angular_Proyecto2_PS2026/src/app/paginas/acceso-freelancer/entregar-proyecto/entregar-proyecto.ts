@@ -12,6 +12,7 @@ import { Cancelacion } from '../../../models/cancelacion/cancelacion';
 import { EntregaServiceLink } from '../../../restApi/entrega-servive-link/entrega-service-link';
 import { RechazoService } from '../../../restApi/rechazo-service/rechazo-service';
 import { Rechazo } from '../../../models/rechazo/rechazo';
+import { Entrega } from '../../../models/entrega/entrega';
 
 @Component({
   selector: 'app-entregar-proyecto',
@@ -27,6 +28,7 @@ export class EntregarProyecto implements OnInit {
 
   usuarioLogeado!: Usuario;
   proyectos = signal<Proyecto[]>([]);
+  entregasProyecto = signal<Entrega[]>([]);
   rechazos = signal<Rechazo[]>([]);
   proyectoElegido = signal<Proyecto | null>(null);
   cancelacion = signal<Cancelacion | null>(null);
@@ -55,6 +57,7 @@ export class EntregarProyecto implements OnInit {
   }
 
   elegirProyecto(proyecto: Proyecto) {
+    this.formEntrega.reset();
     if (proyecto.estado != 6) {
       this.proyectoElegido.set(proyecto);
       this.cancelacion.set(null);
@@ -62,6 +65,7 @@ export class EntregarProyecto implements OnInit {
         proyecto: proyecto.idProyecto,
         freelancer: proyecto.freelancer
       });
+      this.buscarEntregas(proyecto.idProyecto!);
       this.buscarCancelaciones(proyecto.idProyecto!);
     } else {
       this.proyectoElegido.set(null);
@@ -117,22 +121,16 @@ export class EntregarProyecto implements OnInit {
     });
   }
 
+  private buscarEntregas(idProyecto: number): void {
+    this.entregaService.getEntregasProyecto(idProyecto).subscribe({
+      next: (entregas: Entrega[]) => this.entregasProyecto.set(entregas)
+    })
+  }
+
   private buscarCancelaciones(idProyecto: number): void {
     this.rechazoService.getRechazos(idProyecto).subscribe({
       next: (rechazos: Rechazo[]) => this.rechazos.set(rechazos)
     })
-  }
-
-  private buscarCancelacionesProyecto(): void {
-    for (let i = 0; i < this.proyectos().length; i++) {
-      this.rechazoService.getRechazos(this.proyectos()[i].idProyecto!).subscribe({
-        next: (rechazos: Rechazo[]) => {
-          if (rechazos.length > 0) {
-
-          }
-        }
-      })
-    }
   }
 
 }

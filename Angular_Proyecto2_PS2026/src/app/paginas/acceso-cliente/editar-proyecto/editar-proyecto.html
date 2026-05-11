@@ -51,5 +51,17 @@
             }
         </div>
     </div>
+    <div>
+        Elige las habilidades que son necesarias <br> para ser apto para el proyecto
+        <div class="contSecundario">
+            @for (habilidad of habilidades(); track habilidad.idHabilidad) {
+                <button class="btnCuadrado" 
+                [class.seleccionado]="existeEnLista(habilidad.idHabilidad!)" 
+                (click)="elegirHabilidad(habilidad.idHabilidad!)">
+                    {{habilidad.nombreHabilidad}}
+                </button>
+            }
+        </div>
+    </div>
 </div>
 

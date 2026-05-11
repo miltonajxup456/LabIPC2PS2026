@@ -1,0 +1,52 @@
+<app-header [titulo]="titulo"></app-header>
+<app-menu-secundario [linkAnterior]="linkAnterior"></app-menu-secundario>
+<div class="contPrincipal">
+    <div class="contSecundario">
+        @for (usuario of usuarios(); track usuario.nombreUsuario) {
+            <button class="btnCuadrado" (click)="elegirUsuario(usuario)"
+            [class.seleccionado]="usuario.nombreUsuario === usuarioSeleccionado()?.nombreUsuario">
+                {{usuario.nombreUsuario}} <br>
+                {{usuario.tipoRol}}
+            </button>
+        }
+    </div>
+    @if (usuarioSeleccionado()) {
+        <div class="contSecundario">
+            @if (usuarioSeleccionado()?.nombreUsuario !== 'Admin1') {
+                <button class="btnRedondo" 
+                [class.hab]="!usuarioSeleccionado()?.baneo" [class.des]="usuarioSeleccionado()?.baneo"
+                (click)="cambiar()">
+                    @if (usuarioSeleccionado()?.baneo) {
+                        Deshabilitado
+                    } @else {
+                        Habilitado
+                    }
+                </button>
+            }
+            <div class="celda">Nombre de Usuario: {{usuarioSeleccionado()?.nombreUsuario}}</div>
+            <div class="celda">Nombre: {{usuarioSeleccionado()?.nombre}} </div>
+            <div class="celda">Saldo: {{usuarioSeleccionado()?.saldo}}</div>
+            <div class="celda"> Tipo de Rol: {{usuarioSeleccionado()?.tipoRol}} </div>
+            <div class="celda">Correo Electronico: {{usuarioSeleccionado()?.correoElectronico}} </div>
+            <div class="celda">Telefono: {{usuarioSeleccionado()?.telefono}} </div>
+            <div class="celda">Direccion: {{usuarioSeleccionado()?.direccion}} </div>
+            <div class="celda">CUI: {{usuarioSeleccionado()?.cui}} </div>
+            <div class="celda">Fecha de Nacimiento: {{usuarioSeleccionado()?.fechaNac}} </div>
+            @if (usuarioSeleccionado()?.rol === 2) {
+                <div class="celda"> Descripcion de Empresa: {{usuarioSeleccionado()?.descripcionEmpresa}} </div>
+                <div class="celda"> Sector o Industria a la que pertenece: {{usuarioSeleccionado()?.industriaPerteneciente}} </div>
+                <div class="celda"> Sitio web: {{usuarioSeleccionado()?.sitioWeb}} </div>
+            }
+            @if (usuarioSeleccionado()?.rol === 3) {
+                <div class="celda"> Biografia Personal: {{usuarioSeleccionado()?.biografia}} </div>
+                <div class="celda"> Tarifa Referencial: Q {{usuarioSeleccionado()?.tarifaReferencial}} </div>
+                <div class="celda"> Nivel de Experiencia: {{usuarioSeleccionado()?.tipoNivelExperiencia}} </div>
+                <div class="celda"> Calificación Promedio: {{usuarioSeleccionado()?.calificacionPromedio}} / 5  </div>
+                Habilidades del Freelancer
+                @for (habilidad of habilidadesFreelancer(); track habilidad.idHabilidad) {
+                    <div class="celda">{{habilidad.nombreHabilidad}}</div>
+                }
+            }
+        </div>
+    }
+</div>

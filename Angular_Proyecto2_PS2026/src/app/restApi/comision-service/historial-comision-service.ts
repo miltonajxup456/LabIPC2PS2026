@@ -14,6 +14,10 @@ export class HistorialComisionService {
 
     constructor(private httpClient: HttpClient, private apiUrl: Apiurl) {}
 
+    public getComisionGanada(): Observable<number> {
+        return this.httpClient.get<number>(`${this.apiUrl.getUrl()}historial-comision/comision-total/nada/nada2`);
+    }
+
     public getGananciasFreelancer(fechaInicial: string, fechaFinal: string): Observable<GananciaFreelancer[]> {
         return this.httpClient.get<GananciaFreelancer[]>(`${this.apiUrl.getUrl()}historial-comision/ganancias-freelancer/${fechaInicial}/${fechaFinal}`);
     }
@@ -25,4 +29,5 @@ export class HistorialComisionService {
     public getGananciasPlataforma(fechaInicial: string, fechaFinal: string): Observable<GananciasPlataforma> {
         return this.httpClient.get<GananciasPlataforma>(`${this.apiUrl.getUrl()}historial-comision/ganancias-plataforma/${fechaInicial}/${fechaFinal}`);
     }
+    
 }

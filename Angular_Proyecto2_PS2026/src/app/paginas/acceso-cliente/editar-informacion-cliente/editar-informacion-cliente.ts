@@ -59,15 +59,11 @@ export class EditarInformacionCliente {
         nivelExperiencia: this.usuarioLogeado()?.nivelExperiencia!
       });
       this.habilidadService.getHabilidades().subscribe({
-        next: (habilidades: Habilidad[]) => {
-          this.habilidades.set(habilidades);
-        }
+        next: (habilidades: Habilidad[]) => this.habilidades.set(habilidades)
       });
 
       this.usuarioService.getHabilidadesFreelancer(this.usuarioLogeado()?.nombreUsuario!).subscribe({
-        next: (habilidadesFree: number[]) => {
-          this.idHabilidades.set(habilidadesFree);
-        }
+        next: (habilidadesFree: number[]) => this.idHabilidades.set(habilidadesFree)
       });
     }
   }

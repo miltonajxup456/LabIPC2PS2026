@@ -28,6 +28,7 @@ body {
     overflow: auto;
     height: 500px;
     min-width: 300px;
+    max-width: 400px;
     display: flex;
     flex-direction: column;
     gap: 20px;

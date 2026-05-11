@@ -10,6 +10,8 @@ import { GuardadoUsuario } from '../../login/guardado-usuario/guardado-usuario';
 import { CategoriaService } from '../../../restApi/categoria-service/categoria-service';
 import { ComisionService } from '../../../restApi/comision-service/comision-service';
 import { Comision } from '../../../models/comision/comision';
+import { Habilidad } from '../../../models/habilidad/habilidad';
+import { HabilidadService } from '../../../restApi/habilidad-service/habilidad-service';
 
 @Component({
   selector: 'app-editar-proyecto',
@@ -27,6 +29,8 @@ export class EditarProyecto implements OnInit {
   proyectosCliente = signal<Proyecto[]>([]);
   proyectoElegido = signal<Proyecto | null>(null);
   categorias = signal<Categoria[]>([]);
+  habilidades = signal<Habilidad[]>([]);
+  habilidadesProyecto = signal<number[]>([]);
   categoriaID: number = 0;
   comisionProyecto = signal<Comision | null>(null);
 
@@ -34,6 +38,7 @@ export class EditarProyecto implements OnInit {
     private guardado: GuardadoUsuario,
     private proyectoService: ProyectoService, 
     private categoriaService: CategoriaService,
+    private habilidadService: HabilidadService,
     private comisionService: ComisionService) {}
 
   ngOnInit(): void {
@@ -44,19 +49,20 @@ export class EditarProyecto implements OnInit {
       descripcion: new FormControl<string>('', Validators.required),
       presupuesto: new FormControl<number | null>(null, Validators.required),
       fechaLimite: new FormControl<Date | null>(null, Validators.required),
-      categoria: new FormControl<number | null>(null)
+      categoria: new FormControl<number | null>(null), 
+      habilidades: new FormControl<number[]>([])
     });
 
     this.proyectoService.getProyectosCliente(this.usuarioLogeado()?.nombreUsuario!).subscribe({
-      next: (proyectos: Proyecto[]) => {
-        this.proyectosCliente.set(proyectos);
-      }
+      next: (proyectos: Proyecto[]) => this.proyectosCliente.set(proyectos)
     });
 
     this.categoriaService.getTodasLasCategorias().subscribe({
-      next: (categorias: Categoria[]) => {
-        this.categorias.set(categorias);
-      }
+      next: (categorias: Categoria[]) => this.categorias.set(categorias)
+    });
+
+    this.habilidadService.getHabilidades().subscribe({
+      next: (habilidades: Habilidad[]) => this.habilidades.set(habilidades)
     })
   }
 
@@ -71,9 +77,10 @@ export class EditarProyecto implements OnInit {
     });
     this.proyectoElegido.set(proyecto);
     this.categoriaID = proyecto.categoria;
+    this.habilidadesProyecto.set(proyecto.habilidades!);
     this.comisionService.getComisionPorID(proyecto.comision!).subscribe({
       next: (comision: Comision) => this.comisionProyecto.set(comision)
-    })
+    });
   }
 
   elegirCategoria(idCategoria: number): void {
@@ -82,7 +89,25 @@ export class EditarProyecto implements OnInit {
     })
   }
 
+  elegirHabilidad(idHabilidad: number): void {
+    if (this.existeEnLista(idHabilidad)) {
+      this.habilidadesProyecto.update(habs => habs.filter(id => id !== idHabilidad));
+    } else {
+      this.habilidadesProyecto.update(habs => [...habs, idHabilidad]);
+    }
+  }
+
+  existeEnLista(idHabilidad: number): boolean {
+    for (let i = 0; i < this.habilidadesProyecto().length; i++) {
+      if (idHabilidad === this.habilidadesProyecto()[i]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   guardarCambios(): void {
+    this.formProyecto.patchValue({habilidades: this.habilidadesProyecto()})
     const miForm = this.formProyecto.value;
     const fechaProyecto = new Date(miForm.fechaLimite)
     const fechaActual = new Date();
@@ -108,6 +133,7 @@ export class EditarProyecto implements OnInit {
         this.formProyecto.reset();
         this.proyectoElegido.set(null);
         this.categoriaID = 0;
+        this.habilidadesProyecto.set([]);
       },
       error: () => alert('Ocurrio un error al momento de Guardar el Proyecto')
     });

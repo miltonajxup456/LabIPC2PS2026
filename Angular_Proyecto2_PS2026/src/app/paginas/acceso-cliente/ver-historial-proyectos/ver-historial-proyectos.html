@@ -15,6 +15,9 @@
 </div>
 <div class="contPrincipal">
     <div class="contSecundario">
+        @if (proyectos().length > 0) {
+            <button class="btnRedondo" (click)="descargarPdf()">Descargar Reporte</button>
+        }
         @for (proyecto of proyectos(); track $index) {
             <div class="celda">
                 <div class="celda"> Estado: {{proyecto.tipoEstado}} </div>

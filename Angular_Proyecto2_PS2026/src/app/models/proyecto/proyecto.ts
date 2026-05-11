@@ -1,3 +1,5 @@
+import { HabilidadProyecto } from "./habilidad-proyecto"
+
 export interface Proyecto {
   idProyecto?: number,
   titulo: string,
@@ -11,4 +13,5 @@ export interface Proyecto {
   tipoEstado?: string,
   freelancer?: string
   comision?: number
+  habilidades?: number[]
 }

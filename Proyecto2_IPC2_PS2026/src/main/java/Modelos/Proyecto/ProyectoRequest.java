@@ -4,6 +4,8 @@
  */
 package Modelos.Proyecto;
 
+import java.util.List;
+
 /**
  *
  * @author millin-115
@@ -19,6 +21,7 @@ public class ProyectoRequest {
     private int estado;
     private String freelancer;
     private int comision;
+    private List<Integer> habilidades;
 
     public String getTitulo() {
         return titulo;
@@ -90,6 +93,14 @@ public class ProyectoRequest {
 
     public void setComision(int comision) {
         this.comision = comision;
+    }
+
+    public List<Integer> getHabilidades() {
+        return habilidades;
+    }
+
+    public void setHabilidades(List<Integer> habilidades) {
+        this.habilidades = habilidades;
     }
     
 }

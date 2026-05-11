@@ -83,8 +83,8 @@ CREATE TABLE Usuario (
     FOREIGN KEY (rol) REFERENCES Rol(id_rol)
 );
 
-INSERT INTO Usuario (nombre_usuario, nombre, password_user, correo_electronico, telefono, direccion, cui, fecha_nac, rol)
-VALUES ("Admin1", "Milton", "1234", "admin@gmail.com", "12345678", "Guatemala", "87654321", "2000-01-01", 1);
+-- INSERT INTO Usuario (nombre_usuario, nombre, password_user, correo_electronico, telefono, direccion, cui, fecha_nac, rol)
+-- VALUES ("Admin1", "Milton", "1234", "admin@gmail.com", "12345678", "Guatemala", "87654321", "2000-01-01", 1);
 
 CREATE TABLE Cliente(
     id_cliente VARCHAR(50) NOT NULL PRIMARY KEY,

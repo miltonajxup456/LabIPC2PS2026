@@ -1,0 +1,26 @@
+<app-header [titulo]="titulo"></app-header>
+<app-menu-secundario [linkAnterior]="linkAnterior"></app-menu-secundario>
+<div class="contPrincipal">
+    <div class="contSecundario">
+        @for (habilidad of habilidades(); track habilidad.idHabilidad) {
+            <button class="btnCuadrado" [class.seleccionado]="habilidad.idHabilidad === habilidadSeleccionada()?.idHabilidad"
+            (click)="elegirHabilidad(habilidad)">
+                {{habilidad.nombreHabilidad}}
+            </button>
+        }
+    </div>
+    @if (habilidadSeleccionada()) {
+        <form [formGroup]="formHabilidad" (ngSubmit)="actualizarHabilidad()">
+            <div class="celda"> Id de Categoria: {{habilidadSeleccionada()?.idHabilidad}} </div>
+            <label >
+                Nombre de Categoria:
+                <input type="text" formControlName="nombreHabilidad">
+            </label>
+            <label >
+                Descripcion de la Categoria:
+                <textarea rows="10" cols="30" formControlName="descripcion"></textarea>
+            </label>
+            <button class="btnRedondo" [disabled]="formHabilidad.invalid">Actualizar Habilidad</button>
+        </form>
+    }
+</div>

@@ -5,7 +5,7 @@
         @for (propuesta of propuestas(); track propuesta.idPropuestaCategoria) {
             <button class="btnRedondo" 
             (click)="elegirPropuesta(propuesta)"
-            [class.seleccionado]="propuesta.idPropuestaHabilidad === propuestaElegida()?.idPropuestaHabilidad">
+            [class.seleccionado]="propuesta.idPropuestaCategoria === propuestaElegida()?.idPropuestaCategoria">
                 Nombre: {{propuesta.nombre}}
             </button>
         } @empty {

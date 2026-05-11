@@ -9,12 +9,14 @@ import { GuardadoUsuario } from '../../login/guardado-usuario/guardado-usuario';
 import { Usuario } from '../../../models/usuario/usuario';
 import { PropuestaProyecto } from '../../../models/propuesta-proyecto/propuesta-proyecto';
 import { CompletarDatos } from "../../componentes-extra/completar-datos/completar-datos";
+import { UsuarioService } from '../../../restApi/usuario-service/usuario-service';
+import { Habilidad } from '../../../models/habilidad/habilidad';
 
 @Component({
   selector: 'app-agregar-propuesta',
   imports: [Header, MenuSecundario, ReactiveFormsModule, CompletarDatos],
   templateUrl: './agregar-propuesta.html',
-  styles: `p {color: red;} .btnRedondo {margin-bottom: 25px;}`
+  styleUrl: './agregar-propuesta.css',
 })
 export class AgregarPropuesta implements OnInit {
 
@@ -24,20 +26,28 @@ export class AgregarPropuesta implements OnInit {
   usuarioLogeado = signal<Usuario | null>(null);
   proyectos = signal<Proyecto[]>([]);
   proyectoElegido = signal<Proyecto | null>(null);
+  habilidadesProyecto = signal<Habilidad[]>([]);
+  habilidadesFreelancer = signal<number[]>([]);
   propuestaElegida = signal<PropuestaProyecto | null>(null);
   formPropuesta!: FormGroup;
+  esApto = signal<boolean>(false);
 
   constructor(
     private guardado: GuardadoUsuario,
     private proyectoService: ProyectoService, 
+    private usuarioService: UsuarioService, 
     private propuestaService: PropuestaProyectoService) {}
 
   ngOnInit(): void {
     this.usuarioLogeado.set(this.guardado.getUsuarioLogeado());
-    this.proyectoService.getProyectos().subscribe({
+    this.proyectoService.getProyectosAbiertos().subscribe({
       next: (proyectos: Proyecto[]) => {
         this.proyectos.set(proyectos);
       }
+    });
+
+    this.usuarioService.getHabilidadesFreelancer(this.usuarioLogeado()?.nombreUsuario!).subscribe({
+      next: (habilidades: number[]) => this.habilidadesFreelancer.set(habilidades)
     })
 
     this.formPropuesta = new FormGroup ({
@@ -54,7 +64,11 @@ export class AgregarPropuesta implements OnInit {
     this.formPropuesta.reset();
     this.formPropuesta.patchValue({
       proyecto: proyecto.idProyecto
+    });
+    this.proyectoService.getHabilidadesProyecto(proyecto.idProyecto!).subscribe({
+      next: (habilidades: Habilidad[]) => this.habilidadesProyecto.set(habilidades)
     })
+    this.revisarEsApto(proyecto.habilidades!);
     this.propuestaService.getPropuestaFreelancer(proyecto.idProyecto!, this.usuarioLogeado()?.nombreUsuario!).subscribe({
       next: (propuesta: PropuestaProyecto) => {
         if (propuesta != null) {
@@ -69,6 +83,18 @@ export class AgregarPropuesta implements OnInit {
         }
       }
     })
+  }
+
+  revisarEsApto(habilidadesProyecto: number[]): void {
+    for (let i = 0; i < habilidadesProyecto.length; i ++) {
+      for (let j = 0; j < this.habilidadesFreelancer().length; j ++) {
+        if (habilidadesProyecto[i] === this.habilidadesFreelancer()[j]) {
+          this.esApto.set(true);
+          return;
+        }
+      }
+    }
+    this.esApto.set(false);
   }
 
   subirPropuesta(): void {

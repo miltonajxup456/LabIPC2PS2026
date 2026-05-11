@@ -26,6 +26,24 @@ import java.util.Map;
 @WebServlet("/login/*")
 public class LoginServlet extends HttpServlet {
     
+    private UsuarioDB usuariodb;
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Gson gson = new Gson();
+        String instruccion = request.getPathInfo().substring(1);
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        
+        if (instruccion.equals("re-ingresar")) {
+            response.getWriter().write(gson.toJson(usuariodb));
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else if (instruccion.equals("cerrar-sesion")) {
+            usuariodb = null;
+        }
+    }
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Gson gson = new Gson();
@@ -38,7 +56,7 @@ public class LoginServlet extends HttpServlet {
         Map<String, Object> resp = new HashMap<>();
         
         try {
-            UsuarioDB usuariodb = service.validarContraseña(usuarioRequest);
+            usuariodb = service.validarContraseña(usuarioRequest);
             resp.put("mensaje", "ok");
             resp.put("data", usuariodb);
             response.setStatus(HttpServletResponse.SC_OK);

@@ -14,6 +14,7 @@ public class FreelancerDB extends UsuarioDB {
     private double tarifaReferencial;
     private int nivelExperiencia;
     private String tipoNivelExperiencia;
+    private double calificacionPromedio;
 
     public FreelancerDB(UsuarioDB u){
         this.nombreUsuario = u.getNombreUsuario();
@@ -68,6 +69,14 @@ public class FreelancerDB extends UsuarioDB {
 
     public void setTipoNivelExperiencia(String tipoNivelExperiencia) {
         this.tipoNivelExperiencia = tipoNivelExperiencia;
+    }
+
+    public double getCalificacionPromedio() {
+        return calificacionPromedio;
+    }
+
+    public void setCalificacionPromedio(double calificacionPromedio) {
+        this.calificacionPromedio = calificacionPromedio;
     }
 
 }

@@ -5,6 +5,7 @@ import { Usuario } from '../../models/usuario/usuario';
 import { UsuarioService } from '../../restApi/usuario-service/usuario-service';
 import { GuardadoUsuario } from '../login/guardado-usuario/guardado-usuario';
 import { CompletarDatos } from "../componentes-extra/completar-datos/completar-datos";
+import { Habilidad } from '../../models/habilidad/habilidad';
 
 @Component({
   selector: 'app-acceso-freelancer',
@@ -16,6 +17,7 @@ export class AccesoFreelancer implements OnInit {
 
   titulo: string = 'Acceso de Freelancer';
   usuarioLogeado = signal<Usuario | null>(null);
+  habilidadesFreelancer = signal<Habilidad[]>([]);
 
   constructor(private usuarioService: UsuarioService, private guardadoUsuario: GuardadoUsuario) {}
 
@@ -26,6 +28,9 @@ export class AccesoFreelancer implements OnInit {
     //   }
     // })
     this.usuarioLogeado.set(this.guardadoUsuario.getUsuarioLogeado());
+    this.usuarioService.getHabsCompletasFree(this.usuarioLogeado()?.nombreUsuario!).subscribe({
+      next: (habilidades: Habilidad[]) => this.habilidadesFreelancer.set(habilidades)
+    })
   }
 
   cerrarSesion(): void {

@@ -25,6 +25,7 @@ import java.util.List;
 public class HistorialComisionDAO {
     
     private static final String HISTORIAL_FECHAS = "SELECT * FROM Historial_Comision ";
+    private static final String COMISION_GANADA = "SELECT COALESCE(SUM(monto_proyecto * porcentaje_comision / 100)) AS comision_total FROM Historial_Comision_Proyecto";
     private static final String MAS_INGRESOS_FREELANCER = ""
             + "SELECT freelancer, SUM(monto_proyecto * porcentaje_comision / 100) AS comision_total "
             + "FROM Historial_Comision_Proyecto "
@@ -40,6 +41,20 @@ public class HistorialComisionDAO {
             + "FROM Historial_Comision_Proyecto WHERE fecha BETWEEN ? AND ?";
     private static final String AGREGAR_REGISTRO_COMISION = ""
             + "INSERT INTO Historial_Comision_Proyecto (monto_proyecto, porcentaje_comision, cliente, freelancer, categoria, proyecto) VALUES (?,?,?,?,?,?)";
+    
+    public int getComisionGanada() throws DataBaseException {
+        try (Connection connection = DBConnexionSingleton.getConnection();
+                PreparedStatement select = connection.prepareStatement(COMISION_GANADA)) {
+            try (ResultSet rs = select.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("comision_total");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataBaseException("Error al traer la comision ganada "+e);
+        }
+        return 0;
+    }
     
     public List<HistorialDB> getHistorialFechas(String fechaInicial, String fechaFinal) throws DataBaseException {
         List<HistorialDB> historial = new ArrayList<>();

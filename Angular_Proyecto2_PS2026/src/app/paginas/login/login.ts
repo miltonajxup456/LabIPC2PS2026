@@ -27,7 +27,7 @@ export class Login implements OnInit {
     private usuarioService: UsuarioService){}
 
   ngOnInit(): void {
-    this.usuarioService.crearAdministrador().subscribe();
+    //this.usuarioService.crearAdministrador().subscribe();
 
     this.formLogin = new FormGroup({
       nombreUsuario: new FormControl<String | null>(null, Validators.required),

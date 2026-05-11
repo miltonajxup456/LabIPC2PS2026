@@ -28,6 +28,10 @@ import { VerGastosCategoria } from './paginas/acceso-cliente/ver-gastos-categori
 import { VerContratosCompletados } from './paginas/acceso-freelancer/ver-contratos-completados/ver-contratos-completados';
 import { VerCategoriasPreferidas } from './paginas/acceso-freelancer/ver-categorias-preferidas/ver-categorias-preferidas';
 import { VerPropuestasEnviadas } from './paginas/acceso-freelancer/ver-propuestas-enviadas/ver-propuestas-enviadas';
+import { CrearAdministrador } from './paginas/acceso-administrador/crear-administrador/crear-administrador';
+import { VerUsuarios } from './paginas/acceso-administrador/ver-usuarios/ver-usuarios';
+import { ModificarCategoria } from './paginas/acceso-administrador/modificar-categoria/modificar-categoria';
+import { ModificarHabilidad } from './paginas/acceso-administrador/modificar-habilidad/modificar-habilidad';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -44,6 +48,10 @@ export const routes: Routes = [
     { path: 'ver-historial-proyectos', component: VerHistorialProyectos },
     { path: 'ver-historial-recargas', component: VerHistorialRecargas},
     { path: 'ver-gastos-categorias', component: VerGastosCategoria},
+    { path: 'crear-administrador', component: CrearAdministrador},
+    { path: 'ver-usuarios', component: VerUsuarios },
+    { path: 'modificar-categoria', component: ModificarCategoria },
+    { path: 'modificar-habilidad', component: ModificarHabilidad },
 
     { path: 'acceso-freelancer', component: AccesoFreelancer },
     { path: 'agregar-propuesta', component: AgregarPropuesta }, 

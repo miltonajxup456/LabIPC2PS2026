@@ -8,7 +8,7 @@ import { MenuSecundario } from "../../menu-secundario/menu-secundario";
   selector: 'app-inhabilitar-cuentas',
   imports: [Header, MenuSecundario],
   templateUrl: './inhabilitar-cuentas.html',
-  styles: `.hab {background: greenyellow;} .des{background: red;}`,
+  styles: `.hab {background: rgb(45, 231, 61);} .des{background: red;}`,
 })
 export class InhabilitarCuentas implements OnInit {
 
@@ -25,6 +25,7 @@ export class InhabilitarCuentas implements OnInit {
   }
 
   cambiar(usuario: Usuario): void {
+    if (usuario.nombreUsuario === 'Admin1') return
     usuario.baneo = !usuario.baneo;
     this.usuarioService.baneoCuenta(usuario, usuario.nombreUsuario).subscribe();
   }
